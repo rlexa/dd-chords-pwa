@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AppComponent renders 1`] = `
-<app-root>
+<dd-chords-app>
   <h1>
     Hello!
   </h1>
-</app-root>
+</dd-chords-app>
 `;
