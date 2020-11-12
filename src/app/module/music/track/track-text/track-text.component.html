@@ -1,0 +1,12 @@
+<div class="actions">
+  <i class="fas fa-guitar"></i>
+  <button (click)="addTranspose(1)" class="btn btn-dense"><i class="fas fa-arrow-up"></i></button>
+  <button (click)="addTranspose(-1)" class="btn btn-dense"><i class="fas fa-arrow-down"></i></button>
+  <label>{{ transpose$ | async }}</label>
+</div>
+<ng-container *ngIf="lines$ | async as lines">
+  <ng-container *ngFor="let line of lines; trackBy: trackByIndex">
+    <br *ngIf="!line.text" />
+    <p *ngIf="line.text" [class.indent]="!!line.indent">{{ line.text }}</p>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,5 @@
+:host {
+  > :nth-child(1n + 2) {
+    margin-top: var(--margin-default);
+  }
+}

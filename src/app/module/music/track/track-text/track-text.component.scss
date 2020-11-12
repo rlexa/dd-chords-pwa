@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  font-family: monospace;
+
+  .actions {
+    display: inline-flex;
+    align-items: center;
+    margin: 1em 0;
+
+    > :nth-child(1n + 1) {
+      margin-left: 1em;
+    }
+  }
+
+  p {
+    white-space: pre-wrap;
+
+    &.indent {
+      margin-left: 1em;
+    }
+  }
+}

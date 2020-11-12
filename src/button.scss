@@ -1,0 +1,32 @@
+.btn {
+  border-radius: var(--radius-wide);
+  padding: 0.28em 0.72em;
+  outline: none;
+  background-color: var(--color-bg);
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--color-border);
+  transition: background-color 200ms, color 200ms, border-color 200ms;
+
+  &.btn-dense {
+    padding: 0.1em 0.3em;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:hover,
+    &.hover {
+      background-color: var(--color-bg-elevated);
+    }
+
+    &:focus,
+    &.focus {
+      border-color: var(--color-default);
+    }
+  }
+
+  &:disabled {
+    color: var(--color-disabled);
+  }
+}

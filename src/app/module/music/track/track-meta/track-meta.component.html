@@ -1,0 +1,6 @@
+<ng-container *ngFor="let ii of meta; trackBy: trackByIndex">
+  <ng-container *ngIf="ii?.key && ii.value" [ngSwitch]="ii.key">
+    <h1 *ngSwitchCase="TRACK_META_TITLE">{{ ii?.value }}</h1>
+    <h3 *ngSwitchDefault>{{ ii?.key }}: {{ ii?.value }}</h3>
+  </ng-container>
+</ng-container>

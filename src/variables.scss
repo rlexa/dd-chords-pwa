@@ -157,10 +157,6 @@ $radius: (
 
   @include add_customVars_as_hsla('scrollbar-thumb', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.5);
   @include add_customVars_as_hsla('scrollbar-track', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.2);
-
-  @include add_customVars_as_hsla('shadow-default', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.15);
-  @include add_customVars_as_hsla('shadow-strong', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.25);
-  @include add_customVars_as_hsla('shadow-weak', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.1);
 }
 
 // overwrite vars here for theming

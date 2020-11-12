@@ -1,0 +1,5 @@
+article {
+  > :nth-child(1n + 1) {
+    margin-top: var(--margin-default);
+  }
+}
