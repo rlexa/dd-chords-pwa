@@ -5,11 +5,37 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "jest --ci --logHeapUsage",
+    "test:dev": "jest --updateSnapshot --bail --runInBand",
+    "test:watch": "npm run test:dev -- --watchAll",
+    "test:coverage": "jest --coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
   "private": true,
+  "jest": {
+    "preset": "jest-preset-angular",
+    "name": "dd-chords-pwa",
+    "coverageDirectory": "dist/coverage",
+    "collectCoverageFrom": [
+      "src/app/**/*.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      ".module.ts",
+      "index.ts",
+      ".stories.ts"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/jest-setup.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".stories.ts",
+      "test.ts"
+    ],
+    "testURL": "http://localhost/"
+  },
   "dependencies": {
     "@angular/animations": "~11.0.0",
     "@angular/common": "~11.0.0",
@@ -28,18 +54,22 @@
     "@angular-devkit/build-angular": "~0.1100.0",
     "@angular/cli": "~11.0.0",
     "@angular/compiler-cli": "~11.0.0",
-    "@types/jasmine": "~3.6.0",
+    "@types/jest": "^26.0.15",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
+    "jest": "^26.6.3",
+    "jest-preset-angular": "^8.3.2",
     "karma": "~5.1.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "ng-mocks": "^10.5.3",
     "prettier": "^2.1.2",
     "protractor": "~7.0.0",
+    "ts-mockery": "^1.2.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.0.2"
