@@ -1,0 +1,9 @@
+{
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "html.format.wrapLineLength": 140,
+    "editor.rulers": [140],
+    "typescript.tsdk": "node_modules\\typescript\\lib"
+}
