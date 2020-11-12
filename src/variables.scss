@@ -1,0 +1,168 @@
+@mixin add_customVars_toClassStyles($key-value-map, $prefix, $class, $style) {
+  @each $key, $val in $key-value-map {
+    .#{$class}-#{$key} {
+      #{$style}: var(--#{$prefix}-#{$key});
+    }
+  }
+}
+
+@mixin add_customVars($key-value-map, $prefix) {
+  @each $key, $val in $key-value-map {
+    --#{$prefix}-#{$key}: #{$val};
+  }
+}
+
+@mixin add_customVars_inRoot($key-value-map, $prefix) {
+  :root {
+    @include add_customVars($key-value-map, $prefix);
+  }
+}
+
+// FONT FAMILY
+
+$font-family-default: 'Source Sans Pro', 'Segoe UI', 'Helvetica', sans-serif;
+
+$font-family: (
+  'default': $font-family-default,
+);
+
+@include add_customVars_inRoot($font-family, 'font-family');
+@include add_customVars_toClassStyles($font-family, 'font-family', 'font-family', 'font-family');
+
+// FONT SIZE
+
+$font-size: (
+  'smallest': 0.7rem,
+  'small': 0.8rem,
+  'smaller': 0.9rem,
+  'default': 14px,
+  'bigger': 1.15rem,
+  'big': 1.3rem,
+  'biggest': 1.5rem,
+  'bigfoot': 1.7rem,
+);
+
+@include add_customVars_inRoot($font-size, 'font-size');
+@include add_customVars_toClassStyles($font-size, 'font-size', 'font-size', 'font-size');
+
+// FONT WEIGHT
+
+$font-weight: (
+  'weak': 300,
+  'default': 400,
+  'strong': 500,
+);
+
+@include add_customVars_inRoot($font-weight, 'font-weight');
+@include add_customVars_toClassStyles($font-weight, 'font-weight', 'font-weight', 'font-weight');
+
+// MARGIN
+
+$margin: (
+  'narrow': 0.25rem,
+  'default': 0.5rem,
+  'wide': 0.75rem,
+);
+
+@include add_customVars_inRoot($margin, 'margin');
+@include add_customVars_toClassStyles($margin, 'margin', 'margin', 'margin');
+@include add_customVars_toClassStyles($margin, 'margin', 'margin-left', 'margin-left');
+@include add_customVars_toClassStyles($margin, 'margin', 'margin-top', 'margin-top');
+@include add_customVars_toClassStyles($margin, 'margin', 'margin-right', 'margin-right');
+@include add_customVars_toClassStyles($margin, 'margin', 'margin-bottom', 'margin-bottom');
+
+// PADDING
+
+$padding: (
+  'narrow': 0.25rem,
+  'default': 0.5rem,
+  'wide': 0.75rem,
+);
+
+@include add_customVars_inRoot($padding, 'padding');
+@include add_customVars_toClassStyles($padding, 'padding', 'padding', 'padding');
+@include add_customVars_toClassStyles($padding, 'padding', 'padding-left', 'padding-left');
+@include add_customVars_toClassStyles($padding, 'padding', 'padding-top', 'padding-top');
+@include add_customVars_toClassStyles($padding, 'padding', 'padding-right', 'padding-right');
+@include add_customVars_toClassStyles($padding, 'padding', 'padding-bottom', 'padding-bottom');
+
+// GAP
+
+$gap: (
+  'narrow': 0.25rem,
+  'default': 0.5rem,
+  'wide': 0.75rem,
+);
+
+@include add_customVars_inRoot($gap, 'gap');
+
+// RADIUS
+
+$radius: (
+  'narrow': 0.075rem,
+  'default': 0.15rem,
+  'wide': 0.225rem,
+);
+
+@include add_customVars_inRoot($radius, 'radius');
+@include add_customVars_toClassStyles($radius, 'radius', 'border-radius', 'border-radius');
+
+// COLOR
+
+@mixin add_customVar_fromHsla($id, $prefix: 'color', $prefixFrom: 'clr') {
+  --#{$prefix}-#{$id}: hsla(
+    var(--#{$prefixFrom}-#{$id}-h),
+    var(--#{$prefixFrom}-#{$id}-s),
+    var(--#{$prefixFrom}-#{$id}-l),
+    var(--#{$prefixFrom}-#{$id}-a)
+  );
+}
+
+@mixin add_customVars_hsla($id, $h, $s, $l, $a: 1, $prefix: 'clr') {
+  --#{$prefix}-#{$id}-h: #{$h};
+  --#{$prefix}-#{$id}-s: #{$s};
+  --#{$prefix}-#{$id}-l: #{$l};
+  --#{$prefix}-#{$id}-a: #{$a};
+}
+
+@mixin add_customVars_as_hsla($id, $h, $s, $l, $a: 1, $prefixPart: 'clr', $prefixColor: 'color') {
+  --#{$prefixPart}-#{$id}-h: #{$h};
+  --#{$prefixPart}-#{$id}-s: #{$s};
+  --#{$prefixPart}-#{$id}-l: #{$l};
+  --#{$prefixPart}-#{$id}-a: #{$a};
+  @include add_customVar_fromHsla($id, $prefixColor, $prefixPart);
+}
+
+@mixin add_customVars_as_hsla_fromRgb($id, $rgb, $a: 1, $prefixPart: 'clr', $prefixColor: 'color') {
+  @include add_customVars_as_hsla($id, hue($rgb), saturation($rgb), lightness($rgb), $a, $prefixPart, $prefixColor);
+  --#{$prefixPart}-#{$id}-from-rgb: #{$rgb};
+}
+
+:root {
+  @include add_customVars_as_hsla_fromRgb('active', #03dac6);
+  @include add_customVars_as_hsla_fromRgb('default', #bb86fc);
+  @include add_customVars_as_hsla('strong', var(--clr-default-h), 100%, 85%);
+  @include add_customVars_as_hsla_fromRgb('success', #37cc17);
+  @include add_customVars_as_hsla_fromRgb('warning', #cf6679);
+  @include add_customVars_as_hsla('weak', var(--clr-default-h), var(--clr-default-s), 70%);
+
+  @include add_customVars_as_hsla_fromRgb('bg', #121212);
+  @include add_customVars_as_hsla_fromRgb('bg-elevated', #343434);
+
+  @include add_customVars_as_hsla_fromRgb('border', #555555);
+
+  @include add_customVars_as_hsla('shadow-default', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.85);
+  @include add_customVars_as_hsla('shadow-strong', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.75);
+  @include add_customVars_as_hsla('shadow-weak', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.9);
+
+  @include add_customVars_as_hsla('scrollbar-thumb', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.5);
+  @include add_customVars_as_hsla('scrollbar-track', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.2);
+
+  @include add_customVars_as_hsla('shadow-default', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.15);
+  @include add_customVars_as_hsla('shadow-strong', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.25);
+  @include add_customVars_as_hsla('shadow-weak', var(--clr-strong-h), var(--clr-strong-s), var(--clr-strong-l), 0.1);
+}
+
+// overwrite vars here for theming
+//[data-theme='dark-purple'] {
+//}
