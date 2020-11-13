@@ -8,6 +8,7 @@ export interface Track {
 export const TRACK_META_TITLE = 'title';
 
 export interface Line {
+  hasChords?: boolean;
   indent?: number;
   text?: string;
 }
@@ -78,7 +79,11 @@ const normalizeTextLine = (transpose: number) => (text: string) =>
     .replace(/(<[^(><.)]+>)/g, '')
     .replace(/<>/g, '');
 
-const textToLine = (transpose: number) => (text: string): Line => ({indent: getIndent(text), text: normalizeTextLine(transpose)(text)});
+const textToLine = (transpose: number) => (text: string): Line => ({
+  hasChords: text?.includes('<'),
+  indent: getIndent(text),
+  text: normalizeTextLine(transpose)(text),
+});
 
 const toLines = (data: string) => splitBreaksWin(trim(data)).flatMap(splitBreaksMac).flatMap(splitBreaksUnix);
 

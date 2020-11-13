@@ -14,6 +14,7 @@ import {trackByIndex} from 'src/util';
 export class TrackTextComponent implements OnDestroy {
   @RxCleanup() private readonly data$ = new StateSubject<string | null>(null);
   @RxCleanup() public readonly transpose$ = new StateSubject(0);
+  @RxCleanup() public readonly showChords$ = new StateSubject(true);
 
   readonly trackByIndex = trackByIndex;
 
@@ -25,12 +26,20 @@ export class TrackTextComponent implements OnDestroy {
     this.transpose$.next(normalizeTranspose(val ?? 0));
   }
 
-  public readonly lines$ = combineLatest([this.data$, this.transpose$]).pipe(
-    map(([data, transpose]) => textToLines(data ?? '', transpose)),
+  @Input() set showChords(val: boolean) {
+    this.showChords$.next(!!val);
+  }
+
+  public readonly lines$ = combineLatest([this.data$, this.transpose$, this.showChords$]).pipe(
+    map(([data, transpose, showChords]) => textToLines(data ?? '', transpose).filter((line) => !line.hasChords || showChords)),
   );
 
   addTranspose = (add: number) => {
     this.transpose = this.transpose$.value + add;
+  };
+
+  toggleShowChords = () => {
+    this.showChords = !this.showChords$.value;
   };
 
   destroy(): void {}
