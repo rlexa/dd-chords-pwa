@@ -80,5 +80,19 @@ const normalizeTextLine = (transpose: number) => (text: string) =>
 
 const textToLine = (transpose: number) => (text: string): Line => ({indent: getIndent(text), text: normalizeTextLine(transpose)(text)});
 
-export const textToLines = (text: string, transpose: number) =>
-  splitBreaksWin(trim(text)).flatMap(splitBreaksMac).flatMap(splitBreaksUnix).map(textToLine(transpose));
+const toLines = (data: string) => splitBreaksWin(trim(data)).flatMap(splitBreaksMac).flatMap(splitBreaksUnix);
+
+export const textToLines = (text: string, transpose: number) => toLines(text).map(textToLine(transpose));
+
+const getMeta = (lines: string[], meta: string) =>
+  lines.find((line) => line.startsWith(`#${meta} `))?.substr(`#${meta} `.length) || undefined;
+
+export const dataToTrack = (data: string): Track => {
+  const lines = toLines(data);
+  return {
+    author: getMeta(lines, 'author'),
+    performer: getMeta(lines, 'performer'),
+    text: lines.filter((line) => !line.startsWith('#')).join('\n'),
+    title: getMeta(lines, 'title'),
+  };
+};

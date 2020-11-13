@@ -1,4 +1,4 @@
-import {normalizeChord, normalizeTranspose, textToLines, transposeChord} from './music';
+import {dataToTrack, normalizeChord, normalizeTranspose, textToLines, transposeChord} from './music';
 
 describe(`music`, () => {
   describe(`normalizeChord`, () => {
@@ -63,5 +63,39 @@ describe(`music`, () => {
         {indent: 0, text: ''},
         {indent: 0, text: ''},
       ]));
+  });
+
+  describe(`dataToTrack`, () => {
+    it(`handles data`, () => {
+      expect(
+        dataToTrack(
+          `
+#author Виктор Цой
+#performer Кино
+#title Пачка сигарет
+
+<Em>        <Am>        <C>       <D>    <Em>
+Я сижу и смотрю в чужое небо из чужого окна
+     <Am>      <C>    <D>       <Em>
+И не вижу ни одной знакомой звезды.
+
+\t        <Am>           <C>   <D>    <Em>
+\tНо если есть в кармане пачка    сигарет,
+`,
+        ),
+      ).toEqual({
+        author: 'Виктор Цой',
+        performer: 'Кино',
+        text: `
+<Em>        <Am>        <C>       <D>    <Em>
+Я сижу и смотрю в чужое небо из чужого окна
+     <Am>      <C>    <D>       <Em>
+И не вижу ни одной знакомой звезды.
+
+\t        <Am>           <C>   <D>    <Em>
+\tНо если есть в кармане пачка    сигарет,`,
+        title: 'Пачка сигарет',
+      });
+    });
   });
 });
