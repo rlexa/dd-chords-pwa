@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {Meta, TRACK_META_TITLE} from 'src/music';
+import {Track} from 'src/music';
 import {trackByIndex} from 'src/util';
 
 @Component({
@@ -9,8 +9,7 @@ import {trackByIndex} from 'src/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackMetaComponent {
-  @Input() meta: Meta[] | undefined;
+  @Input() track: Track | undefined;
 
-  readonly TRACK_META_TITLE = TRACK_META_TITLE;
-  readonly trackByIndex = trackByIndex;
+  trackByIndex = trackByIndex;
 }

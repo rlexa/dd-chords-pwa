@@ -1,11 +1,8 @@
-export interface Meta {
-  key: string;
-  value: string;
-}
-
 export interface Track {
-  meta?: Meta[];
+  author?: string;
+  performer?: string;
   text?: string;
+  title?: string;
 }
 
 export const TRACK_META_TITLE = 'title';

@@ -1,6 +1,6 @@
-<ng-container *ngFor="let ii of meta; trackBy: trackByIndex">
-  <ng-container *ngIf="ii?.key && ii.value" [ngSwitch]="ii.key">
-    <h1 *ngSwitchCase="TRACK_META_TITLE">{{ ii?.value }}</h1>
-    <h3 *ngSwitchDefault>{{ ii?.key }}: {{ ii?.value }}</h3>
+<h3>
+  <ng-container *ngFor="let meta of [track?.performer, track?.author]; trackBy: trackByIndex; let index = index">
+    <span *ngIf="meta">{{ (index > 0 ? ',' : '') + ' ' + meta }}</span>
   </ng-container>
-</ng-container>
+</h3>
+<h1 *ngIf="track?.title as title">{{ title }}</h1>
