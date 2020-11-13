@@ -31,14 +31,12 @@ const getIndent = (text: string) => (text?.startsWith('\t') ? 1 : 0);
 
 export const TRANSPOSITIONS = 12;
 
-export const normalizeTranspose = (transponse: number) => {
-  transponse = transponse % TRANSPOSITIONS;
-  return transponse >= 0 ? transponse : transponse + TRANSPOSITIONS;
-};
+export const normalizeTranspose = (transpose: number) =>
+  (transpose >= 0 ? transpose : transpose + (Math.floor(Math.abs(transpose) / TRANSPOSITIONS) + 1) * TRANSPOSITIONS) % TRANSPOSITIONS;
 
 const TONES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
-const transposeChord = (chord: string, transpose: number) => {
+export const transposeChord = (chord: string, transpose: number) => {
   transpose = normalizeTranspose(transpose);
   while (chord.length && transpose > 0) {
     const iDown = chord.indexOf('b');
@@ -70,7 +68,7 @@ const transposeChord = (chord: string, transpose: number) => {
   return chord;
 };
 
-const normalizeChord = (chord: string) => chord?.replace(/H/g, 'B');
+export const normalizeChord = (chord: string) => chord?.replace(/H/g, 'B');
 
 const adjustChords = (transpose: number) => (text: string) =>
   normalizeChord(text)?.replace(/<(.+?)>/g, (match, chord: string, offset: number, inputString: string) =>
