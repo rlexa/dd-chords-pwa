@@ -26,7 +26,7 @@ export class TrackTextComponent implements OnDestroy {
   }
 
   @Output() showChordsChange = new EventEmitter<boolean>();
-  @Input() showChords = true;
+  @Input() showChords: boolean | null = true;
 
   public readonly lines$ = combineLatest([this.data$, this.transpose$]).pipe(
     map(([data, transpose]) => textToLines(data ?? '', transpose)),
