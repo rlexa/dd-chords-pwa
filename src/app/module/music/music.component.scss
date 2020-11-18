@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+
+  > .list {
+    min-width: 15rem;
+    max-width: 15rem;
+  }
+
+  > .content {
+    flex: 1 1 auto;
+  }
+}
