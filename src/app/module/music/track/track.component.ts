@@ -1,5 +1,7 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, Input} from '@angular/core';
+import {StateSubject} from 'dd-rxjs';
 import {Track} from 'src/music';
+import {DiShowChords} from '../../di-music/di-show-chords';
 
 @Component({
   selector: 'dd-chords-track',
@@ -8,5 +10,9 @@ import {Track} from 'src/music';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackComponent {
+  constructor(@Inject(DiShowChords) public readonly showChords$: StateSubject<boolean>) {}
+
   @Input() track: Track | undefined;
+
+  setShowChords = (val: boolean) => this.showChords$.next(!!val);
 }

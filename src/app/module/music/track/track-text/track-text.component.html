@@ -1,6 +1,6 @@
 <div class="actions">
   <button (click)="toggleShowChords()" class="btn btn-dense"><i class="fas fa-guitar"></i></button>
-  <ng-container *ngIf="showChords$ | async">
+  <ng-container *ngIf="showChords">
     <button (click)="addTranspose(1)" class="btn btn-dense"><i class="fas fa-arrow-up"></i></button>
     <button (click)="addTranspose(-1)" class="btn btn-dense"><i class="fas fa-arrow-down"></i></button>
     <label>{{ transpose$ | async }}</label>
@@ -8,7 +8,9 @@
 </div>
 <ng-container *ngIf="lines$ | async as lines">
   <ng-container *ngFor="let line of lines; trackBy: trackByIndex">
-    <br *ngIf="!line.text" />
-    <p *ngIf="line.text" [class.indent]="!!line.indent">{{ line.text }}</p>
+    <ng-container *ngIf="!line.hasChords || showChords">
+      <br *ngIf="!line.text" />
+      <p *ngIf="line.text" [class.indent]="!!line.indent">{{ line.text }}</p>
+    </ng-container>
   </ng-container>
 </ng-container>

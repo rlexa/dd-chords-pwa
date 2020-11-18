@@ -1,4 +1,8 @@
 <article>
   <dd-chords-track-meta [track]="track"></dd-chords-track-meta>
-  <dd-chords-track-text [text]="track?.text"></dd-chords-track-text>
+  <dd-chords-track-text
+    [text]="track?.text"
+    [showChords]="showChords$ | async"
+    (showChordsChange)="setShowChords($event)"
+  ></dd-chords-track-text>
 </article>
