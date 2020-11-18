@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {dataToTrack} from 'src/music';
-import {kinoPachkaSigaret} from 'src/music/testdata';
+import {greenCrowKotPrishelNazad} from 'src/music/testdata';
 
 @Component({
   selector: 'dd-chords-music',
@@ -9,5 +9,5 @@ import {kinoPachkaSigaret} from 'src/music/testdata';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MusicComponent {
-  readonly track = dataToTrack(kinoPachkaSigaret);
+  readonly track = dataToTrack(greenCrowKotPrishelNazad);
 }

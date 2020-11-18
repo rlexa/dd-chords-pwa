@@ -1,5 +1,8 @@
+import {md5} from 'src/util';
+
 export interface Track {
   author?: string;
+  id?: string;
   performer?: string;
   text?: string;
   title?: string;
@@ -96,6 +99,7 @@ export const dataToTrack = (data: string): Track => {
   const lines = toLines(data);
   return {
     author: getMeta(lines, 'author'),
+    id: md5(data),
     performer: getMeta(lines, 'performer'),
     text: lines.filter((line) => !line.startsWith('#')).join('\n'),
     title: getMeta(lines, 'title'),
