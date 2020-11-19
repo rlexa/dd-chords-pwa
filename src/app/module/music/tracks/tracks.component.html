@@ -1,3 +1,8 @@
-<button *ngFor="let track of tracks$ | async" class="btn text-ellipsis link" [routerLink]="track.id" routerLinkActive="active">
+<button
+  *ngFor="let track of tracks$ | async"
+  class="btn btn-borderless text-ellipsis link"
+  [routerLink]="track.id"
+  routerLinkActive="active"
+>
   {{ track.title || track.id }}
 </button>

@@ -12,6 +12,11 @@
     padding: 0.1em 0.3em;
   }
 
+  &.btn-borderless {
+    border-width: 0px;
+    padding: 1px;
+  }
+
   &:not(:disabled) {
     cursor: pointer;
 
