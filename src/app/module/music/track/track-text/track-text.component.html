@@ -10,7 +10,7 @@
   <ng-container *ngFor="let line of lines; trackBy: trackByIndex">
     <ng-container *ngIf="!line.hasChords || showChords">
       <br *ngIf="!line.text" />
-      <p *ngIf="line.text" [class.indent]="!!line.indent">{{ line.text }}</p>
+      <p *ngIf="line.text" [class.indent]="!!line.indent" [class.chords]="!!line.hasChords">{{ line.text }}</p>
     </ng-container>
   </ng-container>
 </ng-container>

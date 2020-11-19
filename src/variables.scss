@@ -144,7 +144,7 @@ $radius: (
   @include add_customVars_as_hsla('strong', var(--clr-default-h), 100%, 85%);
   @include add_customVars_as_hsla_fromRgb('success', #37cc17);
   @include add_customVars_as_hsla_fromRgb('warning', #cf6679);
-  @include add_customVars_as_hsla('weak', var(--clr-default-h), var(--clr-default-s), 70%);
+  @include add_customVars_as_hsla('weak', var(--clr-default-h), var(--clr-default-s), 60%);
 
   @include add_customVars_as_hsla_fromRgb('bg', #121212);
   @include add_customVars_as_hsla_fromRgb('bg-elevated', #343434);

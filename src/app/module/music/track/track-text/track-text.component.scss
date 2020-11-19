@@ -18,5 +18,9 @@
     &.indent {
       margin-left: 1em;
     }
+
+    &.chords {
+      color: var(--color-weak);
+    }
   }
 }
