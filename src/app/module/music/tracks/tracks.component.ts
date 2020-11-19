@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {TrackService} from '../../di-music/track.service';
 
 @Component({
   selector: 'dd-chords-tracks',
@@ -6,4 +7,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   styleUrls: ['./tracks.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TracksComponent {}
+export class TracksComponent {
+  constructor(private readonly trackService: TrackService) {}
+
+  readonly tracks$ = this.trackService.tracks$;
+}

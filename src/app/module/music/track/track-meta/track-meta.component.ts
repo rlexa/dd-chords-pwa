@@ -9,7 +9,7 @@ import {trackByIndex} from 'src/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackMetaComponent {
-  @Input() track: Track | undefined;
+  @Input() track: Track | undefined | null;
 
   trackByIndex = trackByIndex;
 }

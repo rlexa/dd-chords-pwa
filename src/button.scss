@@ -24,6 +24,10 @@
     &.focus {
       border-color: var(--color-default);
     }
+
+    &.active {
+      color: var(--color-active);
+    }
   }
 
   &:disabled {

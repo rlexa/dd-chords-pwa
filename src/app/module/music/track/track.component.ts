@@ -12,7 +12,7 @@ import {DiShowChords} from '../../di-music/di-show-chords';
 export class TrackComponent {
   constructor(@Inject(DiShowChords) public readonly showChords$: StateSubject<boolean>) {}
 
-  @Input() track: Track | undefined;
+  @Input() track: Track | undefined | null;
 
   setShowChords = (val: boolean) => this.showChords$.next(!!val);
 }
