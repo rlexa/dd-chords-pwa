@@ -1,3 +1,12 @@
+.scroll-performance {
+  will-change: scroll-position, transform;
+}
+
+.scroll-in-y {
+  overflow-y: scroll;
+  @extend .scroll-performance;
+}
+
 .text-nowrap {
   white-space: nowrap;
 }
