@@ -1,8 +1,10 @@
-<button
-  *ngFor="let track of tracks$ | async"
-  class="btn btn-borderless text-ellipsis link"
-  [routerLink]="track.id"
-  routerLinkActive="active"
->
-  {{ track.title || track.id }}
-</button>
+<cdk-virtual-scroll-viewport [itemSize]="23">
+  <button
+    *cdkVirtualFor="let track of tracks$ | async; trackBy: trackById"
+    class="btn btn-borderless text-ellipsis link"
+    [routerLink]="track.id"
+    routerLinkActive="active"
+  >
+    {{ track.title || track.id }}
+  </button>
+</cdk-virtual-scroll-viewport>
