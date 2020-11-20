@@ -106,4 +106,4 @@ export const dataToTrack = (data: string): Track => {
   return {...ret, id: md5(`${ret.performer}|${ret.title}`)};
 };
 
-export const sortTracks = (aa: Track, bb: Track) => (aa.id || '').localeCompare(bb.id || '');
+export const sortByTitle = <T extends {title?: string}>(aa: T, bb: T) => (aa.title || '').localeCompare(bb.title || '');

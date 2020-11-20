@@ -1,17 +1,16 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {Track} from 'src/music';
 import {DiItemToRoute, DiItemToTitle} from '../../common/di-common/di-item-to-x';
 import {VlistModule} from '../../common/vlist/vlist.module';
-import {DiCurrentTracksModule} from '../../di-music/di-current-tracks';
+import {DiCurrentTrackMetasModule, TrackMeta} from '../../di-music/di-current-tracks';
 import {TracksComponent} from './tracks.component';
 
 @NgModule({
   declarations: [TracksComponent],
-  imports: [CommonModule, VlistModule, DiCurrentTracksModule],
+  imports: [CommonModule, VlistModule, DiCurrentTrackMetasModule],
   providers: [
-    {provide: DiItemToRoute, useValue: (item: Track) => item?.id},
-    {provide: DiItemToTitle, useValue: (item: Track) => item?.title || item?.id},
+    {provide: DiItemToRoute, useValue: (item: TrackMeta) => item?.id},
+    {provide: DiItemToTitle, useValue: (item: TrackMeta) => item?.title || item?.id},
   ],
   exports: [TracksComponent],
 })
