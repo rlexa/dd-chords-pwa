@@ -1,5 +1,7 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {TrackService} from '../../di-music/track.service';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Track} from 'src/music';
+import {DiCurrentTracks} from '../../di-music/di-current-tracks';
 
 @Component({
   selector: 'dd-chords-tracks',
@@ -7,7 +9,5 @@ import {TrackService} from '../../di-music/track.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TracksComponent {
-  constructor(private readonly trackService: TrackService) {}
-
-  readonly tracks$ = this.trackService.tracks$;
+  constructor(@Inject(DiCurrentTracks) public readonly tracks$: Observable<Track[]>) {}
 }
