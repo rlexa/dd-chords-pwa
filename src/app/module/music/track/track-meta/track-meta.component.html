@@ -1,5 +1,5 @@
 <h3>
-  <ng-container *ngFor="let meta of [track?.performer, track?.author]; trackBy: trackByIndex; let index = index">
+  <ng-container *ngFor="let meta of [track?.performer]; trackBy: trackByIndex; let index = index">
     <span *ngIf="meta">{{ (index > 0 ? ',' : '') + ' ' + meta }}</span>
   </ng-container>
 </h3>

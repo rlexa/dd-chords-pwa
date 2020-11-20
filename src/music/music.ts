@@ -1,7 +1,6 @@
 import {md5} from 'src/util';
 
 export interface Track {
-  author?: string;
   hash?: string;
   id?: string;
   performer?: string;
@@ -84,7 +83,7 @@ const normalizeTextLine = (transpose: number) => (text: string) =>
     .replace(/<>/g, '');
 
 const textToLine = (transpose: number) => (text: string): Line => ({
-  hasChords: text?.includes('<'),
+  hasChords: !!text?.match(/<(.+?)>/g)?.length,
   indent: getIndent(text),
   text: normalizeTextLine(transpose)(text),
 });
@@ -99,7 +98,6 @@ const getMeta = (lines: string[], meta: string) =>
 export const dataToTrack = (data: string): Track => {
   const lines = toLines(data);
   const ret: Track = {
-    author: getMeta(lines, 'author'),
     hash: md5(data),
     performer: getMeta(lines, 'performer'),
     text: lines.filter((line) => !line.startsWith('#')).join('\n'),

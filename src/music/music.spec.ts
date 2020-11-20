@@ -53,15 +53,15 @@ describe(`music`, () => {
           1,
         ),
       ).toEqual([
-        {indent: 0, text: 'Fm      Bbm         C#        D#     Fm  '},
-        {indent: 0, text: 'Я сижу и смотрю в чужое небо из чужого окна'},
-        {indent: 0, text: '      Bbm       C#      D#       Fm  '},
-        {indent: 0, text: 'И не вижу ни одной знакомой звезды.'},
-        {indent: 0, text: ''},
-        {indent: 1, text: '        Bbm            C#    D#     Fm  '},
-        {indent: 1, text: 'Что, взлетая, оставляет земле лишь тень.'},
-        {indent: 0, text: ''},
-        {indent: 0, text: ''},
+        {indent: 0, text: 'Fm      Bbm         C#        D#     Fm  ', hasChords: true},
+        {indent: 0, text: 'Я сижу и смотрю в чужое небо из чужого окна', hasChords: false},
+        {indent: 0, text: '      Bbm       C#      D#       Fm  ', hasChords: true},
+        {indent: 0, text: 'И не вижу ни одной знакомой звезды.', hasChords: false},
+        {indent: 0, text: '', hasChords: false},
+        {indent: 1, text: '        Bbm            C#    D#     Fm  ', hasChords: true},
+        {indent: 1, text: 'Что, взлетая, оставляет земле лишь тень.', hasChords: false},
+        {indent: 0, text: '', hasChords: false},
+        {indent: 0, text: '', hasChords: false},
       ]));
   });
 
@@ -70,7 +70,6 @@ describe(`music`, () => {
       expect(
         dataToTrack(
           `
-#author Виктор Цой
 #performer Кино
 #title Пачка сигарет
 
@@ -84,7 +83,8 @@ describe(`music`, () => {
 `,
         ),
       ).toEqual({
-        author: 'Виктор Цой',
+        hash: 'ad1d3fb60dfc01ce7a865ea6dc2941d0',
+        id: '26f931645101b5b93c0f7be944f4563a',
         performer: 'Кино',
         text: `
 <Em>        <Am>        <C>       <D>    <Em>
