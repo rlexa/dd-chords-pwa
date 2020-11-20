@@ -1,12 +1,17 @@
-import {ScrollingModule} from '@angular/cdk/scrolling';
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {Track} from 'src/music';
+import {DiItemToRoute, DiItemToTitle} from '../../common/di-common/di-item-to-x';
+import {VlistModule} from '../../common/vlist/vlist.module';
 import {TracksComponent} from './tracks.component';
 
 @NgModule({
   declarations: [TracksComponent],
-  imports: [CommonModule, RouterModule, ScrollingModule],
+  imports: [CommonModule, VlistModule],
+  providers: [
+    {provide: DiItemToRoute, useValue: (item: Track) => item?.id},
+    {provide: DiItemToTitle, useValue: (item: Track) => item?.title || item?.id},
+  ],
   exports: [TracksComponent],
 })
 class TracksModule {}

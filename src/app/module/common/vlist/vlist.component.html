@@ -1,0 +1,22 @@
+<cdk-virtual-scroll-viewport [itemSize]="23">
+  <ng-container *ngIf="isRouting">
+    <button
+      *cdkVirtualFor="let item of items; trackBy: trackByIndex"
+      class="btn btn-borderless text-ellipsis link"
+      [routerLink]="item | itemToRoute"
+      routerLinkActive="active"
+    >
+      {{ item | itemToTitle }}
+    </button>
+  </ng-container>
+  <ng-container *ngIf="!isRouting">
+    <button
+      *cdkVirtualFor="let item of items; trackBy: trackByIndex"
+      class="btn btn-borderless text-ellipsis link"
+      [class.active]="item === selectedItem"
+      (click)="selectedItemChange.emit(item)"
+    >
+      {{ item | itemToTitle }}
+    </button>
+  </ng-container>
+</cdk-virtual-scroll-viewport>
