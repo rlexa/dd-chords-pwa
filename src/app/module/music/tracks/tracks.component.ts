@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, TrackByFunction} from '@angular/core';
-import {Track} from 'src/music';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {trackByIndex} from 'src/util';
 import {TrackService} from '../../di-music/track.service';
 
 @Component({
@@ -13,5 +13,5 @@ export class TracksComponent {
 
   readonly tracks$ = this.trackService.tracks$;
 
-  trackById: TrackByFunction<Track> = (index, item) => item?.id || `id#index`;
+  trackByIndex = trackByIndex;
 }
