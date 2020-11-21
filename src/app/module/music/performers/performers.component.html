@@ -1,1 +1,5 @@
-<dd-chords-vlist [items]="performers$ | async"></dd-chords-vlist>
+<dd-chords-vlist
+  [items]="performers$ | async"
+  [selectedItem]="filterPerformer$ | async"
+  (selectedItemChange)="filterPerformer$.next($event)"
+></dd-chords-vlist>
