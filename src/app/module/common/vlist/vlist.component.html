@@ -1,4 +1,6 @@
-<cdk-virtual-scroll-viewport [itemSize]="23">
+<ng-template #tmplEmpty><label>-</label></ng-template>
+
+<cdk-virtual-scroll-viewport *ngIf="items?.length; else tmplEmpty" [itemSize]="23">
   <ng-container *ngIf="isRouting">
     <button
       *cdkVirtualFor="let item of items; trackBy: trackByIndex"
