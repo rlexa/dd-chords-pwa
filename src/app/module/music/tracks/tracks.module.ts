@@ -1,12 +1,12 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {VlistModule} from '../../common/vlist/vlist.module';
-import {DiCurrentTrackMetasModule} from '../../di-music/di-current-tracks';
+import {DiMusicModule} from '../../di-music/di-music.module';
 import {TracksComponent} from './tracks.component';
 
 @NgModule({
   declarations: [TracksComponent],
-  imports: [CommonModule, VlistModule, DiCurrentTrackMetasModule],
+  imports: [CommonModule, VlistModule, DiMusicModule],
   exports: [TracksComponent],
 })
 class TracksModule {}
