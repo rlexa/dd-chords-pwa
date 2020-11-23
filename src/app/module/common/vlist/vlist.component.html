@@ -1,24 +1,11 @@
 <ng-template #tmplEmpty><label>-</label></ng-template>
 
-<cdk-virtual-scroll-viewport *ngIf="items?.length; else tmplEmpty" [itemSize]="23">
-  <ng-container *ngIf="isRouting">
-    <button
-      *cdkVirtualFor="let item of items; trackBy: trackByIndex"
-      class="btn btn-borderless text-ellipsis link"
-      [routerLink]="item | itemToRoute"
-      routerLinkActive="active"
-    >
-      {{ item | itemToTitle }}
-    </button>
-  </ng-container>
-  <ng-container *ngIf="!isRouting">
-    <button
-      *cdkVirtualFor="let item of items; trackBy: trackByIndex"
-      class="btn btn-borderless text-ellipsis link"
-      [class.active]="item === selectedItem"
-      (click)="selectedItemChange.emit(item)"
-    >
-      {{ item | itemToTitle }}
-    </button>
+<ng-template #tmplItem let-item>
+  <button class="btn btn-borderless text-ellipsis list-item item">{{ item }}</button>
+</ng-template>
+
+<cdk-virtual-scroll-viewport *ngIf="items?.length; else tmplEmpty" [itemSize]="rowTemplate ? itemSize || 23 : 23">
+  <ng-container *cdkVirtualFor="let ii of items; trackBy: trackByIndex">
+    <ng-container *ngTemplateOutlet="rowTemplate || tmplItem; context: {$implicit: ii}"></ng-container>
   </ng-container>
 </cdk-virtual-scroll-viewport>

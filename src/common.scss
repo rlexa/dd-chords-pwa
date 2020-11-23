@@ -1,3 +1,8 @@
+.list-item {
+  max-width: inherit;
+  width: 100%;
+}
+
 .scroll-performance {
   will-change: scroll-position, transform;
 }

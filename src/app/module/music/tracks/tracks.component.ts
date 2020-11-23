@@ -7,6 +7,7 @@ import {DiCurrentTrackMetas, TrackMeta} from '../../di-music/di-current-tracks';
 @Component({
   selector: 'dd-chords-tracks',
   templateUrl: './tracks.component.html',
+  styleUrls: ['./tracks.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {provide: DiItemToRoute, useValue: getId},

@@ -8,6 +8,7 @@ import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer
 @Component({
   selector: 'dd-chords-performers',
   templateUrl: './performers.component.html',
+  styleUrls: ['./performers.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{provide: DiItemToTitle, useValue: identity}],
 })

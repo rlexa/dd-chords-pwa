@@ -1,10 +1,8 @@
-cdk-virtual-scroll-viewport {
+.cdk-virtual-scroll-viewport {
   height: 100%;
-}
 
-.link {
-  max-width: inherit;
-  width: 100%;
-  text-align: start;
-  line-height: 1.5em;
+  .item {
+    text-align: start;
+    line-height: 1.5em;
+  }
 }

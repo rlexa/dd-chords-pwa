@@ -1,5 +1,11 @@
-<dd-chords-vlist
-  [items]="performers$ | async"
-  [selectedItem]="filterPerformer$ | async"
-  (selectedItemChange)="filterPerformer$.next($event)"
-></dd-chords-vlist>
+<dd-chords-vlist [items]="performers$ | async">
+  <ng-template let-item>
+    <button
+      class="btn btn-borderless text-ellipsis list-item item"
+      [class.active]="(filterPerformer$ | async) === item"
+      (click)="filterPerformer$.next(item)"
+    >
+      {{ item | itemToTitle }}
+    </button>
+  </ng-template>
+</dd-chords-vlist>
