@@ -8,7 +8,7 @@ const DiCurrentPerformersProvider: Provider = {
   provide: DiCurrentPerformers,
   deps: [TrackService],
   useFactory: (trackService: TrackService) =>
-    trackService.tracks$.pipe(map((iis) => iis.map<string>((ii) => ii.performer || '???').sort())),
+    trackService.tracks$.pipe(map((iis) => [...new Set(iis.map<string>((ii) => ii.performer || '???'))].sort())),
 };
 
 @NgModule({providers: [DiCurrentPerformersProvider]})
