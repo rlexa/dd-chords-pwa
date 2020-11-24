@@ -3,11 +3,7 @@ import {StateSubject} from 'dd-rxjs';
 import {Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {jsonEqual} from 'src/util';
-
-export interface TracksFilter {
-  performer?: string;
-  title?: string;
-}
+import {TracksFilter} from './di-tracks-filter';
 
 export const DiTracksFilterPerformer = new InjectionToken<Observable<string | null>>('Track filter performer.', {
   providedIn: 'root',
