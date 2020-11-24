@@ -19,6 +19,7 @@ export class TrackTextComponent implements OnDestroy {
 
   @Input() set text(val: string | undefined) {
     this.data$.next(val || null);
+    this.transpose = 0;
   }
 
   @Input() set transpose(val: number) {
