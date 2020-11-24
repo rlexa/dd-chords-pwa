@@ -5,7 +5,7 @@ import {clearEmptyValues, jsonEqual, mergeObjects} from 'src/util';
 
 export interface TracksFilter {
   performer?: string;
-  title?: string;
+  query?: string;
 }
 
 export const DiTracksFilterPart = new InjectionToken<Observable<Partial<TracksFilter>>>('Track filter part.');

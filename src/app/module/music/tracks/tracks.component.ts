@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {DiCurrentTrackMetas, TrackMeta} from '../../di-music/di-current-tracks';
+import {DiTracksFilterQuery} from '../../di-music/di-tracks-filter-query';
 
 @Component({
   selector: 'dd-chords-tracks',
@@ -9,5 +10,8 @@ import {DiCurrentTrackMetas, TrackMeta} from '../../di-music/di-current-tracks';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TracksComponent {
-  constructor(@Inject(DiCurrentTrackMetas) public readonly tracks$: Observable<TrackMeta[]>) {}
+  constructor(
+    @Inject(DiCurrentTrackMetas) public readonly tracks$: Observable<TrackMeta[]>,
+    @Inject(DiTracksFilterQuery) public readonly tracksFilterQuery$: BehaviorSubject<string | null>,
+  ) {}
 }

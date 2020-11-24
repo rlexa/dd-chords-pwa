@@ -5,6 +5,7 @@ import {Track} from 'src/music';
 import {sortByTitle} from 'src/music/music';
 import {DiTracksFilter, TracksFilter} from './di-tracks-filter';
 import {TrackService} from './track.service';
+import {filterStringValue, queryStringValue} from './util';
 
 export interface TrackMeta extends Pick<Track, 'id' | 'performer' | 'title'> {}
 
@@ -12,10 +13,8 @@ const trackToTrackMeta = (ii: Track): TrackMeta => ({id: ii.id, performer: ii.pe
 
 const emptyTracksMetaArray: TrackMeta[] = [];
 
-const filterStringValue = (filterBy: string | undefined, value: string | undefined): boolean => !filterBy || value === filterBy;
-
 const filterTrack = (trackFilter: TracksFilter) => (track: Track) =>
-  filterStringValue(trackFilter.performer, track.performer) && filterStringValue(trackFilter.title, track.title);
+  filterStringValue(trackFilter.performer, track.performer) && queryStringValue(trackFilter.query, track.title);
 
 export const DiCurrentTrackMetas = new InjectionToken<Observable<TrackMeta[]>>('Current track list');
 const DiCurrentTrackMetasProvider: Provider = {
