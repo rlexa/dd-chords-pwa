@@ -3,10 +3,11 @@ import {DoneSubject, RxCleanup} from 'dd-rxjs';
 import {combineLatest, forkJoin, Observable, of, Subject} from 'rxjs';
 import {map, startWith, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {dataToTrack, Track} from 'src/music';
-import {getPerformers$, upsertTrack$} from 'src/music/music-idb';
+import {getPerformers$, getTrack$, getTrackMetas$, upsertTrack$} from 'src/music/music-idb';
 import {djangoPapagan, greenCrowKotPrishelNazad, kinoKogdaTvojaDevushkaBolna, kinoPachkaSigaret} from 'src/music/testdata';
 import {DiMusicIdb} from './di-music-idb';
 import {PerformersFilter} from './di-performers-filter';
+import {TracksFilter} from './di-tracks-filter';
 
 const trackSourceBuiltIn = 'builtin';
 
@@ -15,7 +16,7 @@ export class TrackService implements OnDestroy {
   constructor(@Inject(DiMusicIdb) private readonly db$: Observable<IDBDatabase>) {
     this.saveTracks$(
       trackSourceBuiltIn,
-      [djangoPapagan, greenCrowKotPrishelNazad, kinoKogdaTvojaDevushkaBolna, kinoPachkaSigaret].map(dataToTrack),
+      [djangoPapagan, greenCrowKotPrishelNazad, kinoPachkaSigaret, kinoKogdaTvojaDevushkaBolna].map(dataToTrack),
     ).subscribe({
       error: (err) => {
         console.log(`Failed to save tracks.`, err);
@@ -31,10 +32,9 @@ export class TrackService implements OnDestroy {
     takeUntil(this.done$),
   );
 
-  private readonly dataTracks$ = of([djangoPapagan, greenCrowKotPrishelNazad, kinoKogdaTvojaDevushkaBolna, kinoPachkaSigaret]);
-  readonly tracks$ = this.dataTracks$.pipe(map((iis) => iis.map(dataToTrack)));
-
   readonly performers$ = (query: PerformersFilter) => this.changedDb$.pipe(switchMap((db) => getPerformers$(db, query)));
+  readonly track$ = (id: string | null) => this.changedDb$.pipe(switchMap((db) => (!id ? of(null) : getTrack$(db, id))));
+  readonly trackMetas$ = (query: TracksFilter) => this.changedDb$.pipe(switchMap((db) => getTrackMetas$(db, query)));
 
   destroy(): void {}
   ngOnDestroy(): void {

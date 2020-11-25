@@ -1,6 +1,8 @@
 import {Observable} from 'rxjs';
+import {TrackMeta} from 'src/app/module/di-music/di-current-tracks';
 import {PerformersFilter} from 'src/app/module/di-music/di-performers-filter';
-import {queryStringValue} from 'src/app/module/di-music/util';
+import {TracksFilter} from 'src/app/module/di-music/di-tracks-filter';
+import {filterStringValue, queryStringValue} from 'src/app/module/di-music/util';
 import {idbOpenRequest$} from 'src/indexeddb';
 import {Track} from './music';
 
@@ -119,6 +121,85 @@ export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observ
       } else {
         sub.next([...collection]);
       }
+    };
+
+    return () => {
+      try {
+        trans.abort();
+      } catch {
+        // ignore
+      }
+    };
+  });
+}
+
+export const trackToTrackMeta = (ii: Track): TrackMeta => ({id: ii.id, performer: ii.performer, title: ii.title});
+
+export function getTrackMetas$(db: IDBDatabase, query: TracksFilter): Observable<TrackMeta[]> {
+  return new Observable((sub) => {
+    const trans = db.transaction(dbStoreTracks, 'readonly');
+
+    trans.onabort = function onabort(): void {
+      sub.error(new Error(`IDB transaction aborted.`));
+    };
+    trans.oncomplete = function oncomplete(): void {
+      sub.complete();
+    };
+    trans.onerror = function onerror(): void {
+      sub.error(new Error(`IDB transaction error: ${this.error}`));
+    };
+
+    const cursor = trans.objectStore(dbStoreTracks).index(keyTitle).openCursor(null, 'next');
+    cursor.onerror = function onerror(ev): void {
+      ev.stopPropagation();
+      sub.error(new Error(`IDB transaction cursor error: ${this.error}`));
+    };
+
+    const collection: TrackMeta[] = [];
+    cursor.onsuccess = function onsuccess(): void {
+      if (this.result) {
+        const track: Track = this.result.value;
+        if (filterStringValue(query.performer, track.performer) && queryStringValue(query.query, track.title)) {
+          collection.push(trackToTrackMeta(track));
+        }
+        this.result.continue();
+      } else {
+        sub.next(collection);
+      }
+    };
+
+    return () => {
+      try {
+        trans.abort();
+      } catch {
+        // ignore
+      }
+    };
+  });
+}
+
+export function getTrack$(db: IDBDatabase, id: string): Observable<Track | null> {
+  return new Observable((sub) => {
+    const trans = db.transaction(dbStoreTracks, 'readonly');
+
+    trans.onabort = function onabort(): void {
+      sub.error(new Error(`IDB transaction aborted.`));
+    };
+    trans.oncomplete = function oncomplete(): void {
+      sub.complete();
+    };
+    trans.onerror = function onerror(): void {
+      sub.error(new Error(`IDB transaction error: ${this.error}`));
+    };
+
+    const request = trans.objectStore(dbStoreTracks).get(id);
+    request.onerror = function onerror(ev): void {
+      ev.stopPropagation();
+      sub.error(new Error(`IDB get request error: ${this.error}`));
+    };
+
+    request.onsuccess = function onsuccess(): void {
+      sub.next(this.result ?? null);
     };
 
     return () => {
