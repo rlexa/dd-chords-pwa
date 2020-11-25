@@ -41,6 +41,7 @@ export function idbOpenRequest$(name: string, version: number, fnUpgrade: (idb: 
 
     idbOpenDbRequest.onsuccess = function onsuccess(): void {
       provideIdb(this.result);
+      sub.complete();
     };
 
     idbOpenDbRequest.onupgradeneeded = function onupgradeneeded(): void {
@@ -49,11 +50,6 @@ export function idbOpenRequest$(name: string, version: number, fnUpgrade: (idb: 
       provideIdb(this.result);
     };
 
-    return () => {
-      idbOpenDbRequest.onerror = null;
-      idbOpenDbRequest.onblocked = null;
-      idbOpenDbRequest.onsuccess = null;
-      idbOpenDbRequest.onupgradeneeded = null;
-    };
+    return () => {};
   });
 }

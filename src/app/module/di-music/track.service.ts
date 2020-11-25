@@ -1,7 +1,7 @@
 import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {DoneSubject, RxCleanup} from 'dd-rxjs';
 import {combineLatest, forkJoin, Observable, of, Subject} from 'rxjs';
-import {map, startWith, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {debounceTime, map, startWith, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {dataToTrack, Track} from 'src/music';
 import {getPerformers$, getTrack$, getTrackMetas$, upsertTrack$} from 'src/music/music-idb';
 import {djangoPapagan, greenCrowKotPrishelNazad, kinoKogdaTvojaDevushkaBolna, kinoPachkaSigaret} from 'src/music/testdata';
@@ -27,7 +27,7 @@ export class TrackService implements OnDestroy {
   @RxCleanup() private readonly done$ = new DoneSubject();
   @RxCleanup() private readonly change$ = new Subject();
 
-  private readonly changedDb$ = combineLatest([this.db$, this.change$.pipe(startWith(0))]).pipe(
+  private readonly changedDb$ = combineLatest([this.db$, this.change$.pipe(debounceTime(10), startWith(0))]).pipe(
     map(([db]) => db),
     takeUntil(this.done$),
   );
