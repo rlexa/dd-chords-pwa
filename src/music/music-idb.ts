@@ -133,6 +133,46 @@ export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observ
   });
 }
 
+export function getTrackHashes$(db: IDBDatabase): Observable<Set<string>> {
+  return new Observable((sub) => {
+    const trans = db.transaction(dbStoreTracks, 'readonly');
+
+    trans.onabort = function onabort(): void {
+      sub.error(new Error(`IDB transaction aborted.`));
+    };
+    trans.oncomplete = function oncomplete(): void {
+      sub.complete();
+    };
+    trans.onerror = function onerror(): void {
+      sub.error(new Error(`IDB transaction error: ${this.error}`));
+    };
+
+    const cursor = trans.objectStore(dbStoreTracks).index(keyHash).openCursor(null, 'next');
+    cursor.onerror = function onerror(ev): void {
+      ev.stopPropagation();
+      sub.error(new Error(`IDB transaction cursor error: ${this.error}`));
+    };
+
+    const collection = new Set<string>();
+    cursor.onsuccess = function onsuccess(): void {
+      if (this.result) {
+        collection.add(this.result.key as string);
+        this.result.continue();
+      } else {
+        sub.next(collection);
+      }
+    };
+
+    return () => {
+      try {
+        trans.abort();
+      } catch {
+        // ignore
+      }
+    };
+  });
+}
+
 export const trackToTrackMeta = (ii: Track): TrackMeta => ({id: ii.id, performer: ii.performer, title: ii.title});
 
 export function getTrackMetas$(db: IDBDatabase, query: TracksFilter): Observable<TrackMeta[]> {
