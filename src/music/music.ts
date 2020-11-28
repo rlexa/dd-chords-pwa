@@ -28,7 +28,7 @@ const trimEnd = (text: string) =>
   lineBreaks.reduce((acc, lineBreak) => (acc?.endsWith(lineBreak) ? acc.substr(0, acc.length - lineBreak.length) : acc), text);
 const trim = (val: string) => trimEnd(trimStart(val));
 
-const getIndent = (text: string) => (text?.startsWith('\t') ? 1 : 0);
+const getIndent = (text: string) => (text?.startsWith('~') ? 1 : 0);
 
 export const TRANSPOSITIONS = 12;
 
@@ -76,21 +76,26 @@ const adjustChords = (transpose: number) => (text: string) =>
     transposeChord(chord, transpose).padEnd(chord.length + 2, ' '),
   );
 
-const normalizeTextLine = (transpose: number) => (text: string) =>
+const normalizeTextLine = (text: string, transpose: number) =>
   adjustChords(transpose)(text)
     ?.replace(/\t/g, '')
+    .replace(/^~/g, '')
     .replace(/(<[^(><.)]+>)/g, '')
     .replace(/<>/g, '');
 
 const textToLine = (transpose: number) => (text: string): Line => ({
   hasChords: !!text?.match(/<(.+?)>/g)?.length,
   indent: getIndent(text),
-  text: normalizeTextLine(transpose)(text),
+  text: normalizeTextLine(text, transpose),
 });
 
 const toLines = (data: string) => splitBreaksWin(trim(data)).flatMap(splitBreaksMac).flatMap(splitBreaksUnix);
 
-export const textToLines = (text: string, transpose: number) => toLines(text).map(textToLine(transpose));
+export const textToLines = (text: string, transpose: number, withChords: boolean) =>
+  toLines(text)
+    .map(textToLine(transpose))
+    .filter((line) => withChords || !line.hasChords)
+    .map<Line>((line) => (withChords ? line : {...line, text: line.text?.replace(/\s{2,}/g, ' ').replace(/^\s/g, '')}));
 
 const getMeta = (lines: string[], meta: string) =>
   lines.find((line) => line.startsWith(`#${meta} `))?.substr(`#${meta} `.length) || undefined;

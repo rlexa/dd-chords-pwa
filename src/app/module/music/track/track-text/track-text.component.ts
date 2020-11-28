@@ -13,6 +13,8 @@ import {trackByIndex} from 'src/util';
 })
 export class TrackTextComponent implements OnDestroy {
   @RxCleanup() private readonly data$ = new StateSubject<string | null>(null);
+
+  @RxCleanup() public readonly showChords$ = new StateSubject(true);
   @RxCleanup() public readonly transpose$ = new StateSubject(0);
 
   readonly trackByIndex = trackByIndex;
@@ -27,17 +29,19 @@ export class TrackTextComponent implements OnDestroy {
   }
 
   @Output() showChordsChange = new EventEmitter<boolean>();
-  @Input() showChords: boolean | null = true;
+  @Input() set showChords(val: boolean | null) {
+    this.showChords$.next(!!val);
+  }
 
-  public readonly lines$ = combineLatest([this.data$, this.transpose$]).pipe(
-    map(([data, transpose]) => textToLines(data ?? '', transpose)),
+  public readonly lines$ = combineLatest([this.data$, this.transpose$, this.showChords$]).pipe(
+    map(([data, transpose, showChords]) => textToLines(data ?? '', transpose, showChords)),
   );
 
   addTranspose = (add: number) => {
     this.transpose = this.transpose$.value + add;
   };
 
-  toggleShowChords = () => this.showChordsChange.emit(!this.showChords);
+  toggleShowChords = () => this.showChordsChange.emit(!this.showChords$.value);
 
   destroy(): void {}
   ngOnDestroy(): void {
