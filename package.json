@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "generate-chords-index": "node generate-chords-index",
+    "prestart": "npm run prebuild",
     "start": "ng serve",
+    "prebuild": "npm run generate-chords-index",
     "build": "ng build",
     "test": "jest --ci --logHeapUsage",
     "test:dev": "jest --updateSnapshot --bail --runInBand",
