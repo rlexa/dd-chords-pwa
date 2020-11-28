@@ -28,7 +28,7 @@ describe(`music`, () => {
     });
 
     describe(`complete minors progression`, () => {
-      const major = ['Cm', 'Cm#', 'Dm', 'Dm#', 'Em', 'Fm', 'Fm#', 'Gm', 'Gm#', 'Am', 'Bbm', 'Bm', 'Cm'];
+      const major = ['Cm', 'C#m', 'Dm', 'D#m', 'Em', 'Fm', 'F#m', 'Gm', 'G#m', 'Am', 'Bbm', 'Bm', 'Cm'];
       major.forEach((ii, index) =>
         it(`${major[0]} + ${index} = ${major[index]}`, () => expect(transposeChord(major[0], index)).toBe(major[index])),
       );
@@ -45,12 +45,13 @@ describe(`music`, () => {
       <Am>      <C>     <D>      <Em>
 И не вижу ни одной знакомой звезды.
 
-\t        <Am>           <C>   <D>    <Em>
-\tЧто, взлетая, оставляет земле лишь тень.
+~        <Am>           <C>   <D>    <Em>
+~Что, взлетая, оставляет земле лишь тень.
 
 <>
 `,
           1,
+          true,
         ),
       ).toEqual([
         {indent: 0, text: 'Fm      Bbm         C#        D#     Fm  ', hasChords: true},
@@ -78,12 +79,12 @@ describe(`music`, () => {
      <Am>      <C>    <D>       <Em>
 И не вижу ни одной знакомой звезды.
 
-\t        <Am>           <C>   <D>    <Em>
-\tНо если есть в кармане пачка    сигарет,
+~        <Am>           <C>   <D>    <Em>
+~Но если есть в кармане пачка    сигарет,
 `,
         ),
       ).toEqual({
-        hash: 'ad1d3fb60dfc01ce7a865ea6dc2941d0',
+        hash: 'c0a58c03d274c58f22b1fde05fcf7996',
         id: '26f931645101b5b93c0f7be944f4563a',
         performer: 'Кино',
         text: `
@@ -92,8 +93,8 @@ describe(`music`, () => {
      <Am>      <C>    <D>       <Em>
 И не вижу ни одной знакомой звезды.
 
-\t        <Am>           <C>   <D>    <Em>
-\tНо если есть в кармане пачка    сигарет,`,
+~        <Am>           <C>   <D>    <Em>
+~Но если есть в кармане пачка    сигарет,`,
         title: 'Пачка сигарет',
       });
     });

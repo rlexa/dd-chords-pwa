@@ -57,7 +57,7 @@ export const transposeChord = (chord: string, transpose: number) => {
           } else if (tone === 'A') {
             chord = 'Bb' + chord.substr(1);
           } else {
-            chord += '#';
+            chord = chord.substr(0, 1) + '#' + chord.substr(1);
           }
         }
       } else {
