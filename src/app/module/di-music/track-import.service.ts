@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {DoneSubject, RxCleanup} from 'dd-rxjs';
-import {combineLatest, forkJoin, Observable, of} from 'rxjs';
-import {catchError, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {combineLatest, Observable, of} from 'rxjs';
+import {bufferCount, catchError, concatMap, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {dataToTrack} from 'src/music';
 import {DiCurrentTrackHashes} from './di-current-track-hashes';
 import {TrackService} from './track.service';
@@ -33,7 +33,12 @@ export class TrackImportService implements OnDestroy {
             console.log(`Local sync of ${paths.length} files...`);
           }
         }),
-        switchMap((paths) => forkJoin(paths.map(this.loadLocalChordsFile$))),
+        switchMap((paths) =>
+          of(...paths).pipe(
+            concatMap((path) => this.loadLocalChordsFile$(path)),
+            bufferCount(paths.length),
+          ),
+        ),
         takeUntil(this.done$),
       )
       .subscribe({
