@@ -1,9 +1,12 @@
-import {NgModule} from '@angular/core';
+import {Inject, NgModule} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {CacheService} from '../common/cache/cache.service';
 import {DiCurrentPerformersProvider} from './di-current-performers';
 import {DiCurrentTrackHashesProvider} from './di-current-track-hashes';
 import {DiCurrentTrackMetasProvider} from './di-current-tracks';
 import {DiMusicIdbLiveProvider} from './di-music-idb';
 import {DiPerformersFilterModule} from './di-performers-filter.module';
+import {DiShowChords} from './di-show-chords';
 import {DiTracksFilterModule} from './di-tracks-filter.module';
 import {TrackImportService} from './track-import.service';
 import {TrackService} from './track.service';
@@ -19,4 +22,8 @@ import {TrackService} from './track.service';
     TrackImportService,
   ],
 })
-export class DiMusicModule {}
+export class DiMusicModule {
+  constructor(cacheService: CacheService, @Inject(DiShowChords) showChords$: BehaviorSubject<boolean>) {
+    cacheService.register('showChords', showChords$, (val) => showChords$.next(val ?? showChords$.value));
+  }
+}
