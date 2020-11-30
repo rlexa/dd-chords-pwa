@@ -13,6 +13,37 @@
     min-width: 15rem;
     max-width: 15rem;
     padding: var(--padding-default);
+
+    display: flex;
+    flex-direction: column;
+
+    > .list-actions {
+      display: none;
+      margin-bottom: var(--margin-default);
+
+      > .list-single-action {
+        width: 100%;
+
+        > :nth-child(1n + 2) {
+          margin-left: var(--margin-narrow);
+        }
+      }
+    }
+
+    > .list-content {
+      flex: 1 1 auto;
+      position: relative;
+    }
+
+    @media (max-width: 900px) {
+      &:not(.visible) {
+        display: none;
+      }
+
+      > .list-actions {
+        display: unset;
+      }
+    }
   }
 
   > .content {
