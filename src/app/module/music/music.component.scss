@@ -9,9 +9,11 @@
   width: 100%;
   height: 100%;
 
+  $width-list: 28ch;
+  $width-text: 85ch;
+
   > .list {
-    min-width: 15rem;
-    max-width: 15rem;
+    min-width: $width-list;
     padding: var(--padding-default);
 
     display: flex;
@@ -35,7 +37,7 @@
       position: relative;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: $width-text + $width-list) {
       &:not(.visible) {
         display: none;
       }

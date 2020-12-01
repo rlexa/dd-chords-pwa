@@ -6,6 +6,7 @@
     "generate-chords-index": "node generate-chords-index",
     "prestart": "npm run prebuild",
     "start": "ng serve",
+    "start:prod": "npm run start -- --prod",
     "prebuild": "npm run generate-chords-index",
     "build": "ng build",
     "test": "jest --ci --logHeapUsage",
