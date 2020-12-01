@@ -5,7 +5,7 @@ import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {jsonEqual} from 'src/util';
 import {TracksFilter} from './di-tracks-filter';
 
-export const DiTracksFilterPerformer = new InjectionToken<Observable<string | null>>('Track filter performer.', {
+export const DiTracksFilterPerformer = new InjectionToken<StateSubject<string | null>>('Track filter performer.', {
   providedIn: 'root',
   factory: () => new StateSubject<string | null>(null),
 });
