@@ -84,8 +84,8 @@ describe(`music`, () => {
 `,
         ),
       ).toEqual({
-        hash: 'c0a58c03d274c58f22b1fde05fcf7996',
-        id: '26f931645101b5b93c0f7be944f4563a',
+        hash: '8707f76202a9c54be3d3308563f04570',
+        id: '3236c301179537a2f9b1c54a32397838',
         performer: 'Кино',
         text: `
 <Em>        <Am>        <C>       <D>    <Em>
