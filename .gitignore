@@ -35,6 +35,9 @@ speed-measure-plugin*.json
 .firebase
 firebase-debug.log
 
+# https
+*.pem
+
 # misc
 /.sass-cache
 /connect.lock
