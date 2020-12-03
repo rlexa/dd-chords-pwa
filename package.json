@@ -8,7 +8,7 @@
     "start": "ng serve",
     "start:prod": "npm run start -- --prod",
     "prebuild": "npm run generate-chords-index",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "jest --ci --logHeapUsage",
     "test:dev": "jest --updateSnapshot --bail --runInBand",
     "test:watch": "npm run test:dev -- --watchAll",

@@ -2,8 +2,6 @@
 
 exports[`AppComponent renders 1`] = `
 <dd-chords-app>
-  <h1>
-    Hello!
-  </h1>
+  <router-outlet />
 </dd-chords-app>
 `;
