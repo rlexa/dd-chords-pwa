@@ -48,7 +48,7 @@ export function idbOpenRequest$(name: string, version: number, fnUpgrade: (idb: 
       console.log(`IDB upgrading to ${name}.${version}`);
       fnUpgrade(this.result);
       sub.error(new Error(`IDB upgrade done - reloading page...`));
-      window.location.reload();
+      setTimeout(() => window.location.reload(), 10);
     };
 
     return () => {};
