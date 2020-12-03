@@ -1,27 +1,33 @@
 # DdChordsPwa
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.0.
+SPA UI client for songs with chords. See [Deployed Site] for project's CI built template view.
 
-## Development server
+## Client Tech
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Frameworks involved in the development of the client itself.
 
-## Code scaffolding
+### UI Framework
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+[Angular UI Framework] (>= v11) is used to build the client.
 
-## Build
+#### UI Experience
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+No additional UI frameworks.
 
-## Running unit tests
+#### Localization
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+The client is doesn't contain any localization at the moment.
 
-## Running end-to-end tests
+### Testing
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+[Jest] is used for unit testing (using matching-snapshot testing for components).
 
-## Further help
+### CI
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+[Travis] is used for continuous integration incl. testing and deploying to [Firebase] for hosting.
+
+[angular ui framework]: https://angular.io
+[deployed site]: https://dd-chords.web.app/
+[firebase]: https://firebase.google.com/
+[jest]: https://facebook.github.io/jest
+[travis]: https://travis-ci.org
