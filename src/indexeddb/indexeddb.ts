@@ -37,17 +37,18 @@ export function idbOpenRequest$(name: string, version: number, fnUpgrade: (idb: 
         alert(`A new version of IDB is ready (please reload).`);
       };
       sub.next(val);
+      sub.complete();
     }
 
     idbOpenDbRequest.onsuccess = function onsuccess(): void {
       provideIdb(this.result);
-      sub.complete();
     };
 
     idbOpenDbRequest.onupgradeneeded = function onupgradeneeded(): void {
       console.log(`IDB upgrading to ${name}.${version}`);
       fnUpgrade(this.result);
-      provideIdb(this.result);
+      sub.error(new Error(`IDB upgrade done - reloading page...`));
+      window.location.reload();
     };
 
     return () => {};
