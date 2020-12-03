@@ -31,12 +31,15 @@ speed-measure-plugin*.json
 !.vscode/extensions.json
 .history/*
 
+# firebase
+.firebase
+firebase-debug.log
+
 # misc
 /.sass-cache
 /connect.lock
 /coverage
 /libpeerconnection.log
-firebase-debug.log
 npm-debug.log
 yarn-error.log
 testem.log
