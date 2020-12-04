@@ -30,6 +30,10 @@ The client is doesn't contain any localization at the moment.
 
 Use `npm run build:watch` to watch-build the client in `dist/*`, concurrently run `npm start` to serve with `express`.
 
+### Manual Deployment
+
+Use `npm run build` for production build, then `firebase login` and `firebase deploy`.
+
 ### HTTPS
 
 Create `key.pem` and `cert.pem` with (in GitBash) `openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem`.
