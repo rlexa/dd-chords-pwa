@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Inject, Output} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DiCurrentTrackMetas, TrackMeta} from '../../di-music/di-current-tracks';
 import {DiTracksFilterQuery} from '../../di-music/di-tracks-filter-query';
@@ -14,4 +14,6 @@ export class TracksComponent {
     @Inject(DiCurrentTrackMetas) public readonly tracks$: Observable<TrackMeta[]>,
     @Inject(DiTracksFilterQuery) public readonly tracksFilterQuery$: BehaviorSubject<string | null>,
   ) {}
+
+  @Output() clickedItem = new EventEmitter<string>();
 }

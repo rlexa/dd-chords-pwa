@@ -2,7 +2,12 @@
 <div class="content">
   <dd-chords-vlist [items]="tracks$ | async">
     <ng-template let-item>
-      <button class="btn btn-borderless text-ellipsis list-item item" [routerLink]="item?.id" routerLinkActive="active">
+      <button
+        class="btn btn-borderless text-ellipsis list-item item"
+        [routerLink]="item?.id"
+        routerLinkActive="active"
+        (click)="clickedItem.next(item?.id)"
+      >
         {{ item?.title || '???' }}
       </button>
     </ng-template>

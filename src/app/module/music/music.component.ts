@@ -1,8 +1,12 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy} from '@angular/core';
 import {DoneSubject, RxCleanup} from 'dd-rxjs';
 import {BehaviorSubject} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {debounceTime, filter, map, take, takeUntil} from 'rxjs/operators';
+import {RoutingService} from '../common/routing';
 import {DiTracksFilterPerformer} from '../di-music/di-tracks-filter-performer';
+import {routeParamIdTrack} from './music-route';
+
+type VisibleList = 'performers' | 'tracks';
 
 @Component({
   selector: 'dd-chords-music',
@@ -13,22 +17,31 @@ import {DiTracksFilterPerformer} from '../di-music/di-tracks-filter-performer';
 export class MusicComponent implements OnDestroy {
   constructor(
     @Inject(DiTracksFilterPerformer) public readonly tracksFilterPerformer$: BehaviorSubject<string | null>,
+    private readonly routingService: RoutingService,
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
+    this.routingService.params$
+      .pipe(
+        debounceTime(0),
+        take(1),
+        map((params) => params[routeParamIdTrack]),
+      )
+      .subscribe((id) => (this.visibleTrack = !!id));
+
     this.tracksFilterPerformer$
       .pipe(
         filter((performer) => !!performer),
         takeUntil(this.done$),
       )
       .subscribe(() => {
-        this.visibleArea = 'tracks';
-        this.changeDetectorRef.markForCheck();
+        this.showList('tracks');
       });
   }
 
   @RxCleanup() private readonly done$ = new DoneSubject();
 
-  visibleArea: 'track' | 'tracks' | 'performers' = 'performers';
+  visibleList: VisibleList = 'performers';
+  visibleTrack = false;
 
   destroy(): void {}
   ngOnDestroy(): void {
@@ -36,9 +49,25 @@ export class MusicComponent implements OnDestroy {
   }
 
   resetPerformer(): void {
-    if (this.visibleArea !== 'performers') {
-      this.visibleArea = 'performers';
-      this.tracksFilterPerformer$.next(null);
+    this.showList('performers');
+    this.tracksFilterPerformer$.next(null);
+  }
+
+  showTrack(id: string): void {
+    if (id) {
+      this.visibleTrack = true;
+    }
+  }
+
+  backFromTrack(): void {
+    this.showList(this.tracksFilterPerformer$.value ? 'tracks' : 'performers');
+    this.visibleTrack = false;
+  }
+
+  showList(val: VisibleList): void {
+    if (val && this.visibleList !== val) {
+      this.visibleList = val;
+      this.changeDetectorRef.markForCheck();
     }
   }
 }

@@ -13,13 +13,12 @@
   $width-text: 85ch;
 
   .with-actions {
-    padding: var(--padding-default);
-
     display: flex;
     flex-direction: column;
 
     > .actions {
       display: none;
+      margin-bottom: var(--margin-default);
 
       :first-child:last-child {
         width: 100%;
@@ -41,11 +40,13 @@
   .list {
     @extend .with-actions;
     min-width: $width-list;
+    padding: var(--padding-default);
   }
 
   .details {
     flex: 1 1 auto;
     padding: var(--padding-default);
+    padding-right: 0px;
   }
 
   @media (max-width: $width-text + $width-list) {
@@ -57,6 +58,29 @@
       &.with-actions {
         > .actions {
           display: block;
+        }
+      }
+    }
+  }
+
+  @media (max-width: $width-text) {
+    .list {
+      flex: 1 1 auto;
+
+      &.visible-track {
+        display: none;
+      }
+    }
+
+    .details {
+      &:not(.visible) {
+        display: none;
+      }
+
+      &.with-actions {
+        > .actions {
+          display: block;
+          padding-right: var(--padding-default);
         }
       }
     }

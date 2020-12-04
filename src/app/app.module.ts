@@ -4,10 +4,13 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {DiCommonModule} from './module/common/di-common';
+import {RoutingService} from './module/common/routing/routing-service';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule, DiCommonModule],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(routingService: RoutingService) {}
+}
