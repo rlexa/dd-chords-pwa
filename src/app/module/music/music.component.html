@@ -1,14 +1,3 @@
-<div class="details with-actions" [class.visible]="visibleTrack">
-  <div class="actions">
-    <button (click)="backFromTrack()" class="btn btn-dense text-ellipsis action">
-      <i class="fas fa-angle-left"></i>
-      <i *ngIf="tracksFilterPerformer$ | async as performer">{{ performer }}</i>
-    </button>
-  </div>
-  <div class="content scroll-in-y">
-    <router-outlet></router-outlet>
-  </div>
-</div>
 <div class="list" [class.visible]="visibleList === 'performers'" [class.visible-track]="visibleTrack">
   <dd-chords-performers class="content"></dd-chords-performers>
 </div>
@@ -20,4 +9,15 @@
     </button>
   </div>
   <dd-chords-tracks class="content" (clickedItem)="showTrack($event)"></dd-chords-tracks>
+</div>
+<div class="details with-actions" [class.visible]="visibleTrack">
+  <div class="actions">
+    <button (click)="backFromTrack()" class="btn btn-dense text-ellipsis action">
+      <i class="fas fa-angle-left"></i>
+      <i *ngIf="tracksFilterPerformer$ | async as performer">{{ performer }}</i>
+    </button>
+  </div>
+  <div class="content scroll-in-y">
+    <router-outlet></router-outlet>
+  </div>
 </div>
