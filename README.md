@@ -1,4 +1,4 @@
-# DdChordsPwa
+# DdChordsPwa [StatusCiCd](CI/CD)
 
 SPA UI client for songs with chords. See [Deployed Site] for project's CI built template view.
 
@@ -42,3 +42,4 @@ This generates a cert-key pair and it will be valid for 3650 days (about 10 year
 [firebase]: https://firebase.google.com/
 [jest]: https://facebook.github.io/jest
 [travis]: https://travis-ci.org
+[statuscicd]: https://travis-ci.org/rlexa/dd-chords-pwa.svg?branch=main
