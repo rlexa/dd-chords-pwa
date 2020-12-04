@@ -1,15 +1,15 @@
-<div class="content scroll-in-y">
+<div class="details scroll-in-y">
   <router-outlet></router-outlet>
 </div>
 <div class="list" [class.visible]="visibleArea === 'performers'">
-  <dd-chords-performers class="list-content"></dd-chords-performers>
+  <dd-chords-performers class="content"></dd-chords-performers>
 </div>
-<div class="list" [class.visible]="visibleArea === 'tracks'">
-  <div class="list-actions">
-    <button (click)="resetPerformer()" class="btn btn-dense text-ellipsis list-single-action">
+<div class="list with-actions" [class.visible]="visibleArea === 'tracks'">
+  <div class="actions">
+    <button (click)="resetPerformer()" class="btn btn-dense text-ellipsis action">
       <i class="fas fa-angle-left"></i>
       <i *ngIf="tracksFilterPerformer$ | async as performer">{{ performer }}</i>
     </button>
   </div>
-  <dd-chords-tracks class="list-content"></dd-chords-tracks>
+  <dd-chords-tracks class="content"></dd-chords-tracks>
 </div>

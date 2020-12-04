@@ -12,44 +12,53 @@
   $width-list: 28ch;
   $width-text: 85ch;
 
-  > .list {
-    min-width: $width-list;
+  .with-actions {
     padding: var(--padding-default);
 
     display: flex;
     flex-direction: column;
 
-    > .list-actions {
+    > .actions {
       display: none;
-      margin-bottom: var(--margin-default);
 
-      > .list-single-action {
+      :first-child:last-child {
         width: 100%;
+      }
 
+      > .action {
         > :nth-child(1n + 2) {
           margin-left: var(--margin-narrow);
         }
       }
     }
 
-    > .list-content {
+    > .content {
       flex: 1 1 auto;
       position: relative;
     }
+  }
 
-    @media (max-width: $width-text + $width-list) {
+  .list {
+    @extend .with-actions;
+    min-width: $width-list;
+  }
+
+  .details {
+    flex: 1 1 auto;
+    padding: var(--padding-default);
+  }
+
+  @media (max-width: $width-text + $width-list) {
+    .list {
       &:not(.visible) {
         display: none;
       }
 
-      > .list-actions {
-        display: unset;
+      &.with-actions {
+        > .actions {
+          display: block;
+        }
       }
     }
-  }
-
-  > .content {
-    flex: 1 1 auto;
-    padding: var(--padding-default);
   }
 }
