@@ -1,9 +1,9 @@
 {
-  "name": "dd-chords-pwa",
-  "short_name": "dd-chords-pwa",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
-  "display": "standalone",
+  "name": "DD-Chords",
+  "short_name": "DD-C",
+  "theme_color": "#bb86fc",
+  "background_color": "#121212",
+  "display": "fullscreen",
   "scope": "./",
   "start_url": "./",
   "icons": [
