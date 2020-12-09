@@ -2,8 +2,8 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
-  {path: 'tracks', loadChildren: () => import('src/app/module/music/routed-music.module').then((m) => m.RoutedMusicModule)},
-  {path: '', redirectTo: 'tracks', pathMatch: 'full'},
+  {path: 'ui', loadChildren: () => import('src/app/module/dashboard/routed-dashboard.module').then((m) => m.RoutedDashboardModule)},
+  {path: '', redirectTo: 'ui', pathMatch: 'full'},
   {path: '*', redirectTo: ''},
 ];
 
