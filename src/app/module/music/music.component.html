@@ -5,7 +5,7 @@
   <div class="actions">
     <button (click)="resetPerformer()" class="btn btn-dense text-ellipsis action">
       <i class="fas fa-angle-left"></i>
-      <i *ngIf="tracksFilterPerformer$ | async as performer">{{ performer }}</i>
+      <i *ngIf="tracksFilterPerformer$ | async as performer">{{ performer.performer }}</i>
     </button>
   </div>
   <dd-chords-tracks class="content" (clickedItem)="showTrack($event)"></dd-chords-tracks>
@@ -14,7 +14,7 @@
   <div class="actions">
     <button (click)="backFromTrack()" class="btn btn-dense text-ellipsis action">
       <i class="fas fa-angle-left"></i>
-      <i *ngIf="tracksFilterPerformer$ | async as performer">{{ performer }}</i>
+      <i *ngIf="tracksFilterPerformer$ | async as performer">{{ performer.performer }}</i>
     </button>
   </div>
   <div class="content scroll-in-y">

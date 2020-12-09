@@ -3,8 +3,13 @@ import {combineLatest, Observable} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {clearEmptyValues, jsonEqual, mergeObjects} from 'src/util';
 
+export interface Performer {
+  performer: string;
+  performerHash: string;
+}
+
 export interface TracksFilter {
-  performer?: string;
+  performer?: Performer;
   query?: string;
 }
 

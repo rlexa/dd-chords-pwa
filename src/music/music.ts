@@ -4,6 +4,7 @@ export interface Track {
   hash?: string;
   id?: string;
   performer?: string;
+  performerHash?: string;
   text?: string;
   title?: string;
 }
@@ -108,7 +109,7 @@ export const dataToTrack = (data: string): Track => {
     text: lines.filter((line) => !line.startsWith('#')).join('\n'),
     title: getMeta(lines, 'title'),
   };
-  return {...ret, id: md5(`${ret.performer}|${ret.title}`)};
+  return {...ret, id: md5(`${ret.performer}|${ret.title}`), performerHash: md5(ret.performer ?? '')};
 };
 
 export const getId = <T extends {id?: string}>(item: T) => item?.id;

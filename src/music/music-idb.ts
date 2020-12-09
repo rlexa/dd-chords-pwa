@@ -1,7 +1,7 @@
 import {Observable} from 'rxjs';
 import {TrackMeta} from 'src/app/module/di-music/di-current-tracks';
 import {PerformersFilter} from 'src/app/module/di-music/di-performers-filter';
-import {TracksFilter} from 'src/app/module/di-music/di-tracks-filter';
+import {Performer, TracksFilter} from 'src/app/module/di-music/di-tracks-filter';
 import {filterStringValue, queryStringValue} from 'src/app/module/di-music/util';
 import {idbOpenRequest$} from 'src/indexeddb';
 import {Track} from './music';
@@ -15,6 +15,7 @@ export const dbStoreTracks = 'tracks';
 
 const keyHash: keyof IdbTrack = 'hash';
 const keyPerformer: keyof IdbTrack = 'performer';
+const keyPerformerHash: keyof IdbTrack = 'performerHash';
 const keySource: keyof IdbTrack = 'source';
 const keyTimestamp: keyof IdbTrack = 'timestamp';
 const keyTitle: keyof IdbTrack = 'title';
@@ -25,6 +26,7 @@ function createStoreTracks(idb: IDBDatabase): void {
 
   store.createIndex(keyHash, keyHash, {unique: true});
   store.createIndex(keyPerformer, keyPerformer, {unique: false});
+  store.createIndex(keyPerformerHash, keyPerformerHash, {unique: false});
   store.createIndex(keyTitle, keyTitle, {unique: false});
   store.createIndex(keySource, keySource, {unique: false});
   store.createIndex(keyTimestamp, keyTimestamp, {unique: false});
@@ -34,7 +36,7 @@ function createDb(idb: IDBDatabase): void {
   createStoreTracks(idb);
 }
 
-export const idb$ = idbOpenRequest$('ddchords', 1, createDb);
+export const idb$ = idbOpenRequest$('ddchords', 2, createDb);
 
 export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Observable<boolean> {
   return new Observable((sub) => {
@@ -89,7 +91,7 @@ export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Obs
   });
 }
 
-export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observable<string[]> {
+export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observable<Performer[]> {
   return new Observable((sub) => {
     const trans = db.transaction(dbStoreTracks, 'readonly');
 
@@ -104,22 +106,25 @@ export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observ
     };
 
     const index = trans.objectStore(dbStoreTracks).index(keyPerformer);
-    const cursor = index.openKeyCursor(null, 'next');
+    const cursor = index.openCursor(null, 'next');
     cursor.onerror = function onerror(ev): void {
       ev.stopPropagation();
       sub.error(new Error(`IDB transaction cursor error: ${this.error}`));
     };
 
-    const collection = new Set<string>();
+    const collection = new Map<string, string>();
     cursor.onsuccess = function onsuccess(): void {
       if (this.result) {
         const performer = this.result.key.toString();
-        if (queryStringValue(query.query, performer)) {
-          collection.add(performer);
+        if (!collection.has(performer) && queryStringValue(query.query, performer)) {
+          const value: Track = this.result.value;
+          collection.set(performer, value.performerHash ?? '');
         }
         this.result.continue();
       } else {
-        sub.next([...collection]);
+        sub.next(
+          [...collection.entries()].map<Performer>(([performer, performerHash]) => ({performer, performerHash})),
+        );
       }
     };
 
@@ -199,7 +204,7 @@ export function getTrackMetas$(db: IDBDatabase, query: TracksFilter): Observable
     cursor.onsuccess = function onsuccess(): void {
       if (this.result) {
         const track: Track = this.result.value;
-        if (filterStringValue(query.performer, track.performer) && queryStringValue(query.query, track.title)) {
+        if (filterStringValue(query.performer?.performerHash, track.performerHash) && queryStringValue(query.query, track.title)) {
           collection.push(trackToTrackMeta(track));
         }
         this.result.continue();
