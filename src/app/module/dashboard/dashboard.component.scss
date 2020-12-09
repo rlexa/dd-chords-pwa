@@ -4,14 +4,14 @@
   flex-direction: column;
 
   > .navigation {
-    padding: var(--padding-default) var(--padding-narrow);
     border-bottom: 1px solid var(--color-border);
 
     display: flex;
     align-items: center;
+    justify-content: center;
 
     > * {
-      margin: 0 var(--margin-narrow);
+      margin: var(--margin-narrow);
     }
 
     > button {
@@ -19,14 +19,21 @@
         min-width: 1em;
       }
     }
-
-    > .flex-fill {
-      flex: 1 1 auto;
-    }
   }
 
   > .content {
     position: relative;
     flex: 1 1 auto;
+  }
+
+  @media (orientation: landscape) {
+    flex-direction: row;
+
+    > .navigation {
+      flex-direction: column;
+      justify-content: start;
+      border-bottom: none;
+      border-right: 1px solid var(--color-border);
+    }
   }
 }
