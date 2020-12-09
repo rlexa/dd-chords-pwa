@@ -1,6 +1,6 @@
 import {InjectionToken, Provider} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {distinctUntilChanged, filter, map, shareReplay, startWith} from 'rxjs/operators';
 import {jsonEqual} from 'src/util';
 
@@ -28,3 +28,8 @@ export const DiCurrentRouterParamsProvider: Provider = {
       shareReplay(1),
     ),
 };
+
+export const DiOnline = new InjectionToken<Observable<boolean>>('Online flag.', {
+  providedIn: 'root',
+  factory: () => of(!!navigator?.onLine),
+});

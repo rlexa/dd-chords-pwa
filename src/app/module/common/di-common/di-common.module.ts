@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
-import {DiCurrentRouterParams, DiCurrentRouterParamsProvider} from './di-common';
+import {DiCurrentRouterParams, DiCurrentRouterParamsProvider, DiOnline} from './di-common';
 
 @NgModule({
   providers: [DiCurrentRouterParamsProvider],
 })
 class DiCommonModule {}
 
-export {DiCommonModule, DiCurrentRouterParams};
+export {DiCommonModule, DiCurrentRouterParams, DiOnline};

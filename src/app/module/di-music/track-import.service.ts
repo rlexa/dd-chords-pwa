@@ -2,8 +2,9 @@ import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {DoneSubject, RxCleanup} from 'dd-rxjs';
 import {combineLatest, Observable, of} from 'rxjs';
-import {bufferCount, catchError, concatMap, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {bufferCount, catchError, concatMap, filter, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {dataToTrack} from 'src/music';
+import {DiOnline} from '../common/di-common';
 import {DiCurrentTrackHashes} from './di-current-track-hashes';
 import {TrackService} from './track.service';
 
@@ -16,29 +17,15 @@ const trackSourceBuiltIn = 'builtin';
 @Injectable()
 export class TrackImportService implements OnDestroy {
   constructor(
+    @Inject(DiOnline) online$: Observable<boolean>,
     @Inject(DiCurrentTrackHashes) private readonly currentHashes$: Observable<Set<string>>,
     private readonly httpClient: HttpClient,
     private readonly trackService: TrackService,
   ) {
-    combineLatest([this.localIndex$, this.haveHashes$])
+    online$
       .pipe(
-        map(([index, hashes]) => {
-          if (!index?.files?.length) {
-            throw new Error('Local sync aborted (no index or files found).');
-          }
-          return index.files.filter((file) => !file.hash || !hashes.has(file.hash)).map((file) => `assets/dd-chords/${file.path}`);
-        }),
-        tap((paths) => {
-          if (paths.length) {
-            console.log(`Local sync of ${paths.length} files...`);
-          }
-        }),
-        switchMap((paths) =>
-          of(...paths).pipe(
-            concatMap((path) => this.loadLocalChordsFile$(path)),
-            bufferCount(paths.length),
-          ),
-        ),
+        filter((online) => online),
+        switchMap(() => this.importLocalData$),
         takeUntil(this.done$),
       )
       .subscribe({
@@ -56,6 +43,26 @@ export class TrackImportService implements OnDestroy {
 
   private readonly haveHashes$ = this.currentHashes$.pipe(take(1));
   private readonly localIndex$ = this.httpClient.get<Index>('assets/dd-chords/dd-chords.json');
+
+  private readonly importLocalData$ = combineLatest([this.localIndex$, this.haveHashes$]).pipe(
+    map(([index, hashes]) => {
+      if (!index?.files?.length) {
+        throw new Error('Local sync aborted (no index or files found).');
+      }
+      return index.files.filter((file) => !file.hash || !hashes.has(file.hash)).map((file) => `assets/dd-chords/${file.path}`);
+    }),
+    tap((paths) => {
+      if (paths.length) {
+        console.log(`Local sync of ${paths.length} files...`);
+      }
+    }),
+    switchMap((paths) =>
+      of(...paths).pipe(
+        concatMap((path) => this.loadLocalChordsFile$(path)),
+        bufferCount(paths.length),
+      ),
+    ),
+  );
 
   private loadLocalChordsFile$ = (path: string) =>
     this.httpClient.get(path, {responseType: 'text'}).pipe(
