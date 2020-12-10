@@ -9,7 +9,7 @@ export interface Performer {
 }
 
 export interface TracksFilter {
-  performer?: Performer;
+  performerHash?: string;
   query?: string;
 }
 

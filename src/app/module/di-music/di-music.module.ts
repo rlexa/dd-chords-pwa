@@ -1,6 +1,7 @@
 import {Inject, NgModule} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {CacheService} from '../common/cache/cache.service';
+import {DiCurrentPerformerProvider} from './di-current-performer';
 import {DiCurrentPerformersProvider} from './di-current-performers';
 import {DiCurrentTrackHashesProvider} from './di-current-track-hashes';
 import {DiCurrentTrackMetasProvider} from './di-current-tracks';
@@ -15,6 +16,7 @@ import {TrackService} from './track.service';
   imports: [DiPerformersFilterModule, DiTracksFilterModule],
   providers: [
     DiMusicIdbLiveProvider,
+    DiCurrentPerformerProvider,
     DiCurrentPerformersProvider,
     DiCurrentTrackHashesProvider,
     DiCurrentTrackMetasProvider,

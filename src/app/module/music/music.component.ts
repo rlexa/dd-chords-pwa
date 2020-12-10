@@ -3,6 +3,7 @@ import {DoneSubject, RxCleanup} from 'dd-rxjs';
 import {BehaviorSubject} from 'rxjs';
 import {debounceTime, filter, map, take, takeUntil} from 'rxjs/operators';
 import {RoutingService} from '../common/routing';
+import {DiCurrentPerformer} from '../di-music/di-current-performer';
 import {Performer} from '../di-music/di-tracks-filter';
 import {DiTracksFilterPerformer} from '../di-music/di-tracks-filter-performer';
 import {routeParamIdTrack} from './music-route';
@@ -17,7 +18,8 @@ type VisibleList = 'performers' | 'tracks';
 })
 export class MusicComponent implements OnDestroy {
   constructor(
-    @Inject(DiTracksFilterPerformer) public readonly tracksFilterPerformer$: BehaviorSubject<Performer | null>,
+    @Inject(DiCurrentPerformer) public readonly currentPerformer$: BehaviorSubject<Performer | null>,
+    @Inject(DiTracksFilterPerformer) private readonly tracksFilterPerformer$: BehaviorSubject<string | null>,
     private readonly routingService: RoutingService,
     private readonly changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -29,7 +31,7 @@ export class MusicComponent implements OnDestroy {
       )
       .subscribe((id) => (this.visibleTrack = !!id));
 
-    this.tracksFilterPerformer$
+    this.currentPerformer$
       .pipe(
         filter((performer) => !!performer),
         takeUntil(this.done$),

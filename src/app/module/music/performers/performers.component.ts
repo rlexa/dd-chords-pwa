@@ -15,6 +15,6 @@ export class PerformersComponent {
   constructor(
     @Inject(DiCurrentPerformers) public readonly performers$: Observable<Performer[]>,
     @Inject(DiPerformersFilterQuery) public readonly performersFilterQuery$: BehaviorSubject<string | null>,
-    @Inject(DiTracksFilterPerformer) public readonly tracksFilterPerformer$: BehaviorSubject<Performer | null>,
+    @Inject(DiTracksFilterPerformer) public readonly tracksFilterPerformer$: BehaviorSubject<string | null>,
   ) {}
 }

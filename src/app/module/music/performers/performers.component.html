@@ -4,8 +4,8 @@
     <ng-template let-item>
       <button
         class="btn btn-borderless text-ellipsis list-item item"
-        [class.active]="(tracksFilterPerformer$ | async)?.performerHash === item?.performerHash"
-        (click)="tracksFilterPerformer$.next(item)"
+        [class.active]="(tracksFilterPerformer$ | async) === item?.performerHash"
+        (click)="tracksFilterPerformer$.next(item.performerHash)"
       >
         {{ item.performer }}
       </button>

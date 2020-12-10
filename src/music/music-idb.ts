@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {TrackMeta} from 'src/app/module/di-music/di-current-tracks';
 import {PerformersFilter} from 'src/app/module/di-music/di-performers-filter';
 import {Performer, TracksFilter} from 'src/app/module/di-music/di-tracks-filter';
@@ -36,7 +36,7 @@ function createDb(idb: IDBDatabase): void {
   createStoreTracks(idb);
 }
 
-export const idb$ = idbOpenRequest$('ddchords', 2, createDb);
+export const idb$ = idbOpenRequest$('ddchords', 3, createDb);
 
 export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Observable<boolean> {
   return new Observable((sub) => {
@@ -89,6 +89,46 @@ export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Obs
       }
     };
   });
+}
+
+export function getPerformer$(db: IDBDatabase, id: string | null): Observable<Performer | null> {
+  return !id
+    ? of(null)
+    : new Observable((sub) => {
+        const trans = db.transaction(dbStoreTracks, 'readonly');
+
+        trans.onabort = function onabort(): void {
+          sub.error(new Error(`IDB transaction aborted.`));
+        };
+        trans.oncomplete = function oncomplete(): void {
+          sub.complete();
+        };
+        trans.onerror = function onerror(): void {
+          sub.error(new Error(`IDB transaction error: ${this.error}`));
+        };
+
+        const index = trans.objectStore(dbStoreTracks).index(keyPerformerHash);
+        const getRequest = index.get(id);
+        getRequest.onerror = function onerror(ev): void {
+          ev.stopPropagation();
+          sub.error(new Error(`IDB transaction get error: ${this.error}`));
+        };
+
+        getRequest.onsuccess = function onsuccess(): void {
+          const track: Track = this.result;
+          sub.next(
+            track && track.performer && track.performerHash ? {performer: track.performer, performerHash: track.performerHash} : null,
+          );
+        };
+
+        return () => {
+          try {
+            trans.abort();
+          } catch {
+            // ignore
+          }
+        };
+      });
 }
 
 export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observable<Performer[]> {
@@ -204,7 +244,7 @@ export function getTrackMetas$(db: IDBDatabase, query: TracksFilter): Observable
     cursor.onsuccess = function onsuccess(): void {
       if (this.result) {
         const track: Track = this.result.value;
-        if (filterStringValue(query.performer?.performerHash, track.performerHash) && queryStringValue(query.query, track.title)) {
+        if (filterStringValue(query.performerHash, track.performerHash) && queryStringValue(query.query, track.title)) {
           collection.push(trackToTrackMeta(track));
         }
         this.result.continue();
