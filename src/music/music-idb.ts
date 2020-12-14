@@ -11,6 +11,8 @@ export interface IdbTrack extends Track {
   timestamp: number;
 }
 
+const dbVersion = 4;
+
 export const dbStoreTracks = 'tracks';
 
 const keyHash: keyof IdbTrack = 'hash';
@@ -22,6 +24,13 @@ const keyTitle: keyof IdbTrack = 'title';
 
 function createStoreTracks(idb: IDBDatabase): void {
   const keyPath: keyof IdbTrack = 'id';
+
+  try {
+    idb.deleteObjectStore(dbStoreTracks);
+  } catch {
+    // ignore
+  }
+
   const store = idb.createObjectStore(dbStoreTracks, {keyPath});
 
   store.createIndex(keyHash, keyHash, {unique: true});
@@ -36,7 +45,7 @@ function createDb(idb: IDBDatabase): void {
   createStoreTracks(idb);
 }
 
-export const idb$ = idbOpenRequest$('ddchords', 3, createDb);
+export const idb$ = idbOpenRequest$('ddchords', dbVersion, createDb);
 
 export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Observable<boolean> {
   return new Observable((sub) => {
