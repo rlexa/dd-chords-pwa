@@ -1,7 +1,9 @@
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {ServiceWorkerModule} from '@angular/service-worker';
+import {ServiceWorkerModule, SwUpdate} from '@angular/service-worker';
+import {from} from 'rxjs';
+import {delay, switchMap, tap} from 'rxjs/operators';
 import {environment} from '../environments/environment';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -20,5 +22,13 @@ import {RoutingService} from './module/common/routing/routing-service';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(routingService: RoutingService) {}
+  constructor(routingService: RoutingService, swUpdate: SwUpdate) {
+    swUpdate.available
+      .pipe(
+        tap((event) => console.log(`Detected update.`, event)),
+        delay(5000),
+        switchMap(() => from(swUpdate.activateUpdate())),
+      )
+      .subscribe(() => document.location.reload());
+  }
 }
