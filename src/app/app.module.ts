@@ -2,7 +2,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ServiceWorkerModule, SwUpdate} from '@angular/service-worker';
-import {from} from 'rxjs';
+import {from, merge} from 'rxjs';
 import {delay, switchMap, tap} from 'rxjs/operators';
 import {environment} from '../environments/environment';
 import {AppRoutingModule} from './app-routing.module';
@@ -23,9 +23,11 @@ import {RoutingService} from './module/common/routing/routing-service';
 })
 export class AppModule {
   constructor(routingService: RoutingService, swUpdate: SwUpdate) {
-    swUpdate.available
+    merge(
+      swUpdate.available.pipe(tap((event) => console.log(`Detected update, reloading soon...`, event))),
+      swUpdate.unrecoverable.pipe(tap((event) => console.log(`Detected unrecoverable state "${event.reason}", reloading soon...`))),
+    )
       .pipe(
-        tap((event) => console.log(`Detected update.`, event)),
         delay(5000),
         switchMap(() => from(swUpdate.activateUpdate())),
       )
