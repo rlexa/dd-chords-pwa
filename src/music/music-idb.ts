@@ -11,7 +11,7 @@ export interface IdbTrack extends Track {
   timestamp: number;
 }
 
-const dbVersion = 4;
+const dbVersion = 5;
 
 export const dbStoreTracks = 'tracks';
 

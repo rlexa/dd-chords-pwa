@@ -1,11 +1,11 @@
 import {md5} from 'src/util';
 
 export interface Track {
+  data?: string;
   hash?: string;
   id?: string;
   performer?: string;
   performerHash?: string;
-  text?: string;
   title?: string;
 }
 
@@ -98,6 +98,7 @@ const toLines = (data: string) => splitBreaksWin(trim(data)).flatMap(splitBreaks
 
 export const textToLines = (text: string, transpose: number, withChords: boolean) =>
   toLines(text)
+    .filter((line) => !line.startsWith(metaLine))
     .map(textToLine(transpose))
     .filter((line) => withChords || !line.hasChords)
     .map<Line>((line) => (withChords ? line : {...line, text: line.text?.replace(/\s{2,}/g, ' ').replace(/^\s/g, '')}));
@@ -108,9 +109,9 @@ const getMeta = (lines: string[], meta: string) =>
 export const dataToTrack = (data: string): Track => {
   const lines = toLines(data);
   const ret: Track = {
+    data,
     hash: md5(data),
     performer: getMeta(lines, metaPerformer),
-    text: lines.filter((line) => !line.startsWith('#')).join('\n'),
     title: getMeta(lines, metaTitle),
   };
   return {...ret, id: md5(`${ret.performer}|${ret.title}`), performerHash: md5(ret.performer ?? '')};
@@ -121,5 +122,4 @@ export const getTitle = <T extends {title?: string}>(item: T) => item?.title;
 
 export const sortByTitle = <T extends {title?: string}>(aa: T, bb: T) => (getTitle(aa) || '').localeCompare(getTitle(bb) || '');
 
-export const trackToData = (track: Track) =>
-  `${metaLine}${metaPerformer} ${track.performer}\n` + `${metaLine}${metaTitle} ${track.title}\n` + track.text;
+export const trackToData = (track: Track) => track.data;
