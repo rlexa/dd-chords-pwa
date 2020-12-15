@@ -17,6 +17,10 @@ export interface Line {
   text?: string;
 }
 
+export const metaLine = '#';
+export const metaPerformer = 'performer';
+export const metaTitle = 'title';
+
 const lineBreaks = ['\r\n', '\r', '\n'];
 
 const splitBreaksWin = (val: string) => val.split(lineBreaks[0]);
@@ -99,15 +103,15 @@ export const textToLines = (text: string, transpose: number, withChords: boolean
     .map<Line>((line) => (withChords ? line : {...line, text: line.text?.replace(/\s{2,}/g, ' ').replace(/^\s/g, '')}));
 
 const getMeta = (lines: string[], meta: string) =>
-  lines.find((line) => line.startsWith(`#${meta} `))?.substr(`#${meta} `.length) || undefined;
+  lines.find((line) => line.startsWith(`${metaLine}${meta} `))?.substr(`#${meta} `.length) || undefined;
 
 export const dataToTrack = (data: string): Track => {
   const lines = toLines(data);
   const ret: Track = {
     hash: md5(data),
-    performer: getMeta(lines, 'performer'),
+    performer: getMeta(lines, metaPerformer),
     text: lines.filter((line) => !line.startsWith('#')).join('\n'),
-    title: getMeta(lines, 'title'),
+    title: getMeta(lines, metaTitle),
   };
   return {...ret, id: md5(`${ret.performer}|${ret.title}`), performerHash: md5(ret.performer ?? '')};
 };
@@ -116,3 +120,6 @@ export const getId = <T extends {id?: string}>(item: T) => item?.id;
 export const getTitle = <T extends {title?: string}>(item: T) => item?.title;
 
 export const sortByTitle = <T extends {title?: string}>(aa: T, bb: T) => (getTitle(aa) || '').localeCompare(getTitle(bb) || '');
+
+export const trackToData = (track: Track) =>
+  `${metaLine}${metaPerformer} ${track.performer}\n` + `${metaLine}${metaTitle} ${track.title}\n` + track.text;
