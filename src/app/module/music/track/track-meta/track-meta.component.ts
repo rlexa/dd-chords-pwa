@@ -22,7 +22,7 @@ export class TrackMetaComponent {
     if (typeof navigator.share === 'function') {
       if (this.track) {
         try {
-          await navigator.share({text: trackToData(this.track), title: this.track.title});
+          await navigator.share({text: trackToData(this.track), title: this.track.title, url: window.location.href});
           console.error(`Share succeeded.`);
         } catch (ex) {
           console.error(`Share failed.`, ex);
