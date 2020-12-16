@@ -1,8 +1,9 @@
 import {ChangeDetectionStrategy, Component, Inject, Input} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
+import {routeShared} from 'src/app/app-routing';
 import {DiCanShare} from 'src/app/module/common/di-common/di-common';
+import {queryParamTrackId} from 'src/app/module/shared-target/shared-target';
 import {Track} from 'src/music';
-import {trackToData} from 'src/music/music';
 import {trackByIndex} from 'src/util';
 
 @Component({
@@ -21,8 +22,11 @@ export class TrackMetaComponent {
   async share(): Promise<void> {
     if (typeof navigator.share === 'function') {
       if (this.track) {
+        const path = new URL(`${window.location.origin}/${routeShared}`);
+        path.searchParams.append(queryParamTrackId, this.track.id ?? '');
+        const url = path.toString();
         try {
-          await navigator.share({text: trackToData(this.track), title: this.track.title, url: window.location.href});
+          await navigator.share({title: this.track.title, url});
           console.error(`Share succeeded.`);
         } catch (ex) {
           console.error(`Share failed.`, ex);
