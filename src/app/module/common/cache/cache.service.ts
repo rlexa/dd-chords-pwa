@@ -16,7 +16,7 @@ interface CachedMap {
 }
 
 const cachedMapKey = 'dd-chords-cache';
-const cachedMapVersion = 1;
+const cachedMapVersion = 2;
 
 @Injectable({providedIn: 'root'})
 export class CacheService implements OnDestroy {

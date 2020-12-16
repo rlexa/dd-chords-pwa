@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {Observable} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {LoggerService} from '../common/logger';
 import {DiCurrentTrackCount} from '../di-music/di-current-track-count';
 
@@ -15,5 +16,5 @@ export class InfoComponent {
     private readonly logger: LoggerService,
   ) {}
 
-  readonly logs$ = this.logger.logs$;
+  readonly logs$ = this.logger.logs$.pipe(debounceTime(0));
 }
