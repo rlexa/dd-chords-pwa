@@ -2,4 +2,8 @@
   <h3>DD-Chords</h3>
   <p>devdroy, Alex Rempel</p>
   <hr />
+
+  <h3>Logs</h3>
+  <p *ngFor="let log of logs$ | async" class="log level-{{ log.level }}">{{ log.message }}</p>
+  <hr />
 </div>

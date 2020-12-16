@@ -5,6 +5,7 @@ import {combineLatest, Observable, of} from 'rxjs';
 import {bufferCount, catchError, concatMap, filter, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {dataToTrack} from 'src/music';
 import {DiOnline} from '../common/di-common';
+import {LoggerService} from '../common/logger';
 import {DiCurrentTrackHashes} from './di-current-track-hashes';
 import {TrackService} from './track.service';
 
@@ -21,6 +22,7 @@ export class TrackImportService implements OnDestroy {
     @Inject(DiCurrentTrackHashes) private readonly currentHashes$: Observable<Set<string>>,
     private readonly httpClient: HttpClient,
     private readonly trackService: TrackService,
+    private readonly loggerService: LoggerService,
   ) {
     online$
       .pipe(
@@ -31,11 +33,11 @@ export class TrackImportService implements OnDestroy {
       .subscribe({
         next: (oks) => {
           if (oks.length) {
-            console.log(`...local sync: ${oks.filter((ok) => ok).length}x success, ${oks.filter((ok) => !ok).length}x fail.`);
+            this.loggerService.debug(`...local sync: ${oks.filter((ok) => ok).length}x success, ${oks.filter((ok) => !ok).length}x fail.`);
           }
         },
-        error: (err) => console.log(`Local sync error.`, err),
-        complete: () => console.log(`Local sync checked.`),
+        error: (err) => this.loggerService.log(`Local sync error (maybe just offline).`, err),
+        complete: () => this.loggerService.debug(`Local sync checked.`),
       });
   }
 
@@ -53,7 +55,7 @@ export class TrackImportService implements OnDestroy {
     }),
     tap((paths) => {
       if (paths.length) {
-        console.log(`Local sync of ${paths.length} files...`);
+        this.loggerService.debug(`Local sync of ${paths.length} files...`);
       }
     }),
     switchMap((paths) =>
@@ -68,7 +70,7 @@ export class TrackImportService implements OnDestroy {
     this.httpClient.get(path, {responseType: 'text'}).pipe(
       switchMap((text) => this.trackService.saveTrack$(trackSourceBuiltIn, dataToTrack(text))),
       catchError((err) => {
-        console.log(`Sync of local asset ${path} failed.`, err);
+        this.loggerService.error(`Sync of local asset ${path} failed.`, err);
         return of(false);
       }),
     );

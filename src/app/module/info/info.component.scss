@@ -17,4 +17,17 @@
   h3 {
     font-weight: var(--font-weight-strong);
   }
+
+  .log {
+    align-self: flex-start;
+    margin-bottom: var(--margin-default);
+
+    &.level-debug {
+      color: var(--color-weak);
+    }
+
+    &.level-error {
+      color: var(--color-warning);
+    }
+  }
 }

@@ -8,6 +8,7 @@ import {environment} from '../environments/environment';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {DiCommonModule} from './module/common/di-common';
+import {LoggerService} from './module/common/logger';
 import {RoutingService} from './module/common/routing/routing-service';
 
 @NgModule({
@@ -22,10 +23,10 @@ import {RoutingService} from './module/common/routing/routing-service';
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(routingService: RoutingService, swUpdate: SwUpdate) {
+  constructor(routingService: RoutingService, swUpdate: SwUpdate, loggerService: LoggerService) {
     merge(
-      swUpdate.available.pipe(tap((event) => console.log(`Detected update, reloading soon...`, event))),
-      swUpdate.unrecoverable.pipe(tap((event) => console.log(`Detected unrecoverable state "${event.reason}", reloading soon...`))),
+      swUpdate.available.pipe(tap((event) => loggerService.log(`Detected update, reloading soon...`, event))),
+      swUpdate.unrecoverable.pipe(tap((event) => loggerService.error(`Detected unrecoverable state "${event.reason}", reloading soon...`))),
     )
       .pipe(
         delay(5000),

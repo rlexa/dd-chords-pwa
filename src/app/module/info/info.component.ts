@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {LoggerService} from '../common/logger';
 
 @Component({
   selector: 'dd-chords-info',
@@ -6,4 +7,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   styleUrls: ['./info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InfoComponent {}
+export class InfoComponent {
+  constructor(private readonly logger: LoggerService) {}
+
+  readonly logs$ = this.logger.logs$;
+}

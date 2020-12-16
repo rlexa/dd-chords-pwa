@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, Inject, Input} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {routeShared} from 'src/app/app-routing';
 import {DiCanShare} from 'src/app/module/common/di-common/di-common';
+import {LoggerService} from 'src/app/module/common/logger';
 import {queryParamTrackId} from 'src/app/module/shared-target/shared-target';
 import {Track} from 'src/music';
 import {trackByIndex} from 'src/util';
@@ -13,7 +14,7 @@ import {trackByIndex} from 'src/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackMetaComponent {
-  constructor(@Inject(DiCanShare) public readonly canShare$: BehaviorSubject<boolean>) {}
+  constructor(@Inject(DiCanShare) public readonly canShare$: BehaviorSubject<boolean>, private readonly loggerService: LoggerService) {}
 
   @Input() track: Track | undefined | null;
 
@@ -27,13 +28,13 @@ export class TrackMetaComponent {
         const url = path.toString();
         try {
           await navigator.share({title: this.track.title, url});
-          console.error(`Share succeeded.`);
+          this.loggerService.log(`Shared.`, url);
         } catch (ex) {
-          console.error(`Share failed.`, ex);
+          this.loggerService.error(`Share failed.`, ex);
         }
       }
     } else {
-      console.log(`System does not allow sharing.`);
+      this.loggerService.error(`System does not allow sharing.`);
       this.canShare$.next(false);
     }
   }
