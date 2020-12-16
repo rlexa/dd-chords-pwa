@@ -7,6 +7,7 @@ type LogItemLevel = 'error' | 'info' | 'debug';
 interface LogItem {
   level: LogItemLevel;
   message: string;
+  timestamp: number;
 }
 
 @Injectable({providedIn: 'root'})
@@ -41,7 +42,7 @@ export class LoggerService implements OnDestroy, Pick<Console, 'error' | 'log' |
       .trim();
 
     if (level && text?.length) {
-      this.logs[this.logIndex$.value] = {level, message: text};
+      this.logs[this.logIndex$.value] = {level, message: text, timestamp: new Date().getTime()};
       this.logIndex$.next((this.logIndex$.value + 1) % this.logs.length);
     }
   }
