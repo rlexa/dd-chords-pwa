@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {take} from 'rxjs/operators';
+import {from} from 'rxjs';
+import {exhaustMap, take} from 'rxjs/operators';
 import {routeUi} from 'src/app/app-routing';
 import {routeTracks} from '../dashboard/routed-dashboard';
 import {queryParamTrackId} from './shared-target';
@@ -16,15 +17,15 @@ export class SharedTargetComponent implements OnInit {
 
   private readonly queryParams$ = this.activatedRoute.queryParams;
 
-  ngOnInit(): void {
-    this.queryParams$.pipe(take(1)).subscribe((query) => this.navigate(query));
-  }
+  private navigate$ = (query: Params) =>
+    from(this.router.navigate(query[queryParamTrackId] ? [routeUi, routeTracks, query[queryParamTrackId]] : [routeUi], {replaceUrl: true}));
 
-  private navigate(query: Params): void {
-    if (query[queryParamTrackId]) {
-      this.router.navigate([routeUi, routeTracks, query[queryParamTrackId]], {replaceUrl: true});
-    } else {
-      this.router.navigate([routeUi], {replaceUrl: true});
-    }
+  ngOnInit(): void {
+    this.queryParams$
+      .pipe(
+        take(1),
+        exhaustMap((query) => this.navigate$(query)),
+      )
+      .subscribe();
   }
 }
