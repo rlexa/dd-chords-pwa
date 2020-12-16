@@ -3,6 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 import {CacheService} from '../common/cache/cache.service';
 import {DiCurrentPerformerProvider} from './di-current-performer';
 import {DiCurrentPerformersProvider} from './di-current-performers';
+import {DiCurrentTrackCountProvider} from './di-current-track-count';
 import {DiCurrentTrackHashesProvider} from './di-current-track-hashes';
 import {DiCurrentTrackMetasProvider} from './di-current-tracks';
 import {DiMusicIdbLiveProvider} from './di-music-idb';
@@ -19,6 +20,7 @@ import {TrackService} from './track.service';
     DiCurrentPerformerProvider,
     DiCurrentPerformersProvider,
     DiCurrentTrackHashesProvider,
+    DiCurrentTrackCountProvider,
     DiCurrentTrackMetasProvider,
     TrackService,
     TrackImportService,

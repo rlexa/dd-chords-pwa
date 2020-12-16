@@ -10,6 +10,8 @@ import {AppComponent} from './app.component';
 import {DiCommonModule} from './module/common/di-common';
 import {LoggerService} from './module/common/logger';
 import {RoutingService} from './module/common/routing/routing-service';
+import {DiMusicModule} from './module/di-music/di-music.module';
+import {TrackImportService} from './module/di-music/track-import.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,12 +20,20 @@ import {RoutingService} from './module/common/routing/routing-service';
     HttpClientModule,
     AppRoutingModule,
     DiCommonModule,
+    DiMusicModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(routingService: RoutingService, swUpdate: SwUpdate, loggerService: LoggerService) {
+  constructor(
+    swUpdate: SwUpdate,
+    // inject to make sure it catches all changes
+    routingService: RoutingService,
+    // inject to make sure it imports local assets
+    trackImportService: TrackImportService,
+    loggerService: LoggerService,
+  ) {
     merge(
       swUpdate.available.pipe(tap((event) => loggerService.log(`Detected update, reloading soon...`, event))),
       swUpdate.unrecoverable.pipe(tap((event) => loggerService.error(`Detected unrecoverable state "${event.reason}", reloading soon...`))),
