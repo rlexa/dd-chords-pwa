@@ -6,6 +6,7 @@ export interface Track {
   id?: string;
   performer?: string;
   performerHash?: string;
+  playlists?: string;
   title?: string;
 }
 

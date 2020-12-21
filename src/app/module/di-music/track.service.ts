@@ -3,7 +3,7 @@ import {DoneSubject, RxCleanup} from 'dd-rxjs';
 import {forkJoin, Observable, of, Subject} from 'rxjs';
 import {switchMap, takeUntil, tap} from 'rxjs/operators';
 import {Track} from 'src/music';
-import {getTrack$, upsertTrack$} from 'src/music/music-idb';
+import {getTrack$, toggleTrackFavorite$, upsertTrack$} from 'src/music/music-idb';
 import {DiMusicIdb, DiMusicIdbChange, DiMusicIdbLive} from './di-music-idb';
 
 @Injectable()
@@ -41,6 +41,17 @@ export class TrackService implements OnDestroy {
         const saved = iis.filter((ii) => ii).length;
         if (saved > 0) {
           this.dbChange$.next(saved);
+        }
+      }),
+      takeUntil(this.done$),
+    );
+
+  toggleTrackFavorite$ = (idTrack: string) =>
+    this.db$.pipe(
+      switchMap((db) => toggleTrackFavorite$(db, idTrack)),
+      tap((saved) => {
+        if (saved) {
+          this.dbChange$.next(1);
         }
       }),
       takeUntil(this.done$),

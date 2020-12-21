@@ -15,6 +15,12 @@ const dbVersion = 5;
 
 export const dbStoreTracks = 'tracks';
 
+const separatorPlaylists = '<|>';
+const playlistFavorites = '#favorites';
+
+export const playlistToQuery = (playlist: string | undefined) => `${separatorPlaylists}${playlist ?? '???'}${separatorPlaylists}`;
+export const queryPlaylistFavorites = playlistToQuery(playlistFavorites);
+
 const keyHash: keyof IdbTrack = 'hash';
 const keyPerformer: keyof IdbTrack = 'performer';
 const keyPerformerHash: keyof IdbTrack = 'performerHash';
@@ -73,11 +79,11 @@ export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Obs
       sub.error(new Error(`IDB transaction get error: ${this.error}`));
     };
     getRequest.onsuccess = function onsuccess(): void {
-      const oldTrack = this.result;
+      const oldTrack: IdbTrack | undefined = this.result;
       if (oldTrack?.hash === track.hash) {
         sub.next(false);
       } else {
-        const idbTrack: IdbTrack = {...track, source, timestamp: new Date().getTime()};
+        const idbTrack: IdbTrack = {...track, playlists: undefined, source, timestamp: new Date().getTime()};
 
         const putRequest = store.put(idbTrack);
         putRequest.onerror = function onerror(ev): void {
@@ -305,3 +311,61 @@ export function getTrack$(db: IDBDatabase, id: string): Observable<Track | null>
     };
   });
 }
+
+export function toggleTrackPlaylist$(
+  db: IDBDatabase,
+  id: string | undefined | null,
+  playlist: string | undefined | null,
+): Observable<boolean> {
+  return new Observable((sub) => {
+    if (!id || !playlist?.trim()) {
+      sub.error(new Error(`Toggle playlist error: invalid id or playlist.`));
+      return;
+    }
+
+    const trans = db.transaction(dbStoreTracks, 'readwrite');
+
+    trans.onabort = function onabort(): void {
+      sub.error(new Error(`IDB transaction aborted.`));
+    };
+    trans.oncomplete = function oncomplete(): void {
+      sub.complete();
+    };
+    trans.onerror = function onerror(): void {
+      sub.error(new Error(`IDB transaction error: ${this.error}`));
+    };
+
+    const store = trans.objectStore(dbStoreTracks);
+    const request = store.get(id);
+    request.onerror = function onerror(ev): void {
+      ev.stopPropagation();
+      sub.error(new Error(`IDB get request error: ${this.error}`));
+    };
+
+    request.onsuccess = function onsuccess(): void {
+      const track: IdbTrack | undefined = this.result;
+      if (!track) {
+        sub.next(false);
+      } else {
+        const curPlaylist = playlist.trim();
+        const oldPlaylists = (track.playlists ?? '').split(separatorPlaylists).filter((ii) => ii?.length);
+        const indexFound = oldPlaylists.indexOf(curPlaylist);
+        const newPlaylists =
+          indexFound >= 0 ? oldPlaylists.filter((ii, index) => index !== indexFound) : [...oldPlaylists, curPlaylist].sort();
+        track.playlists = `${separatorPlaylists}${newPlaylists.join(separatorPlaylists)}${separatorPlaylists}`;
+        store.put(track);
+        sub.next(true);
+      }
+    };
+
+    return () => {
+      try {
+        trans.abort();
+      } catch {
+        // ignore
+      }
+    };
+  });
+}
+
+export const toggleTrackFavorite$ = (db: IDBDatabase, id: string | undefined | null) => toggleTrackPlaylist$(db, id, playlistFavorites);

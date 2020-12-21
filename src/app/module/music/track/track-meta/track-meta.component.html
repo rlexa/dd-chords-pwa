@@ -10,7 +10,7 @@
       <button
         (click)="toggleFavorite(track?.id)"
         class="btn btn-dense btn-borderless"
-        [class.active]="favorites$ | async | contains: track?.id"
+        [class.active]="track?.playlists | contains: playlistFavorites"
       >
         <i class="fas fa-heart"></i>
       </button>

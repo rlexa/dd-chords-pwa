@@ -3,9 +3,10 @@ import {BehaviorSubject} from 'rxjs';
 import {routeShared} from 'src/app/app-routing';
 import {DiCanShare} from 'src/app/module/common/di-common/di-common';
 import {LoggerService} from 'src/app/module/common/logger';
-import {FavoritesService} from 'src/app/module/di-music/favorites.service';
+import {TrackService} from 'src/app/module/di-music/track.service';
 import {queryParamTrackId} from 'src/app/module/shared-target/shared-target';
 import {Track} from 'src/music';
+import {queryPlaylistFavorites} from 'src/music/music-idb';
 import {trackByIndex} from 'src/util';
 
 @Component({
@@ -16,14 +17,14 @@ import {trackByIndex} from 'src/util';
 })
 export class TrackMetaComponent {
   constructor(
+    private readonly trackService: TrackService,
     @Inject(DiCanShare) public readonly canShare$: BehaviorSubject<boolean>,
-    private readonly favoritesService: FavoritesService,
     private readonly loggerService: LoggerService,
   ) {}
 
   @Input() track: Track | undefined | null;
 
-  public readonly favorites$ = this.favoritesService.favoriteHashes$;
+  public readonly playlistFavorites = queryPlaylistFavorites;
 
   trackByIndex = trackByIndex;
 
@@ -46,7 +47,9 @@ export class TrackMetaComponent {
     }
   }
 
-  toggleFavorite(hash: string | undefined): void {
-    this.favoritesService.toggle(hash ?? '');
+  async toggleFavorite(id: string | undefined): Promise<void> {
+    if (id) {
+      await this.trackService.toggleTrackFavorite$(id).toPromise();
+    }
   }
 }
