@@ -10,8 +10,8 @@ export const DiCurrentPerformers = new InjectionToken<Observable<Performer[]>>('
 export const DiCurrentPerformersProvider: Provider = {
   provide: DiCurrentPerformers,
   deps: [DiMusicIdbLive, DiPerformersFilter],
-  useFactory: (db$: Observable<IDBDatabase>, tracksFilter$: Observable<PerformersFilter>): Observable<Performer[]> =>
-    combineLatest([db$, tracksFilter$]).pipe(
+  useFactory: (db$: Observable<IDBDatabase>, performersFilter$: Observable<PerformersFilter>): Observable<Performer[]> =>
+    combineLatest([db$, performersFilter$]).pipe(
       switchMap(([db, query]) => getPerformers$(db, query)),
       shareReplay({refCount: true, bufferSize: 1}),
     ),

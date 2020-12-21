@@ -1,4 +1,7 @@
 <div class="navigation">
+  <button class="btn btn-borderless" [class.active]="showFavorits$ | async" (click)="toggleShowFavorites()">
+    <i class="fas fa-heart"></i>
+  </button>
   <button class="btn" routerLink="tracks" routerLinkActive="active">
     <i class="fas fa-music"></i>
   </button>

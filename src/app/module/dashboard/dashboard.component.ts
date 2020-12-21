@@ -1,4 +1,6 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {DiShowFavorites} from '../di-music/di-show-favorites';
 
 @Component({
   selector: 'dd-chords-dashboard',
@@ -6,4 +8,10 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  constructor(@Inject(DiShowFavorites) public readonly showFavorits$: BehaviorSubject<boolean>) {}
+
+  toggleShowFavorites(): void {
+    this.showFavorits$.next(!this.showFavorits$.value);
+  }
+}

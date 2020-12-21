@@ -9,6 +9,7 @@ import {DiCurrentTrackMetasProvider} from './di-current-tracks';
 import {DiMusicIdbLiveProvider} from './di-music-idb';
 import {DiPerformersFilterModule} from './di-performers-filter.module';
 import {DiShowChords} from './di-show-chords';
+import {DiShowFavorites} from './di-show-favorites';
 import {DiTracksFilterModule} from './di-tracks-filter.module';
 import {TrackImportService} from './track-import.service';
 import {TrackService} from './track.service';
@@ -27,7 +28,12 @@ import {TrackService} from './track.service';
   ],
 })
 export class DiMusicModule {
-  constructor(cacheService: CacheService, @Inject(DiShowChords) showChords$: BehaviorSubject<boolean>) {
+  constructor(
+    cacheService: CacheService,
+    @Inject(DiShowChords) showChords$: BehaviorSubject<boolean>,
+    @Inject(DiShowFavorites) showFavorites$: BehaviorSubject<boolean>,
+  ) {
     cacheService.register('showChords', showChords$, (val) => showChords$.next(val ?? showChords$.value));
+    cacheService.register('showFavorites', showFavorites$, (val) => showFavorites$.next(val ?? showFavorites$.value));
   }
 }

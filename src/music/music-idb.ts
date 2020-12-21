@@ -171,9 +171,11 @@ export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observ
     cursor.onsuccess = function onsuccess(): void {
       if (this.result) {
         const performer = this.result.key.toString();
-        if (!collection.has(performer) && queryStringValue(query.query, performer)) {
-          const value: Track = this.result.value;
-          collection.set(performer, value.performerHash ?? '');
+        if (!collection.has(performer)) {
+          const track: Track = this.result.value;
+          if (queryStringValue(query.query, performer) && (!query.favorites || track.playlists?.includes(queryPlaylistFavorites))) {
+            collection.set(performer, track.performerHash ?? '');
+          }
         }
         this.result.continue();
       } else {
@@ -259,7 +261,11 @@ export function getTrackMetas$(db: IDBDatabase, query: TracksFilter): Observable
     cursor.onsuccess = function onsuccess(): void {
       if (this.result) {
         const track: Track = this.result.value;
-        if (filterStringValue(query.performerHash, track.performerHash) && queryStringValue(query.query, track.title)) {
+        if (
+          filterStringValue(query.performerHash, track.performerHash) &&
+          queryStringValue(query.query, track.title) &&
+          (!query.favorites || track.playlists?.includes(queryPlaylistFavorites))
+        ) {
           collection.push(trackToTrackMeta(track));
         }
         this.result.continue();

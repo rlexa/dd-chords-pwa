@@ -4,6 +4,7 @@ import {distinctUntilChanged, map} from 'rxjs/operators';
 import {clearEmptyValues, jsonEqual, mergeObjects} from 'src/util';
 
 export interface PerformersFilter {
+  favorites?: boolean;
   query?: string;
 }
 
