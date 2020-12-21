@@ -1,6 +1,10 @@
 import {Observable} from 'rxjs';
 
-export function idbOpenRequest$(name: string, version: number, fnUpgrade: (idb: IDBDatabase) => void): Observable<IDBDatabase> {
+export function idbOpenRequest$(
+  name: string,
+  version: number,
+  fnUpgrade: (idb: IDBDatabase, transaction: IDBTransaction | null, oldVersion: number) => void,
+): Observable<IDBDatabase> {
   return new Observable<IDBDatabase>((sub) => {
     if (!('indexedDB' in window)) {
       sub.error(new Error('IndexedDB not supported.'));
@@ -44,9 +48,9 @@ export function idbOpenRequest$(name: string, version: number, fnUpgrade: (idb: 
       provideIdb(this.result);
     };
 
-    idbOpenDbRequest.onupgradeneeded = function onupgradeneeded(): void {
+    idbOpenDbRequest.onupgradeneeded = function onupgradeneeded(ev): void {
       console.log(`IDB upgrading to ${name}.${version}`);
-      fnUpgrade(this.result);
+      fnUpgrade(this.result, this.transaction, ev.oldVersion);
       sub.error(new Error(`IDB upgrade done - reloading page...`));
       setTimeout(() => window.location.reload(), 10);
     };

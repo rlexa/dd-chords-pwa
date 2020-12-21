@@ -28,30 +28,47 @@ const keySource: keyof IdbTrack = 'source';
 const keyTimestamp: keyof IdbTrack = 'timestamp';
 const keyTitle: keyof IdbTrack = 'title';
 
-function createStoreTracks(idb: IDBDatabase): void {
+function createStoreIfMissing(
+  name: string,
+  db: IDBDatabase,
+  transaction: IDBTransaction | null,
+  options?: IDBObjectStoreParameters,
+): IDBObjectStore {
+  return db.objectStoreNames.contains(name) && transaction ? transaction.objectStore(name) : db.createObjectStore(name, options);
+}
+
+function createIndexIfMissing(store: IDBObjectStore, name: string, options?: IDBIndexParameters): void {
+  if (!store.indexNames.contains(name)) {
+    store.createIndex(name, name, options);
+  }
+}
+
+function upgradeStoreTracks(db: IDBDatabase, transaction: IDBTransaction | null, oldVersion: number): void {
   const keyPath: keyof IdbTrack = 'id';
 
-  try {
-    idb.deleteObjectStore(dbStoreTracks);
-  } catch {
-    // ignore
+  if (oldVersion < 5 || !transaction) {
+    try {
+      db.deleteObjectStore(dbStoreTracks);
+    } catch {
+      // ignore
+    }
   }
 
-  const store = idb.createObjectStore(dbStoreTracks, {keyPath});
+  const store = createStoreIfMissing(dbStoreTracks, db, transaction, {keyPath});
 
-  store.createIndex(keyHash, keyHash, {unique: true});
-  store.createIndex(keyPerformer, keyPerformer, {unique: false});
-  store.createIndex(keyPerformerHash, keyPerformerHash, {unique: false});
-  store.createIndex(keyTitle, keyTitle, {unique: false});
-  store.createIndex(keySource, keySource, {unique: false});
-  store.createIndex(keyTimestamp, keyTimestamp, {unique: false});
+  createIndexIfMissing(store, keyHash, {unique: true});
+  createIndexIfMissing(store, keyPerformer, {unique: false});
+  createIndexIfMissing(store, keyPerformerHash, {unique: false});
+  createIndexIfMissing(store, keyTitle, {unique: false});
+  createIndexIfMissing(store, keySource, {unique: false});
+  createIndexIfMissing(store, keyTimestamp, {unique: false});
 }
 
-function createDb(idb: IDBDatabase): void {
-  createStoreTracks(idb);
+function upgradeDb(idb: IDBDatabase, transaction: IDBTransaction | null, oldVersion: number): void {
+  upgradeStoreTracks(idb, transaction, oldVersion);
 }
 
-export const idb$ = idbOpenRequest$('ddchords', dbVersion, createDb);
+export const idb$ = idbOpenRequest$('ddchords', dbVersion, upgradeDb);
 
 export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Observable<boolean> {
   return new Observable((sub) => {
