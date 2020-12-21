@@ -83,7 +83,7 @@ export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Obs
       if (oldTrack?.hash === track.hash) {
         sub.next(false);
       } else {
-        const idbTrack: IdbTrack = {...track, playlists: undefined, source, timestamp: new Date().getTime()};
+        const idbTrack: IdbTrack = {...track, playlists: oldTrack?.playlists, source, timestamp: new Date().getTime()};
 
         const putRequest = store.put(idbTrack);
         putRequest.onerror = function onerror(ev): void {
