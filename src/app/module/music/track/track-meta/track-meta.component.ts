@@ -3,6 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 import {routeShared} from 'src/app/app-routing';
 import {DiCanShare} from 'src/app/module/common/di-common/di-common';
 import {LoggerService} from 'src/app/module/common/logger';
+import {FavoritesService} from 'src/app/module/di-music/favorites.service';
 import {queryParamTrackId} from 'src/app/module/shared-target/shared-target';
 import {Track} from 'src/music';
 import {trackByIndex} from 'src/util';
@@ -14,9 +15,15 @@ import {trackByIndex} from 'src/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrackMetaComponent {
-  constructor(@Inject(DiCanShare) public readonly canShare$: BehaviorSubject<boolean>, private readonly loggerService: LoggerService) {}
+  constructor(
+    @Inject(DiCanShare) public readonly canShare$: BehaviorSubject<boolean>,
+    private readonly favoritesService: FavoritesService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @Input() track: Track | undefined | null;
+
+  public readonly favorites$ = this.favoritesService.favoriteHashes$;
 
   trackByIndex = trackByIndex;
 
@@ -37,5 +44,9 @@ export class TrackMetaComponent {
       this.loggerService.error(`System does not allow sharing.`);
       this.canShare$.next(false);
     }
+  }
+
+  toggleFavorite(hash: string | undefined): void {
+    this.favoritesService.toggle(hash ?? '');
   }
 }

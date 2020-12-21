@@ -7,6 +7,13 @@
   <span>{{ title }}</span>
   <ng-container *ngIf="canShare$ | async">
     <span *ngIf="track?.performer && track?.data">
+      <button
+        (click)="toggleFavorite(track?.id)"
+        class="btn btn-dense btn-borderless"
+        [class.active]="favorites$ | async | contains: track?.id"
+      >
+        <i class="fas fa-heart"></i>
+      </button>
       <button (click)="share()" class="btn btn-dense btn-borderless"><i class="fas fa-share-alt"></i></button>
     </span>
   </ng-container>
