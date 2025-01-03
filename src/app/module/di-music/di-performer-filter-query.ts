@@ -5,9 +5,9 @@ import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {jsonEqual} from 'src/util';
 import {PerformersFilter} from './di-performers-filter';
 
-export const DiPerformersFilterQuery = new InjectionToken<BehaviorSubject<string | undefined>>('Performers filter performer.', {
+export const DiPerformersFilterQuery = new InjectionToken<BehaviorSubject<string>>('Performers filter performer.', {
   providedIn: 'root',
-  factory: () => new StateSubject<string | undefined>(undefined),
+  factory: () => new StateSubject<string>(''),
 });
 
 export const DiPerformersFilterPartQuery = new InjectionToken<Observable<Partial<PerformersFilter>>>('Performers filter part.', {

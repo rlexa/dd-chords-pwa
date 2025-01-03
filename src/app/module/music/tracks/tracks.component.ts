@@ -11,7 +11,7 @@ import {DiTracksFilterQuery} from '../../di-music/di-tracks-filter-query';
       #inputQuery
       class="input"
       [value]="tracksFilterQuery$ | async"
-      (input)="tracksFilterQuery$.next(inputQuery.value || undefined)"
+      (input)="tracksFilterQuery$.next(inputQuery.value || '')"
     />
     <div class="content">
       <dd-chords-vlist [items]="tracks$ | async">
@@ -53,5 +53,5 @@ export class TracksComponent {
   protected readonly tracks$ = inject(DiCurrentTrackMetas);
   protected readonly tracksFilterQuery$ = inject(DiTracksFilterQuery);
 
-  @Output() clickedItem = new EventEmitter<string>();
+  @Output() readonly clickedItem = new EventEmitter<string>();
 }

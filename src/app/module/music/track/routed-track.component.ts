@@ -2,9 +2,9 @@ import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
+import {RouteParamIdTrack} from 'src/app/routing';
 import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer';
 import {TrackService} from '../../di-music/track.service';
-import {routeParamIdTrack} from '../music-route';
 import {TrackComponent} from './track.component';
 
 @Component({
@@ -20,7 +20,7 @@ export class RoutedTrackComponent {
   private readonly tracksFilterPerformer$ = inject(DiTracksFilterPerformer);
 
   private readonly idTrack$ = this.activatedRouteSnapshot.paramMap.pipe(
-    map((params) => params.get(routeParamIdTrack)),
+    map((params) => params.get(RouteParamIdTrack)),
     distinctUntilChanged(),
   );
 

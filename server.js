@@ -13,8 +13,8 @@ try {
   app.all('*', (req, res) => res.sendFile('index.html', {root: rootDir}));
 
   // app.listen(port);
-  const key = fs.readFileSync('key.pem');
-  const cert = fs.readFileSync('cert.pem');
+  const key = fs.readFileSync('server.key');
+  const cert = fs.readFileSync('server.crt');
   https.createServer({key, cert}, app).listen(port, host);
 
   console.log(`Serving https://${host}:${port}`);

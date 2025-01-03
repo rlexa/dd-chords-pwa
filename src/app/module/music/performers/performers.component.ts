@@ -11,7 +11,7 @@ import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer
       #inputQuery
       class="input"
       [value]="performersFilterQuery$ | async"
-      (input)="performersFilterQuery$.next(inputQuery.value || undefined)"
+      (input)="performersFilterQuery$.next(inputQuery.value || '')"
     />
     <div class="content">
       <dd-chords-vlist [items]="performers$ | async">
@@ -19,7 +19,7 @@ import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer
           <button
             class="btn btn-borderless text-ellipsis list-item item"
             [class.active]="(tracksFilterPerformer$ | async) === item?.performerHash"
-            (click)="tracksFilterPerformer$.next(item.performerHash)"
+            (click)="tracksFilterPerformer$.next(item.performerHash || '')"
           >
             {{ item.performer }}
           </button>

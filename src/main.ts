@@ -58,8 +58,10 @@ bootstrapApplication(AppComponent, {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const trackImportService = inject(TrackImportService);
 
-        cacheService.register('showChords', showChords$, (val) => showChords$.next(val ?? showChords$.value));
-        cacheService.register('showFavorites', showFavorites$, (val) => showFavorites$.next(val ?? showFavorites$.value));
+        return () => {
+          cacheService.register('showChords', showChords$, (val) => showChords$.next(val ?? showChords$.value));
+          cacheService.register('showFavorites', showFavorites$, (val) => showFavorites$.next(val ?? showFavorites$.value));
+        };
       },
     },
   ],

@@ -5,8 +5,7 @@ import {ContainsPipe} from 'src/app/module/common/di-common';
 import {DiCanShare} from 'src/app/module/common/di-common/di-common';
 import {LoggerService} from 'src/app/module/common/logger';
 import {TrackService} from 'src/app/module/di-music/track.service';
-import {queryParamTrackId} from 'src/app/module/shared-target/shared-target';
-import {RouteShared} from 'src/app/routing';
+import {QueryParamTrackId, RouteShared} from 'src/app/routing';
 import {Track} from 'src/music';
 import {queryPlaylistFavorites} from 'src/music/music-idb';
 import {trackByIndex} from 'src/util';
@@ -70,7 +69,7 @@ export class TrackMetaComponent {
     if (typeof navigator.share === 'function') {
       if (this.track) {
         const path = new URL(`${window.location.origin}/${RouteShared}`);
-        path.searchParams.append(queryParamTrackId, this.track.id ?? '');
+        path.searchParams.append(QueryParamTrackId, this.track.id ?? '');
         const url = path.toString();
         try {
           await navigator.share({title: this.track.title, url});

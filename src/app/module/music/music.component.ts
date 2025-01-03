@@ -49,7 +49,7 @@ export class MusicComponent implements OnInit {
 
   protected resetPerformer() {
     this.showList('performers');
-    this.tracksFilterPerformer$.next(null);
+    this.tracksFilterPerformer$.next('');
   }
 
   protected showTrack(id: string) {
