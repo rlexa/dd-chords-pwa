@@ -32,9 +32,7 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "dd-rxjs": "^1.5.2",
     "rxjs": "^7.8.1",
-    "ts-md5": "^1.2.7",
-    "tslib": "^2.0.0",
-    "zone.js": "~0.14.10"
+    "ts-md5": "^1.2.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",

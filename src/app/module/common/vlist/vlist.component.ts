@@ -6,7 +6,7 @@ import {trackByIndex} from 'src/util';
 @Component({
   selector: 'dd-chords-vlist',
   template: `<ng-template #tmplEmpty>
-      <label>-</label>
+      <span>-</span>
     </ng-template>
 
     <ng-template #tmplItem let-item>
