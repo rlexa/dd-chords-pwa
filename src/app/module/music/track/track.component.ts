@@ -7,16 +7,14 @@ import {TrackTextComponent} from './track-text';
 
 @Component({
   selector: 'dd-chords-track',
-  template: `<ng-template #tmplEmpty><span>-</span></ng-template>
-
-    <article *ngIf="track; else tmplEmpty">
-      <dd-chords-track-meta [track]="track"></dd-chords-track-meta>
-      <dd-chords-track-text
-        [text]="track.data"
-        [showChords]="showChords$ | async"
-        (showChordsChange)="setShowChords($event)"
-      ></dd-chords-track-text>
-    </article>`,
+  template: `@if (track) {
+      <article>
+        <dd-chords-track-meta [track]="track" />
+        <dd-chords-track-text [text]="track.data" [showChords]="showChords$ | async" (showChordsChange)="setShowChords($event)" />
+      </article>
+    } @else {
+      <span>-</span>
+    }`,
   styles: [
     `
       article {

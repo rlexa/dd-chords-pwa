@@ -31,7 +31,7 @@ export class SharedTargetComponent implements OnInit {
 
   private readonly queryParams$ = this.activatedRoute.queryParams;
 
-  private navigate$ = (query: Params) =>
+  private readonly navigate$ = (query: Params) =>
     from(this.router.navigate(query[QueryParamTrackId] ? [RouteUi, RouteTracks, query[QueryParamTrackId]] : [RouteUi], {replaceUrl: true}));
 
   ngOnInit() {

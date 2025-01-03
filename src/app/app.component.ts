@@ -3,7 +3,7 @@ import {RouterModule} from '@angular/router';
 
 @Component({
   selector: 'dd-chords-app',
-  template: `<router-outlet></router-outlet>`,
+  template: `<router-outlet />`,
   styles: [
     `
       :host {

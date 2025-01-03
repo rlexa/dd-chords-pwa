@@ -16,7 +16,9 @@ import {DiCurrentTrackCount} from '../di-music/di-current-track-count';
     <hr />
 
     <h3>Logs</h3>
-    <p *ngFor="let log of logs$ | async" class="log level-{{ log.level }}">{{ log.timestamp | date: 'HH:mm:ss.SSS' }} {{ log.message }}</p>
+    @for (log of logs$ | async; track $index) {
+      <p class="log level-{{ log.level }}">{{ log.timestamp | date: 'HH:mm:ss.SSS' }} {{ log.message }}</p>
+    }
     <hr />
   </div>`,
   styleUrls: ['./info.component.scss'],
@@ -28,5 +30,5 @@ export class InfoComponent {
   protected readonly currentTrackCount$ = inject(DiCurrentTrackCount);
   private readonly logger = inject(LoggerService);
 
-  readonly logs$ = this.logger.logs$.pipe(debounceTime(0));
+  protected readonly logs$ = this.logger.logs$.pipe(debounceTime(0));
 }

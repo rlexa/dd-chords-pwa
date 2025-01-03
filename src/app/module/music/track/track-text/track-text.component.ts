@@ -4,24 +4,26 @@ import {StateSubject} from 'dd-rxjs';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {normalizeTranspose, textToLines} from 'src/music';
-import {trackByIndex} from 'src/util';
 
 @Component({
   selector: 'dd-chords-track-text',
   template: `<div class="actions">
       <button (click)="toggleShowChords()" class="btn btn-dense"><i class="fas fa-guitar"></i></button>
-      <ng-container *ngIf="showChords$ | async">
+      @if (showChords$ | async) {
         <button (click)="addTranspose(1)" class="btn btn-dense"><i class="fas fa-arrow-up"></i></button>
         <button (click)="addTranspose(-1)" class="btn btn-dense"><i class="fas fa-arrow-down"></i></button>
         <span>{{ transpose$ | async }}</span>
-      </ng-container>
+      }
     </div>
-    <ng-container *ngIf="lines$ | async as lines">
-      <ng-container *ngFor="let line of lines; trackBy: trackByIndex">
-        <br *ngIf="!line.text" />
-        <p *ngIf="line.text" [class.indent]="!!line.indent" [class.chords]="!!line.hasChords">{{ line.text }}</p>
-      </ng-container>
-    </ng-container> `,
+    @if (lines$ | async; as lines) {
+      @for (line of lines; track $index) {
+        @if (!line.text) {
+          <br />
+        } @else {
+          <p [class.indent]="!!line.indent" [class.chords]="!!line.hasChords">{{ line.text }}</p>
+        }
+      }
+    }`,
   styleUrls: ['./track-text.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
@@ -58,6 +60,5 @@ export class TrackTextComponent implements OnDestroy {
   }
 
   protected readonly addTranspose = (add: number) => (this.transpose = this.transpose$.value + add);
-  protected readonly trackByIndex = trackByIndex;
   protected readonly toggleShowChords = () => this.showChordsChange.emit(!this.showChords$.value);
 }

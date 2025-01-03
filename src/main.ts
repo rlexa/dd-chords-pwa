@@ -2,7 +2,7 @@ import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {APP_INITIALIZER, enableProdMode, inject, provideExperimentalZonelessChangeDetection} from '@angular/core';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {provideAnimations} from '@angular/platform-browser/animations';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withComponentInputBinding} from '@angular/router';
 import {provideServiceWorker} from '@angular/service-worker';
 import {of} from 'rxjs';
 import {AppComponent} from './app/app.component';
@@ -42,7 +42,7 @@ bootstrapApplication(AppComponent, {
     {provide: DiTracksFilterPart, multi: true, useExisting: DiTracksFilterPartPerformer},
     {provide: DiTracksFilterPart, multi: true, useExisting: DiTracksFilterPartQuery},
     // routing
-    provideRouter([{path: '', loadChildren: () => import('./app/module/dashboard/routes')}]),
+    provideRouter([{path: '', loadChildren: () => import('./app/module/dashboard/routes')}], withComponentInputBinding()),
     // app init
     {
       provide: APP_INITIALIZER,

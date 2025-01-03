@@ -8,30 +8,35 @@ import {TrackService} from 'src/app/module/di-music/track.service';
 import {QueryParamTrackId, RouteShared} from 'src/app/routing';
 import {Track} from 'src/music';
 import {queryPlaylistFavorites} from 'src/music/music-idb';
-import {trackByIndex} from 'src/util';
 
 @Component({
   selector: 'dd-chords-track-meta',
   template: `<h3>
-      <ng-container *ngFor="let meta of [track?.performer]; trackBy: trackByIndex; let index = index">
-        <span *ngIf="meta">{{ (index > 0 ? ',' : '') + ' ' + meta }}</span>
-      </ng-container>
+      @for (meta of [track?.performer]; track $index) {
+        @if (meta) {
+          <span>{{ ($index > 0 ? ',' : '') + ' ' + meta }}</span>
+        }
+      }
     </h3>
-    <h1 *ngIf="track?.title as title">
-      <span>{{ title }}</span>
-      <ng-container *ngIf="canShare$ | async">
-        <span *ngIf="track?.performer && track?.data">
-          <button
-            (click)="toggleFavorite(track?.id)"
-            class="btn btn-dense btn-borderless"
-            [class.active]="track?.playlists | contains: playlistFavorites"
-          >
-            <i class="fas fa-heart"></i>
-          </button>
-          <button (click)="share()" class="btn btn-dense btn-borderless"><i class="fas fa-share-alt"></i></button>
-        </span>
-      </ng-container>
-    </h1>`,
+    @if (track?.title; as title) {
+      <h1>
+        <span>{{ title }}</span>
+        @if (canShare$ | async) {
+          @if (track?.performer && track?.data) {
+            <span>
+              <button
+                (click)="toggleFavorite(track?.id)"
+                class="btn btn-dense btn-borderless"
+                [class.active]="track?.playlists | contains: playlistFavorites"
+              >
+                <i class="fas fa-heart"></i>
+              </button>
+              <button (click)="share()" class="btn btn-dense btn-borderless"><i class="fas fa-share-alt"></i></button>
+            </span>
+          }
+        }
+      </h1>
+    }`,
   styles: [
     `
       :host {
@@ -62,8 +67,6 @@ export class TrackMetaComponent {
   @Input() track?: Track | null;
 
   protected readonly playlistFavorites = queryPlaylistFavorites;
-
-  protected readonly trackByIndex = trackByIndex;
 
   protected async share(): Promise<void> {
     if (typeof navigator.share === 'function') {
