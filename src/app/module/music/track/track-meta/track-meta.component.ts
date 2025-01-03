@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, inject, Input} from '@angular/core';
-import {firstValueFrom} from 'rxjs';
+import {ChangeDetectionStrategy, Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {concatMap, Subject} from 'rxjs';
 import {ContainsPipe} from 'src/app/module/common/di-common';
 import {DiCanShare} from 'src/app/module/common/di-common/di-common';
 import {LoggerService} from 'src/app/module/common/logger';
@@ -59,14 +59,24 @@ import {queryPlaylistFavorites} from 'src/music/music-idb';
   standalone: true,
   imports: [CommonModule, ContainsPipe],
 })
-export class TrackMetaComponent {
+export class TrackMetaComponent implements OnDestroy, OnInit {
   protected readonly canShare$ = inject(DiCanShare);
   private readonly loggerService = inject(LoggerService);
   private readonly trackService = inject(TrackService);
 
+  private readonly triggerToggleFavorite$ = new Subject<string>();
+
   @Input() track?: Track | null;
 
   protected readonly playlistFavorites = queryPlaylistFavorites;
+
+  ngOnDestroy() {
+    this.triggerToggleFavorite$.complete();
+  }
+
+  ngOnInit() {
+    this.triggerToggleFavorite$.pipe(concatMap((id) => this.trackService.toggleTrackFavorite$(id))).subscribe();
+  }
 
   protected async share(): Promise<void> {
     if (typeof navigator.share === 'function') {
@@ -87,9 +97,9 @@ export class TrackMetaComponent {
     }
   }
 
-  protected async toggleFavorite(id?: string) {
+  protected toggleFavorite(id?: string) {
     if (id) {
-      await firstValueFrom(this.trackService.toggleTrackFavorite$(id));
+      this.triggerToggleFavorite$.next(id);
     }
   }
 }

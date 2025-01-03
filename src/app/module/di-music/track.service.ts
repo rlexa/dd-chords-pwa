@@ -20,7 +20,7 @@ export class TrackService {
       switchMap((db) => upsertTrack$(db, source, track)),
       tap((saved) => {
         if (saved) {
-          this.dbChange$.next(1);
+          this.dbChange$.next();
         }
       }),
       takeUntilDestroyed(this.destroyRef),
@@ -32,7 +32,7 @@ export class TrackService {
       tap((iis) => {
         const saved = iis.filter((ii) => ii).length;
         if (saved > 0) {
-          this.dbChange$.next(saved);
+          this.dbChange$.next();
         }
       }),
       takeUntilDestroyed(this.destroyRef),
@@ -43,7 +43,7 @@ export class TrackService {
       switchMap((db) => toggleTrackFavorite$(db, idTrack)),
       tap((saved) => {
         if (saved) {
-          this.dbChange$.next(1);
+          this.dbChange$.next();
         }
       }),
       takeUntilDestroyed(this.destroyRef),

@@ -8,7 +8,7 @@ export const DiMusicIdb = new InjectionToken<Observable<IDBDatabase>>('Music Ind
   factory: () => idb$.pipe(shareReplay(1)),
 });
 
-export const DiMusicIdbChange = new InjectionToken<Subject<number>>('Music IndexedDB change stream', {
+export const DiMusicIdbChange = new InjectionToken<Subject<void>>('Music IndexedDB change stream', {
   providedIn: 'root',
   factory: () => new Subject(),
 });
