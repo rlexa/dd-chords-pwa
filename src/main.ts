@@ -18,6 +18,7 @@ import {DiTracksFilterPartFavorites} from './app/module/di-music/di-tracks-filte
 import {DiTracksFilterPartPerformer} from './app/module/di-music/di-tracks-filter-performer';
 import {DiTracksFilterPartQuery} from './app/module/di-music/di-tracks-filter-query';
 import {TrackImportService} from './app/module/di-music/track-import.service';
+import {RouteShared, RouteUi} from './app/routing';
 import {SwService} from './app/sw.service';
 import {environment} from './environments/environment';
 
@@ -42,7 +43,15 @@ bootstrapApplication(AppComponent, {
     {provide: DiTracksFilterPart, multi: true, useExisting: DiTracksFilterPartPerformer},
     {provide: DiTracksFilterPart, multi: true, useExisting: DiTracksFilterPartQuery},
     // routing
-    provideRouter([{path: '', loadChildren: () => import('./app/module/dashboard/routes')}], withComponentInputBinding()),
+    provideRouter(
+      [
+        {path: RouteShared, loadChildren: () => import('./app/module/shared-target/routes')},
+        {path: RouteUi, loadChildren: () => import('./app/module/dashboard/routes')},
+        {path: '', redirectTo: RouteUi, pathMatch: 'full'},
+        {path: '**', redirectTo: ''},
+      ],
+      withComponentInputBinding(),
+    ),
     // app init
     {
       provide: APP_INITIALIZER,
