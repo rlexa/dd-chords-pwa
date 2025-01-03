@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {DoneSubject, RxCleanup} from 'dd-rxjs';
 import {combineLatest, Observable, of} from 'rxjs';
