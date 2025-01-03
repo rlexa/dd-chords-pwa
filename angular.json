@@ -71,18 +71,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "dd-chords-pwa:build"
+            "buildTarget": "dd-chords-pwa:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "dd-chords-pwa:build:production"
+              "buildTarget": "dd-chords-pwa:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dd-chords-pwa:build"
+            "buildTarget": "dd-chords-pwa:build"
           }
         },
         "test": {
