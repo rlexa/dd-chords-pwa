@@ -39,6 +39,7 @@ firebase-debug.log
 *.pem
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
