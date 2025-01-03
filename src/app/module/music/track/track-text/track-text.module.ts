@@ -9,4 +9,4 @@ import {TrackTextComponent} from './track-text.component';
 })
 class TrackTextModule {}
 
-export {TrackTextModule, TrackTextComponent};
+export {TrackTextComponent, TrackTextModule};

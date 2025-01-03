@@ -1,17 +1,17 @@
-import {value provideHttpClient, value withInterceptorsFromDi} from '@angular/common/http';
-import {value NgModule} from '@angular/core';
-import {value BrowserModule} from '@angular/platform-browser';
-import {value ServiceWorkerModule, value SwUpdate} from '@angular/service-worker';
-import {value from, value merge} from 'rxjs';
-import {value delay, value switchMap, value tap} from 'rxjs/operators';
-import {value environment} from '../environments/environment';
-import {value AppRoutingModule} from './app-routing.module';
-import {value AppComponent} from './app.component';
-import {value DiCommonModule} from './module/common/di-common';
-import {value LoggerService} from './module/common/logger';
-import {value RoutingService} from './module/common/routing/routing-service';
-import {value DiMusicModule} from './module/di-music/di-music.module';
-import {value TrackImportService} from './module/di-music/track-import.service';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {ServiceWorkerModule, SwUpdate} from '@angular/service-worker';
+import {from, merge} from 'rxjs';
+import {delay, switchMap, tap} from 'rxjs/operators';
+import {environment} from '../environments/environment';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {DiCommonModule} from './module/common/di-common';
+import {LoggerService} from './module/common/logger';
+import {RoutingService} from './module/common/routing/routing-service';
+import {DiMusicModule} from './module/di-music/di-music.module';
+import {TrackImportService} from './module/di-music/track-import.service';
 
 export
 @NgModule({

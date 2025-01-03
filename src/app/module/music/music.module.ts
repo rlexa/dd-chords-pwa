@@ -13,4 +13,4 @@ import {TracksModule} from './tracks/tracks.module';
 })
 class MusicModule {}
 
-export {MusicModule, MusicComponent};
+export {MusicComponent, MusicModule};

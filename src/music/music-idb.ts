@@ -196,9 +196,7 @@ export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observ
         }
         this.result.continue();
       } else {
-        sub.next(
-          [...collection.entries()].map<Performer>(([performer, performerHash]) => ({performer, performerHash})),
-        );
+        sub.next([...collection.entries()].map<Performer>(([performer, performerHash]) => ({performer, performerHash})));
       }
     };
 

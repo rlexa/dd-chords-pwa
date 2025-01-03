@@ -9,4 +9,4 @@ import {DiCurrentRouterParams, DiCurrentRouterParamsProvider, DiOnline} from './
 })
 class DiCommonModule {}
 
-export {DiCommonModule, DiCurrentRouterParams, DiOnline, ContainsPipe};
+export {ContainsPipe, DiCommonModule, DiCurrentRouterParams, DiOnline};

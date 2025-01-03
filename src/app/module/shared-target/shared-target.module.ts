@@ -10,4 +10,4 @@ import {SharedTargetComponent} from './shared-target.component';
 })
 class SharedTargetModule {}
 
-export {SharedTargetModule, SharedTargetComponent};
+export {SharedTargetComponent, SharedTargetModule};

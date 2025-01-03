@@ -1,3 +1,12 @@
+/**
+ * jest should fail on console.error logging so let's monkey-patch it to throw an actual error.
+ */
+let error = console.error;
+console.error = function (message: any) {
+  error.apply(console, arguments as any); // keep default behaviour
+  throw message instanceof Error ? message : new Error(message);
+};
+
 const getMockStorage = () => {
   let storage: {[key: string]: string} = {};
   return {

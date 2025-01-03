@@ -1,5 +1,5 @@
 import {InjectionToken, Provider} from '@angular/core';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable, combineLatest} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {clearEmptyValues, jsonEqual, mergeObjects} from 'src/util';
 

@@ -1,6 +1,6 @@
 import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {DoneSubject, RxCleanup} from 'dd-rxjs';
-import {forkJoin, Observable, of, Subject} from 'rxjs';
+import {Observable, Subject, forkJoin, of} from 'rxjs';
 import {switchMap, takeUntil, tap} from 'rxjs/operators';
 import {Track} from 'src/music';
 import {getTrack$, toggleTrackFavorite$, upsertTrack$} from 'src/music/music-idb';

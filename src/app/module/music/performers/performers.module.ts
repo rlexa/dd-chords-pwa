@@ -10,4 +10,4 @@ import {PerformersComponent} from './performers.component';
 })
 class PerformersModule {}
 
-export {PerformersModule, PerformersComponent};
+export {PerformersComponent, PerformersModule};

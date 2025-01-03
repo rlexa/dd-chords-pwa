@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {DoneSubject, RxCleanup} from 'dd-rxjs';
-import {combineLatest, Observable, of} from 'rxjs';
+import {Observable, combineLatest, of} from 'rxjs';
 import {bufferCount, catchError, concatMap, filter, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {dataToTrack} from 'src/music';
 import {DiOnline} from '../common/di-common';

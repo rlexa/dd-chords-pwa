@@ -9,4 +9,4 @@ import {InfoComponent} from './info.component';
 })
 class InfoModule {}
 
-export {InfoModule, InfoComponent};
+export {InfoComponent, InfoModule};

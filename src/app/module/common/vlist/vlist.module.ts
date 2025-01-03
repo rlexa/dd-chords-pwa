@@ -10,4 +10,4 @@ import {VlistComponent} from './vlist.component';
 })
 class VlistModule {}
 
-export {VlistModule, VlistComponent};
+export {VlistComponent, VlistModule};

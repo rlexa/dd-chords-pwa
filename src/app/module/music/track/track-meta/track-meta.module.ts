@@ -10,4 +10,4 @@ import {TrackMetaComponent} from './track-meta.component';
 })
 class TrackMetaModule {}
 
-export {TrackMetaModule, TrackMetaComponent};
+export {TrackMetaComponent, TrackMetaModule};

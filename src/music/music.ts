@@ -89,11 +89,13 @@ const normalizeTextLine = (text: string, transpose: number) =>
     .replace(/(<[^(><.)]+>)/g, '')
     .replace(/<>/g, '');
 
-const textToLine = (transpose: number) => (text: string): Line => ({
-  hasChords: !!text?.match(/<(.+?)>/g)?.length,
-  indent: getIndent(text),
-  text: normalizeTextLine(text, transpose),
-});
+const textToLine =
+  (transpose: number) =>
+  (text: string): Line => ({
+    hasChords: !!text?.match(/<(.+?)>/g)?.length,
+    indent: getIndent(text),
+    text: normalizeTextLine(text, transpose),
+  });
 
 const toLines = (data: string) => splitBreaksWin(trim(data)).flatMap(splitBreaksMac).flatMap(splitBreaksUnix);
 

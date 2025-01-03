@@ -29,8 +29,10 @@ export const detectChanges = <T>(fixture: ComponentFixture<T>) => {
 /**
  * Builds a getter of existing mocked component by type.
  */
-export const getterMockedComponent = <T>(type: Type<T>) => (fixture: ComponentFixture<any>): MockedComponent<T> =>
-  fixture.debugElement.query(By.directive(type))?.componentInstance;
+export const getterMockedComponent =
+  <T>(type: Type<T>) =>
+  (fixture: ComponentFixture<any>): MockedComponent<T> =>
+    fixture.debugElement.query(By.directive(type))?.componentInstance;
 
 /**
  * Converts the given Observable<T> to a Promise<T> using the rxjs operator take.
@@ -42,6 +44,6 @@ export function takePromise<T>(observable: Observable<T>, count = 1): Promise<T>
 /**
  * Mocks via factory.
  */
-export const mockWith = <T>(provide: Type<T>, mock: T) => ({provide, useFactory: () => mock} as Provider);
+export const mockWith = <T>(provide: Type<T>, mock: T) => ({provide, useFactory: () => mock}) as Provider;
 
 export const mockAll = <T>(provide: Type<T>) => mockWith(provide, Mock.all<T>());

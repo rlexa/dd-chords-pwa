@@ -1,5 +1,5 @@
 import {InjectionToken, Provider} from '@angular/core';
-import {combineLatest, Observable, Subject} from 'rxjs';
+import {Observable, Subject, combineLatest} from 'rxjs';
 import {debounceTime, map, shareReplay, startWith} from 'rxjs/operators';
 import {idb$} from 'src/music/music-idb';
 

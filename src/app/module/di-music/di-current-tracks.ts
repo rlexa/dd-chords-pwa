@@ -1,5 +1,5 @@
 import {InjectionToken, Provider} from '@angular/core';
-import {combineLatest, Observable, of} from 'rxjs';
+import {Observable, combineLatest, of} from 'rxjs';
 import {shareReplay, switchMap} from 'rxjs/operators';
 import {Track} from 'src/music';
 import {getTrackMetas$} from 'src/music/music-idb';

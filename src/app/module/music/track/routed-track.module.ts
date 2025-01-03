@@ -18,4 +18,4 @@ import {TrackModule} from './track.module';
 })
 class RoutedTrackModule {}
 
-export {RoutedTrackModule, RoutedTrackComponent};
+export {RoutedTrackComponent, RoutedTrackModule};

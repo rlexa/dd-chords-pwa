@@ -10,4 +10,4 @@ import {DashboardComponent} from './dashboard.component';
 })
 class DashboardModule {}
 
-export {DashboardModule, DashboardComponent};
+export {DashboardComponent, DashboardModule};

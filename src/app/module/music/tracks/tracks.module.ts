@@ -11,4 +11,4 @@ import {TracksComponent} from './tracks.component';
 })
 class TracksModule {}
 
-export {TracksModule, TracksComponent};
+export {TracksComponent, TracksModule};

@@ -13,7 +13,10 @@ import {queryParamTrackId} from './shared-target';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTargetComponent implements OnInit {
-  constructor(private readonly activatedRoute: ActivatedRoute, private readonly router: Router) {}
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+  ) {}
 
   private readonly queryParams$ = this.activatedRoute.queryParams;
 
