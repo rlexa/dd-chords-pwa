@@ -1,1 +1,2 @@
-export * from './di-common.module';
+export * from './contains.pipe';
+export * from './di-common';

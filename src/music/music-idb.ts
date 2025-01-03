@@ -37,13 +37,13 @@ function createStoreIfMissing(
   return db.objectStoreNames.contains(name) && transaction ? transaction.objectStore(name) : db.createObjectStore(name, options);
 }
 
-function createIndexIfMissing(store: IDBObjectStore, name: string, options?: IDBIndexParameters): void {
+function createIndexIfMissing(store: IDBObjectStore, name: string, options?: IDBIndexParameters) {
   if (!store.indexNames.contains(name)) {
     store.createIndex(name, name, options);
   }
 }
 
-function upgradeStoreTracks(db: IDBDatabase, transaction: IDBTransaction | null, oldVersion: number): void {
+function upgradeStoreTracks(db: IDBDatabase, transaction: IDBTransaction | null, oldVersion: number) {
   const keyPath: keyof IdbTrack = 'id';
 
   if (oldVersion < 5 || !transaction) {
@@ -64,7 +64,7 @@ function upgradeStoreTracks(db: IDBDatabase, transaction: IDBTransaction | null,
   createIndexIfMissing(store, keyTimestamp, {unique: false});
 }
 
-function upgradeDb(idb: IDBDatabase, transaction: IDBTransaction | null, oldVersion: number): void {
+function upgradeDb(idb: IDBDatabase, transaction: IDBTransaction | null, oldVersion: number) {
   upgradeStoreTracks(idb, transaction, oldVersion);
 }
 
@@ -78,24 +78,24 @@ export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Obs
     }
     const trans = db.transaction(dbStoreTracks, 'readwrite');
 
-    trans.onabort = function onabort(): void {
+    trans.onabort = function onabort() {
       sub.error(new Error(`IDB transaction aborted.`));
     };
-    trans.oncomplete = function oncomplete(): void {
+    trans.oncomplete = function oncomplete() {
       sub.complete();
     };
-    trans.onerror = function onerror(): void {
+    trans.onerror = function onerror() {
       sub.error(new Error(`IDB transaction error: ${this.error}`));
     };
 
     const store = trans.objectStore(dbStoreTracks);
 
     const getRequest = store.get(track.id);
-    getRequest.onerror = function onerror(ev): void {
+    getRequest.onerror = function onerror(ev) {
       ev.stopPropagation();
       sub.error(new Error(`IDB transaction get error: ${this.error}`));
     };
-    getRequest.onsuccess = function onsuccess(): void {
+    getRequest.onsuccess = function onsuccess() {
       const oldTrack: IdbTrack | undefined = this.result;
       if (oldTrack?.hash === track.hash) {
         sub.next(false);
@@ -103,11 +103,11 @@ export function upsertTrack$(db: IDBDatabase, source: string, track: Track): Obs
         const idbTrack: IdbTrack = {...track, playlists: oldTrack?.playlists, source, timestamp: new Date().getTime()};
 
         const putRequest = store.put(idbTrack);
-        putRequest.onerror = function onerror(ev): void {
+        putRequest.onerror = function onerror(ev) {
           ev.stopPropagation();
           sub.error(new Error(`IDB transaction add error: ${this.error}`));
         };
-        putRequest.onsuccess = function onsuccessPut(): void {
+        putRequest.onsuccess = function onsuccessPut() {
           sub.next(true);
         };
       }
@@ -129,24 +129,24 @@ export function getPerformer$(db: IDBDatabase, id: string | null): Observable<Pe
     : new Observable((sub) => {
         const trans = db.transaction(dbStoreTracks, 'readonly');
 
-        trans.onabort = function onabort(): void {
+        trans.onabort = function onabort() {
           sub.error(new Error(`IDB transaction aborted.`));
         };
-        trans.oncomplete = function oncomplete(): void {
+        trans.oncomplete = function oncomplete() {
           sub.complete();
         };
-        trans.onerror = function onerror(): void {
+        trans.onerror = function onerror() {
           sub.error(new Error(`IDB transaction error: ${this.error}`));
         };
 
         const index = trans.objectStore(dbStoreTracks).index(keyPerformerHash);
         const getRequest = index.get(id);
-        getRequest.onerror = function onerror(ev): void {
+        getRequest.onerror = function onerror(ev) {
           ev.stopPropagation();
           sub.error(new Error(`IDB transaction get error: ${this.error}`));
         };
 
-        getRequest.onsuccess = function onsuccess(): void {
+        getRequest.onsuccess = function onsuccess() {
           const track: Track = this.result;
           sub.next(
             track && track.performer && track.performerHash ? {performer: track.performer, performerHash: track.performerHash} : null,
@@ -167,25 +167,25 @@ export function getPerformers$(db: IDBDatabase, query: PerformersFilter): Observ
   return new Observable((sub) => {
     const trans = db.transaction(dbStoreTracks, 'readonly');
 
-    trans.onabort = function onabort(): void {
+    trans.onabort = function onabort() {
       sub.error(new Error(`IDB transaction aborted.`));
     };
-    trans.oncomplete = function oncomplete(): void {
+    trans.oncomplete = function oncomplete() {
       sub.complete();
     };
-    trans.onerror = function onerror(): void {
+    trans.onerror = function onerror() {
       sub.error(new Error(`IDB transaction error: ${this.error}`));
     };
 
     const index = trans.objectStore(dbStoreTracks).index(keyPerformer);
     const cursor = index.openCursor(null, 'next');
-    cursor.onerror = function onerror(ev): void {
+    cursor.onerror = function onerror(ev) {
       ev.stopPropagation();
       sub.error(new Error(`IDB transaction cursor error: ${this.error}`));
     };
 
     const collection = new Map<string, string>();
-    cursor.onsuccess = function onsuccess(): void {
+    cursor.onsuccess = function onsuccess() {
       if (this.result) {
         const performer = this.result.key.toString();
         if (!collection.has(performer)) {
@@ -214,24 +214,24 @@ export function getTrackHashes$(db: IDBDatabase): Observable<Set<string>> {
   return new Observable((sub) => {
     const trans = db.transaction(dbStoreTracks, 'readonly');
 
-    trans.onabort = function onabort(): void {
+    trans.onabort = function onabort() {
       sub.error(new Error(`IDB transaction aborted.`));
     };
-    trans.oncomplete = function oncomplete(): void {
+    trans.oncomplete = function oncomplete() {
       sub.complete();
     };
-    trans.onerror = function onerror(): void {
+    trans.onerror = function onerror() {
       sub.error(new Error(`IDB transaction error: ${this.error}`));
     };
 
     const cursor = trans.objectStore(dbStoreTracks).index(keyHash).openCursor(null, 'next');
-    cursor.onerror = function onerror(ev): void {
+    cursor.onerror = function onerror(ev) {
       ev.stopPropagation();
       sub.error(new Error(`IDB transaction cursor error: ${this.error}`));
     };
 
     const collection = new Set<string>();
-    cursor.onsuccess = function onsuccess(): void {
+    cursor.onsuccess = function onsuccess() {
       if (this.result) {
         collection.add(this.result.key as string);
         this.result.continue();
@@ -256,24 +256,24 @@ export function getTrackMetas$(db: IDBDatabase, query: TracksFilter): Observable
   return new Observable((sub) => {
     const trans = db.transaction(dbStoreTracks, 'readonly');
 
-    trans.onabort = function onabort(): void {
+    trans.onabort = function onabort() {
       sub.error(new Error(`IDB transaction aborted.`));
     };
-    trans.oncomplete = function oncomplete(): void {
+    trans.oncomplete = function oncomplete() {
       sub.complete();
     };
-    trans.onerror = function onerror(): void {
+    trans.onerror = function onerror() {
       sub.error(new Error(`IDB transaction error: ${this.error}`));
     };
 
     const cursor = trans.objectStore(dbStoreTracks).index(keyTitle).openCursor(null, 'next');
-    cursor.onerror = function onerror(ev): void {
+    cursor.onerror = function onerror(ev) {
       ev.stopPropagation();
       sub.error(new Error(`IDB transaction cursor error: ${this.error}`));
     };
 
     const collection: TrackMeta[] = [];
-    cursor.onsuccess = function onsuccess(): void {
+    cursor.onsuccess = function onsuccess() {
       if (this.result) {
         const track: Track = this.result.value;
         if (
@@ -303,23 +303,23 @@ export function getTrack$(db: IDBDatabase, id: string): Observable<Track | null>
   return new Observable((sub) => {
     const trans = db.transaction(dbStoreTracks, 'readonly');
 
-    trans.onabort = function onabort(): void {
+    trans.onabort = function onabort() {
       sub.error(new Error(`IDB transaction aborted.`));
     };
-    trans.oncomplete = function oncomplete(): void {
+    trans.oncomplete = function oncomplete() {
       sub.complete();
     };
-    trans.onerror = function onerror(): void {
+    trans.onerror = function onerror() {
       sub.error(new Error(`IDB transaction error: ${this.error}`));
     };
 
     const request = trans.objectStore(dbStoreTracks).get(id);
-    request.onerror = function onerror(ev): void {
+    request.onerror = function onerror(ev) {
       ev.stopPropagation();
       sub.error(new Error(`IDB get request error: ${this.error}`));
     };
 
-    request.onsuccess = function onsuccess(): void {
+    request.onsuccess = function onsuccess() {
       sub.next(this.result ?? null);
     };
 
@@ -346,24 +346,24 @@ export function toggleTrackPlaylist$(
 
     const trans = db.transaction(dbStoreTracks, 'readwrite');
 
-    trans.onabort = function onabort(): void {
+    trans.onabort = function onabort() {
       sub.error(new Error(`IDB transaction aborted.`));
     };
-    trans.oncomplete = function oncomplete(): void {
+    trans.oncomplete = function oncomplete() {
       sub.complete();
     };
-    trans.onerror = function onerror(): void {
+    trans.onerror = function onerror() {
       sub.error(new Error(`IDB transaction error: ${this.error}`));
     };
 
     const store = trans.objectStore(dbStoreTracks);
     const request = store.get(id);
-    request.onerror = function onerror(ev): void {
+    request.onerror = function onerror(ev) {
       ev.stopPropagation();
       sub.error(new Error(`IDB get request error: ${this.error}`));
     };
 
-    request.onsuccess = function onsuccess(): void {
+    request.onsuccess = function onsuccess() {
       const track: IdbTrack | undefined = this.result;
       if (!track) {
         sub.next(false);

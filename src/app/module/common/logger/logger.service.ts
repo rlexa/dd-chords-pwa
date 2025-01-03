@@ -1,7 +1,8 @@
-import {Injectable, OnDestroy} from '@angular/core';
-import {DoneSubject, RxCleanup, StateSubject} from 'dd-rxjs';
-import {map, shareReplay, takeUntil} from 'rxjs/operators';
-import {CacheService} from '../cache/cache.service';
+import {DestroyRef, inject, Injectable, OnDestroy} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {StateSubject} from 'dd-rxjs';
+import {map, shareReplay} from 'rxjs/operators';
+import {CacheService} from '../cache';
 
 type LogItemLevel = 'error' | 'info' | 'debug';
 
@@ -13,16 +14,18 @@ interface LogItem {
 
 @Injectable({providedIn: 'root'})
 export class LoggerService implements OnDestroy, Pick<Console, 'error' | 'log' | 'debug'> {
-  constructor(cacheService: CacheService) {
-    cacheService.register('logs', this.logs$, (logs) =>
+  private readonly cacheService = inject(CacheService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  constructor() {
+    this.cacheService.register('logs', this.logs$, (logs) =>
       logs?.filter((ii) => ii?.level && ii?.message && ii?.timestamp).forEach((logItem) => this.push(logItem)),
     );
   }
 
   private readonly logs: LogItem[] = new Array<LogItem>(10);
 
-  @RxCleanup() private readonly done$ = new DoneSubject();
-  @RxCleanup() private readonly logIndex$ = new StateSubject(0);
+  private readonly logIndex$ = new StateSubject(0);
 
   readonly logs$ = this.logIndex$.pipe(
     map((logIndex) => {
@@ -33,22 +36,21 @@ export class LoggerService implements OnDestroy, Pick<Console, 'error' | 'log' |
       return logs.filter((ii) => !!ii);
     }),
     shareReplay({refCount: true, bufferSize: 1}),
-    takeUntil(this.done$),
+    takeUntilDestroyed(this.destroyRef),
   );
 
-  destroy(): void {}
-  ngOnDestroy(): void {
-    this.destroy();
+  ngOnDestroy() {
+    this.logIndex$.complete();
   }
 
-  private push(logItem: LogItem): void {
+  private push(logItem: LogItem) {
     this.logs[this.logIndex$.value] = logItem;
     this.logIndex$.next((this.logIndex$.value + 1) % this.logs.length);
   }
 
-  private add(level: LogItemLevel, message?: any, ...optionalParams: any[]): void {
+  private add(level: LogItemLevel, message?: unknown, ...optionalParams: unknown[]) {
     const text = [message, ...optionalParams]
-      .map((ii) => ii.toString())
+      .map((ii) => ii?.toString())
       .join(' ')
       .trim();
 
@@ -57,17 +59,17 @@ export class LoggerService implements OnDestroy, Pick<Console, 'error' | 'log' |
     }
   }
 
-  debug(message?: any, ...optionalParams: any[]): void {
+  debug(message?: unknown, ...optionalParams: unknown[]) {
     this.add('debug', message, ...optionalParams);
     console.debug(message, ...optionalParams);
   }
 
-  error(message?: any, ...optionalParams: any[]): void {
+  error(message?: unknown, ...optionalParams: unknown[]) {
     this.add('error', message, ...optionalParams);
     console.error(message, ...optionalParams);
   }
 
-  log(message?: any, ...optionalParams: any[]): void {
+  log(message?: unknown, ...optionalParams: unknown[]) {
     this.add('info', message, ...optionalParams);
     console.log(message, ...optionalParams);
   }

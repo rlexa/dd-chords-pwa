@@ -25,18 +25,18 @@ export function idbOpenRequest$(
 
     const idbOpenDbRequest = indexedDB.open(name, version);
 
-    idbOpenDbRequest.onerror = function onerror(): void {
+    idbOpenDbRequest.onerror = function onerror() {
       sub.error(new Error(`IDB open request error: ${this.error}`));
     };
 
-    idbOpenDbRequest.onblocked = function onblocked(): void {
+    idbOpenDbRequest.onblocked = function onblocked() {
       sub.error(new Error(`IDB open request blocked: maybe close other tabs using it?`));
     };
 
-    function provideIdb(val: IDBDatabase): void {
+    function provideIdb(val: IDBDatabase) {
       // If another page requests a version change then close the db (else won't happen until tab is closed).
       // This allows the other page to upgrade the database.
-      val.onversionchange = (ev) => {
+      val.onversionchange = () => {
         val.close();
         alert(`A new version of IDB is ready (please reload).`);
       };
@@ -44,17 +44,15 @@ export function idbOpenRequest$(
       sub.complete();
     }
 
-    idbOpenDbRequest.onsuccess = function onsuccess(): void {
+    idbOpenDbRequest.onsuccess = function onsuccess() {
       provideIdb(this.result);
     };
 
-    idbOpenDbRequest.onupgradeneeded = function onupgradeneeded(ev): void {
+    idbOpenDbRequest.onupgradeneeded = function onupgradeneeded(ev) {
       console.log(`IDB upgrading to ${name}.${version}`);
       fnUpgrade(this.result, this.transaction, ev.oldVersion);
       sub.error(new Error(`IDB upgrade done - reloading page...`));
       setTimeout(() => window.location.reload(), 10);
     };
-
-    return () => {};
   });
 }

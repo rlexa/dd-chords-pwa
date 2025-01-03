@@ -1,4 +1,4 @@
-import {InjectionToken, Provider} from '@angular/core';
+import {inject, InjectionToken} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 import {StateSubject} from 'dd-rxjs';
 import {Observable, of} from 'rxjs';
@@ -14,12 +14,12 @@ const mergeParams = (route: ActivatedRouteSnapshot, into: Record<string, string 
 };
 
 /** Current `Router` params. */
-export const DiCurrentRouterParams = new InjectionToken<Observable<Record<string, string | null>>>('Global Router params.');
-export const DiCurrentRouterParamsProvider: Provider = {
-  provide: DiCurrentRouterParams,
-  deps: [Router],
-  useFactory: (router: Router) =>
-    router.events.pipe(
+export const DiCurrentRouterParams = new InjectionToken<Observable<Record<string, string | null>>>('Global Router params.', {
+  providedIn: 'root',
+  factory: () => {
+    const router = inject(Router);
+
+    return router.events.pipe(
       // events is a cold stream, let's start with a fake navigation event with current state's url
       startWith(new NavigationEnd(0, router.routerState.snapshot.url, router.routerState.snapshot.url)),
       // only need end of navigation events for the current final resolved route
@@ -27,8 +27,9 @@ export const DiCurrentRouterParamsProvider: Provider = {
       map(() => mergeParams(router.routerState.snapshot.root)),
       distinctUntilChanged(jsonEqual),
       shareReplay(1),
-    ),
-};
+    );
+  },
+});
 
 export const DiCanShare = new InjectionToken('Flag.', {providedIn: 'root', factory: () => new StateSubject(true)});
 

@@ -9,4 +9,4 @@ export const jsonEqual = <T>(aa: T, bb: T) => aa === bb || JSON.stringify(aa) ==
 
 export const mergeObjects = <T extends object>(objs: T[]) => objs.reduce<T>((acc, ii) => Object.assign(acc, ii), {} as T);
 
-export const trackByIndex = (index: number, __: any) => index;
+export const trackByIndex = (index: number) => index;

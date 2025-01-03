@@ -43,8 +43,8 @@ export class TrackTextComponent implements OnDestroy {
 
   toggleShowChords = () => this.showChordsChange.emit(!this.showChords$.value);
 
-  destroy(): void {}
-  ngOnDestroy(): void {
+  destroy() {}
+  ngOnDestroy() {
     this.destroy();
   }
 }

@@ -18,8 +18,8 @@ export class TrackService implements OnDestroy {
 
   readonly track$ = (id: string | null) => this.dbLive$.pipe(switchMap((db) => (!id ? of(null) : getTrack$(db, id))));
 
-  destroy(): void {}
-  ngOnDestroy(): void {
+  destroy() {}
+  ngOnDestroy() {
     this.destroy();
   }
 

@@ -78,9 +78,7 @@ export const transposeChord = (chord: string, transpose: number) => {
 export const normalizeChord = (chord: string) => chord?.replace(/H/g, 'B');
 
 const adjustChords = (transpose: number) => (text: string) =>
-  normalizeChord(text)?.replace(/<(.+?)>/g, (match, chord: string, offset: number, inputString: string) =>
-    transposeChord(chord, transpose).padEnd(chord.length + 2, ' '),
-  );
+  normalizeChord(text)?.replace(/<(.+?)>/g, (match, chord: string) => transposeChord(chord, transpose).padEnd(chord.length + 2, ' '));
 
 const normalizeTextLine = (text: string, transpose: number) =>
   adjustChords(transpose)(text)

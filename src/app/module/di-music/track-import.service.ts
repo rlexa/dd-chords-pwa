@@ -75,8 +75,8 @@ export class TrackImportService implements OnDestroy {
       }),
     );
 
-  destroy(): void {}
-  ngOnDestroy(): void {
+  destroy() {}
+  ngOnDestroy() {
     this.destroy();
   }
 }

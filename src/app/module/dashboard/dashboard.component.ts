@@ -11,7 +11,7 @@ import {DiShowFavorites} from '../di-music/di-show-favorites';
 export class DashboardComponent {
   constructor(@Inject(DiShowFavorites) public readonly showFavorits$: BehaviorSubject<boolean>) {}
 
-  toggleShowFavorites(): void {
+  toggleShowFavorites() {
     this.showFavorits$.next(!this.showFavorits$.value);
   }
 }

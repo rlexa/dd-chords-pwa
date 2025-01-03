@@ -46,28 +46,28 @@ export class MusicComponent implements OnDestroy {
   visibleList: VisibleList = 'performers';
   visibleTrack = false;
 
-  destroy(): void {}
-  ngOnDestroy(): void {
+  destroy() {}
+  ngOnDestroy() {
     this.destroy();
   }
 
-  resetPerformer(): void {
+  resetPerformer() {
     this.showList('performers');
     this.tracksFilterPerformer$.next(null);
   }
 
-  showTrack(id: string): void {
+  showTrack(id: string) {
     if (id) {
       this.visibleTrack = true;
     }
   }
 
-  backFromTrack(): void {
+  backFromTrack() {
     this.showList(this.tracksFilterPerformer$.value ? 'tracks' : 'performers');
     this.visibleTrack = false;
   }
 
-  showList(val: VisibleList): void {
+  showList(val: VisibleList) {
     if (val && this.visibleList !== val) {
       this.visibleList = val;
       this.changeDetectorRef.markForCheck();

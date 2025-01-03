@@ -23,7 +23,7 @@ export class SharedTargetComponent implements OnInit {
   private navigate$ = (query: Params) =>
     from(this.router.navigate(query[queryParamTrackId] ? [routeUi, routeTracks, query[queryParamTrackId]] : [routeUi], {replaceUrl: true}));
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.queryParams$
       .pipe(
         take(1),
