@@ -1,22 +1,23 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {BehaviorSubject} from 'rxjs';
 import {distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
 import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer';
 import {TrackService} from '../../di-music/track.service';
 import {routeParamIdTrack} from '../music-route';
+import {TrackComponent} from './track.component';
 
 @Component({
   selector: 'dd-chords-routed-track',
-  templateUrl: './routed-track.component.html',
+  template: `<dd-chords-track [track]="track$ | async"></dd-chords-track>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, TrackComponent],
 })
 export class RoutedTrackComponent {
-  constructor(
-    private readonly activatedRouteSnapshot: ActivatedRoute,
-    private readonly trackService: TrackService,
-    @Inject(DiTracksFilterPerformer) private readonly tracksFilterPerformer$: BehaviorSubject<string | null>,
-  ) {}
+  private readonly activatedRouteSnapshot = inject(ActivatedRoute);
+  private readonly trackService = inject(TrackService);
+  private readonly tracksFilterPerformer$ = inject(DiTracksFilterPerformer);
 
   private readonly idTrack$ = this.activatedRouteSnapshot.paramMap.pipe(
     map((params) => params.get(routeParamIdTrack)),

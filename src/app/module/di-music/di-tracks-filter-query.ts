@@ -1,23 +1,24 @@
-import {InjectionToken, Provider} from '@angular/core';
+import {inject, InjectionToken} from '@angular/core';
 import {StateSubject} from 'dd-rxjs';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {jsonEqual} from 'src/util';
 import {TracksFilter} from './di-tracks-filter';
 
-export const DiTracksFilterQuery = new InjectionToken<Observable<string | null>>('Track filter query.', {
+export const DiTracksFilterQuery = new InjectionToken<BehaviorSubject<string | undefined>>('Track filter query.', {
   providedIn: 'root',
-  factory: () => new StateSubject<string | null>(null),
+  factory: () => new StateSubject<string | undefined>(undefined),
 });
 
-export const DiTracksFilterPartQuery = new InjectionToken<Observable<Partial<TracksFilter>>>('Track filter part.');
-export const DiTracksFilterPartQueryProvider: Provider = {
-  provide: DiTracksFilterPartQuery,
-  deps: [DiTracksFilterQuery],
-  useFactory: (query$: Observable<string>) =>
-    query$.pipe(
-      map<string, TracksFilter>((query) => ({query})),
+export const DiTracksFilterPartQuery = new InjectionToken<Observable<Partial<TracksFilter>>>('Track filter part.', {
+  providedIn: 'root',
+  factory: () => {
+    const query$ = inject(DiTracksFilterQuery);
+
+    return query$.pipe(
+      map((query) => ({query})),
       distinctUntilChanged(jsonEqual),
       shareReplay({refCount: true, bufferSize: 1}),
-    ),
-};
+    );
+  },
+});

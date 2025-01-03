@@ -1,8 +1,8 @@
 import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable, OnDestroy} from '@angular/core';
-import {DoneSubject, RxCleanup} from 'dd-rxjs';
-import {Observable, combineLatest, of} from 'rxjs';
-import {bufferCount, catchError, concatMap, filter, map, switchMap, take, takeUntil, tap} from 'rxjs/operators';
+import {DestroyRef, inject, Injectable} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {combineLatest, of} from 'rxjs';
+import {bufferCount, catchError, concatMap, filter, map, switchMap, take, tap} from 'rxjs/operators';
 import {dataToTrack} from 'src/music';
 import {DiOnline} from '../common/di-common';
 import {LoggerService} from '../common/logger';
@@ -15,20 +15,21 @@ interface Index {
 
 const trackSourceBuiltIn = 'builtin';
 
-@Injectable()
-export class TrackImportService implements OnDestroy {
-  constructor(
-    @Inject(DiOnline) online$: Observable<boolean>,
-    @Inject(DiCurrentTrackHashes) private readonly currentHashes$: Observable<Set<string>>,
-    private readonly httpClient: HttpClient,
-    private readonly trackService: TrackService,
-    private readonly loggerService: LoggerService,
-  ) {
-    online$
+@Injectable({providedIn: 'root'})
+export class TrackImportService {
+  private readonly currentHashes$ = inject(DiCurrentTrackHashes);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly httpClient = inject(HttpClient);
+  private readonly online$ = inject(DiOnline);
+  private readonly trackService = inject(TrackService);
+  private readonly loggerService = inject(LoggerService);
+
+  constructor() {
+    this.online$
       .pipe(
         filter((online) => online),
         switchMap(() => this.importLocalData$),
-        takeUntil(this.done$),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
         next: (oks) => {
@@ -40,8 +41,6 @@ export class TrackImportService implements OnDestroy {
         complete: () => this.loggerService.debug(`Local sync checked.`),
       });
   }
-
-  @RxCleanup() private readonly done$ = new DoneSubject();
 
   private readonly haveHashes$ = this.currentHashes$.pipe(take(1));
   private readonly localIndex$ = this.httpClient.get<Index>('assets/dd-chords/dd-chords.json');
@@ -66,7 +65,7 @@ export class TrackImportService implements OnDestroy {
     ),
   );
 
-  private loadLocalChordsFile$ = (path: string) =>
+  private readonly loadLocalChordsFile$ = (path: string) =>
     this.httpClient.get(path, {responseType: 'text'}).pipe(
       switchMap((text) => this.trackService.saveTrack$(trackSourceBuiltIn, dataToTrack(text))),
       catchError((err) => {
@@ -74,9 +73,4 @@ export class TrackImportService implements OnDestroy {
         return of(false);
       }),
     );
-
-  destroy() {}
-  ngOnDestroy() {
-    this.destroy();
-  }
 }

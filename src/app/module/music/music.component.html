@@ -1,7 +1,7 @@
-<div class="list" [class.visible]="visibleList === 'performers'" [class.visible-track]="visibleTrack">
+<div class="list" [class.visible]="visibleList() === 'performers'" [class.visible-track]="visibleTrack()">
   <dd-chords-performers class="content"></dd-chords-performers>
 </div>
-<div class="list with-actions" [class.visible]="visibleList === 'tracks'" [class.visible-track]="visibleTrack">
+<div class="list with-actions" [class.visible]="visibleList() === 'tracks'" [class.visible-track]="visibleTrack()">
   <div class="actions">
     <button (click)="resetPerformer()" class="btn btn-dense text-ellipsis action">
       <i class="fas fa-angle-left"></i>
@@ -10,7 +10,7 @@
   </div>
   <dd-chords-tracks class="content" (clickedItem)="showTrack($event)"></dd-chords-tracks>
 </div>
-<div class="details with-actions" [class.visible]="visibleTrack">
+<div class="details with-actions" [class.visible]="visibleTrack()">
   <div class="actions">
     <button (click)="backFromTrack()" class="btn btn-dense text-ellipsis action">
       <i class="fas fa-angle-left"></i>

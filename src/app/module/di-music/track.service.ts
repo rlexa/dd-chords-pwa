@@ -1,27 +1,19 @@
-import {Inject, Injectable, OnDestroy} from '@angular/core';
-import {DoneSubject, RxCleanup} from 'dd-rxjs';
-import {Observable, Subject, forkJoin, of} from 'rxjs';
-import {switchMap, takeUntil, tap} from 'rxjs/operators';
+import {DestroyRef, inject, Injectable} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {forkJoin, of} from 'rxjs';
+import {switchMap, tap} from 'rxjs/operators';
 import {Track} from 'src/music';
 import {getTrack$, toggleTrackFavorite$, upsertTrack$} from 'src/music/music-idb';
 import {DiMusicIdb, DiMusicIdbChange, DiMusicIdbLive} from './di-music-idb';
 
-@Injectable()
-export class TrackService implements OnDestroy {
-  constructor(
-    @Inject(DiMusicIdb) private readonly db$: Observable<IDBDatabase>,
-    @Inject(DiMusicIdbChange) private readonly dbChange$: Subject<number>,
-    @Inject(DiMusicIdbLive) private readonly dbLive$: Observable<IDBDatabase>,
-  ) {}
-
-  @RxCleanup() private readonly done$ = new DoneSubject();
+@Injectable({providedIn: 'root'})
+export class TrackService {
+  private readonly db$ = inject(DiMusicIdb);
+  private readonly dbChange$ = inject(DiMusicIdbChange);
+  private readonly dbLive$ = inject(DiMusicIdbLive);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly track$ = (id: string | null) => this.dbLive$.pipe(switchMap((db) => (!id ? of(null) : getTrack$(db, id))));
-
-  destroy() {}
-  ngOnDestroy() {
-    this.destroy();
-  }
 
   saveTrack$ = (source: string, track: Track) =>
     this.db$.pipe(
@@ -31,7 +23,7 @@ export class TrackService implements OnDestroy {
           this.dbChange$.next(1);
         }
       }),
-      takeUntil(this.done$),
+      takeUntilDestroyed(this.destroyRef),
     );
 
   saveTracks$ = (source: string, tracks: Track[]) =>
@@ -43,7 +35,7 @@ export class TrackService implements OnDestroy {
           this.dbChange$.next(saved);
         }
       }),
-      takeUntil(this.done$),
+      takeUntilDestroyed(this.destroyRef),
     );
 
   toggleTrackFavorite$ = (idTrack: string) =>
@@ -54,6 +46,6 @@ export class TrackService implements OnDestroy {
           this.dbChange$.next(1);
         }
       }),
-      takeUntil(this.done$),
+      takeUntilDestroyed(this.destroyRef),
     );
 }

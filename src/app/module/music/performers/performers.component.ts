@@ -1,20 +1,55 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {VlistComponent} from '../../common/vlist';
 import {DiCurrentPerformers} from '../../di-music/di-current-performers';
 import {DiPerformersFilterQuery} from '../../di-music/di-performer-filter-query';
-import {Performer} from '../../di-music/di-tracks-filter';
 import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer';
 
 @Component({
   selector: 'dd-chords-performers',
-  templateUrl: './performers.component.html',
-  styleUrls: ['./performers.component.scss'],
+  template: `<input
+      #inputQuery
+      class="input"
+      [value]="performersFilterQuery$ | async"
+      (input)="performersFilterQuery$.next(inputQuery.value || undefined)"
+    />
+    <div class="content">
+      <dd-chords-vlist [items]="performers$ | async">
+        <ng-template let-item>
+          <button
+            class="btn btn-borderless text-ellipsis list-item item"
+            [class.active]="(tracksFilterPerformer$ | async) === item?.performerHash"
+            (click)="tracksFilterPerformer$.next(item.performerHash)"
+          >
+            {{ item.performer }}
+          </button>
+        </ng-template>
+      </dd-chords-vlist>
+    </div>`,
+  styles: [
+    `
+      :host {
+        display: flex;
+        flex-direction: column;
+
+        .content {
+          flex: 1 1 auto;
+          position: relative;
+        }
+      }
+
+      .item {
+        text-align: start;
+        line-height: 1.5em;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, VlistComponent],
 })
 export class PerformersComponent {
-  constructor(
-    @Inject(DiCurrentPerformers) public readonly performers$: Observable<Performer[]>,
-    @Inject(DiPerformersFilterQuery) public readonly performersFilterQuery$: BehaviorSubject<string | null>,
-    @Inject(DiTracksFilterPerformer) public readonly tracksFilterPerformer$: BehaviorSubject<string | null>,
-  ) {}
+  protected readonly performers$ = inject(DiCurrentPerformers);
+  protected readonly performersFilterQuery$ = inject(DiPerformersFilterQuery);
+  protected readonly tracksFilterPerformer$ = inject(DiTracksFilterPerformer);
 }

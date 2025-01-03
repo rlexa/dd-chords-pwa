@@ -1,12 +1,14 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy} from '@angular/core';
-import {DoneSubject, RxCleanup} from 'dd-rxjs';
-import {BehaviorSubject} from 'rxjs';
-import {debounceTime, filter, map, take, takeUntil} from 'rxjs/operators';
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {RouterModule} from '@angular/router';
+import {debounceTime, filter, map, take} from 'rxjs/operators';
+import {RouteParamIdTrack} from 'src/app/routing';
 import {RoutingService} from '../common/routing';
 import {DiCurrentPerformer} from '../di-music/di-current-performer';
-import {Performer} from '../di-music/di-tracks-filter';
 import {DiTracksFilterPerformer} from '../di-music/di-tracks-filter-performer';
-import {routeParamIdTrack} from './music-route';
+import {PerformersComponent} from './performers';
+import {TracksComponent} from './tracks';
 
 type VisibleList = 'performers' | 'tracks';
 
@@ -15,62 +17,55 @@ type VisibleList = 'performers' | 'tracks';
   templateUrl: './music.component.html',
   styleUrls: ['./music.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, RouterModule, PerformersComponent, TracksComponent],
 })
-export class MusicComponent implements OnDestroy {
-  constructor(
-    @Inject(DiCurrentPerformer) public readonly currentPerformer$: BehaviorSubject<Performer | null>,
-    @Inject(DiTracksFilterPerformer) private readonly tracksFilterPerformer$: BehaviorSubject<string | null>,
-    private readonly routingService: RoutingService,
-    private readonly changeDetectorRef: ChangeDetectorRef,
-  ) {
+export class MusicComponent implements OnInit {
+  protected readonly currentPerformer$ = inject(DiCurrentPerformer);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly tracksFilterPerformer$ = inject(DiTracksFilterPerformer);
+  private readonly routingService = inject(RoutingService);
+
+  protected readonly visibleList = signal<VisibleList>('performers');
+  protected readonly visibleTrack = signal(false);
+
+  ngOnInit() {
     this.routingService.params$
       .pipe(
         debounceTime(0),
         take(1),
-        map((params) => params[routeParamIdTrack]),
+        map((params) => params[RouteParamIdTrack]),
+        takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe((id) => (this.visibleTrack = !!id));
+      .subscribe((id) => this.visibleTrack.set(!!id));
 
     this.currentPerformer$
       .pipe(
         filter((performer) => !!performer),
-        takeUntil(this.done$),
+        takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(() => {
-        this.showList('tracks');
-      });
+      .subscribe(() => this.showList('tracks'));
   }
 
-  @RxCleanup() private readonly done$ = new DoneSubject();
-
-  visibleList: VisibleList = 'performers';
-  visibleTrack = false;
-
-  destroy() {}
-  ngOnDestroy() {
-    this.destroy();
-  }
-
-  resetPerformer() {
+  protected resetPerformer() {
     this.showList('performers');
     this.tracksFilterPerformer$.next(null);
   }
 
-  showTrack(id: string) {
+  protected showTrack(id: string) {
     if (id) {
-      this.visibleTrack = true;
+      this.visibleTrack.set(true);
     }
   }
 
-  backFromTrack() {
+  protected backFromTrack() {
     this.showList(this.tracksFilterPerformer$.value ? 'tracks' : 'performers');
-    this.visibleTrack = false;
+    this.visibleTrack.set(false);
   }
 
-  showList(val: VisibleList) {
-    if (val && this.visibleList !== val) {
-      this.visibleList = val;
-      this.changeDetectorRef.markForCheck();
+  protected showList(val: VisibleList) {
+    if (val && this.visibleList() !== val) {
+      this.visibleList.set(val);
     }
   }
 }

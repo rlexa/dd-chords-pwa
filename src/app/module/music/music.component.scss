@@ -49,7 +49,7 @@
     padding-right: 0px;
   }
 
-  @media (max-width: $width-text + $width-list) {
+  @media (max-width: ($width-text + $width-list)) {
     .list {
       &:not(.visible) {
         display: none;
