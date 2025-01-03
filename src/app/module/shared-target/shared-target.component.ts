@@ -1,9 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {ActivatedRoute, Params, Router, RouterModule} from '@angular/router';
-import {from} from 'rxjs';
-import {exhaustMap, take} from 'rxjs/operators';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
+import {map, take} from 'rxjs/operators';
 import {QueryParamTrackId, RouteTracks, RouteUi} from 'src/app/routing';
 
 @Component({
@@ -29,18 +28,13 @@ export class SharedTargetComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
 
-  private readonly queryParams$ = this.activatedRoute.queryParams;
-
-  private readonly navigate$ = (query: Params) =>
-    from(this.router.navigate(query[QueryParamTrackId] ? [RouteUi, RouteTracks, query[QueryParamTrackId]] : [RouteUi], {replaceUrl: true}));
-
   ngOnInit() {
-    this.queryParams$
+    this.activatedRoute.queryParams
       .pipe(
         take(1),
-        exhaustMap((query) => this.navigate$(query)),
+        map((query) => query[QueryParamTrackId]),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe();
+      .subscribe((sharedId) => this.router.navigate(sharedId ? [RouteUi, RouteTracks, sharedId] : [RouteUi], {replaceUrl: true}));
   }
 }
