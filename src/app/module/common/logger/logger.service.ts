@@ -59,7 +59,6 @@ export class LoggerService implements OnDestroy, Pick<Console, 'error' | 'log' |
 
   debug(message?: any, ...optionalParams: any[]): void {
     this.add('debug', message, ...optionalParams);
-    // tslint:disable-next-line: no-console
     console.debug(message, ...optionalParams);
   }
 
