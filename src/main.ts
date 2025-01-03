@@ -35,7 +35,7 @@ bootstrapApplication(AppComponent, {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const swService = inject(SwService);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const trackImportService = TrackImportService;
+        const trackImportService = inject(TrackImportService);
       },
     },
   ],
