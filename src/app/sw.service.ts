@@ -1,10 +1,12 @@
-import {inject, Injectable} from '@angular/core';
+import {DestroyRef, inject, Injectable} from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {SwUpdate} from '@angular/service-worker';
 import {delay, from, merge, switchMap, tap} from 'rxjs';
 import {LoggerService} from './module/common/logger';
 
 @Injectable({providedIn: 'root'})
 export class SwService {
+  private readonly destroyRef = inject(DestroyRef);
   private readonly loggerService = inject(LoggerService);
   private readonly swUpdate = inject(SwUpdate);
 
@@ -18,6 +20,7 @@ export class SwService {
       .pipe(
         delay(5000),
         switchMap(() => from(this.swUpdate.activateUpdate())),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => document.location.reload());
   }
