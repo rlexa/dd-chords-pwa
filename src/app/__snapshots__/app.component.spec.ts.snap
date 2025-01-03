@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AppComponent renders 1`] = `
-<dd-chords-app>
-  <router-outlet />
-</dd-chords-app>
+<mock-render>
+  <dd-chords-app>
+    <router-outlet />
+  </dd-chords-app>
+</mock-render>
 `;

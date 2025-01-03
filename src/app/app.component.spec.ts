@@ -1,25 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
+import {MockBuilder, MockedComponentFixture, MockRender} from 'ng-mocks';
 import {AppComponent} from './app.component';
-import {detectChanges, overrideForChangeDetection} from './test';
 
 describe('AppComponent', () => {
-  let fixture: ComponentFixture<AppComponent>;
+  let fixture: MockedComponentFixture<AppComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AppComponent],
-    })
-      .overrideComponent(AppComponent, overrideForChangeDetection)
-      .compileComponents();
-  });
+  beforeEach(() => MockBuilder(AppComponent));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    detectChanges(fixture);
+    fixture = MockRender(AppComponent);
+    fixture.detectChanges();
   });
 
   it('has instance', () => expect(fixture.componentInstance).toBeTruthy());
+
   it('renders', () => expect(fixture).toMatchSnapshot());
 });

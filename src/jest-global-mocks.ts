@@ -1,3 +1,7 @@
+/* eslint-disable prefer-rest-params */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prefer-const */
+
 /**
  * jest should fail on console.error logging so let's monkey-patch it to throw an actual error.
  */
@@ -8,7 +12,7 @@ console.error = function (message: any) {
 };
 
 const getMockStorage = () => {
-  let storage: {[key: string]: string} = {};
+  let storage: Record<string, string> = {};
   return {
     getItem: (key: string) => (key in storage ? storage[key] : null),
     setItem: (key: string, value: string) => (storage[key] = value || ''),
