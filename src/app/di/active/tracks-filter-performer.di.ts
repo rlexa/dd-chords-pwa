@@ -1,5 +1,5 @@
 import {InjectionToken} from '@angular/core';
-import {StateSubject} from 'dd-rxjs';
+import {StateSubject} from 'src/util';
 
 export const DiTracksFilterPerformer = new InjectionToken<StateSubject<string>>('Track filter performer.', {
   providedIn: 'root',

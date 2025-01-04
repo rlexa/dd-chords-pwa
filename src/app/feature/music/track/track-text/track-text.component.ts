@@ -1,9 +1,9 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
-import {StateSubject} from 'dd-rxjs';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {normalizeTranspose, textToLines} from 'src/music';
+import {StateSubject} from 'src/util';
 
 @Component({
   selector: 'dd-chords-track-text',

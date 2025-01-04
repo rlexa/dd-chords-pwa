@@ -1,8 +1,8 @@
 import {DestroyRef, inject, Injectable, OnDestroy} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {StateSubject} from 'dd-rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {CacheService} from 'src/app/shared/cache';
+import {StateSubject} from 'src/util';
 
 type LogItemLevel = 'error' | 'info' | 'debug';
 
