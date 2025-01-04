@@ -1,8 +1,8 @@
 import {inject, InjectionToken} from '@angular/core';
 import {Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
+import {DiShowFavorites} from 'src/app/di';
 import {jsonEqual} from 'src/util';
-import {DiShowFavorites} from './di-show-favorites';
 import {TracksFilter} from './di-tracks-filter';
 
 export const DiTracksFilterPartFavorites = new InjectionToken<Observable<Partial<TracksFilter>>>('Tracks filter part.', {

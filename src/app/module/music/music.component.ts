@@ -4,7 +4,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterModule} from '@angular/router';
 import {debounceTime, filter, map, take} from 'rxjs/operators';
 import {RouteParamIdTrack} from 'src/app/routing';
-import {RoutingService} from '../common/routing';
+import {RoutingService} from 'src/app/shared/routing';
 import {DiCurrentPerformer} from '../di-music/di-current-performer';
 import {DiTracksFilterPerformer} from '../di-music/di-tracks-filter-performer';
 import {PerformersComponent} from './performers';

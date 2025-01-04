@@ -1,11 +1,11 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {concatMap, Subject} from 'rxjs';
-import {ContainsPipe} from 'src/app/module/common/di-common';
-import {DiCanShare} from 'src/app/module/common/di-common/di-common';
-import {LoggerService} from 'src/app/module/common/logger';
+import {DiCanShare} from 'src/app/di';
 import {TrackService} from 'src/app/module/di-music/track.service';
 import {QueryParamTrackId, RouteShared} from 'src/app/routing';
+import {ContainsPipe} from 'src/app/shared/contains-pipe';
+import {LoggerService} from 'src/app/shared/logger';
 import {Track} from 'src/music';
 import {queryPlaylistFavorites} from 'src/music/music-idb';
 

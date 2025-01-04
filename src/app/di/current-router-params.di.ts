@@ -1,7 +1,6 @@
 import {inject, InjectionToken} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
-import {StateSubject} from 'dd-rxjs';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {distinctUntilChanged, filter, map, shareReplay, startWith} from 'rxjs/operators';
 import {jsonEqual} from 'src/util';
 
@@ -29,11 +28,4 @@ export const DiCurrentRouterParams = new InjectionToken<Observable<Record<string
       shareReplay(1),
     );
   },
-});
-
-export const DiCanShare = new InjectionToken('Flag.', {providedIn: 'root', factory: () => new StateSubject(true)});
-
-export const DiOnline = new InjectionToken<Observable<boolean>>('Online flag.', {
-  providedIn: 'root',
-  factory: () => of(!!navigator?.onLine),
 });

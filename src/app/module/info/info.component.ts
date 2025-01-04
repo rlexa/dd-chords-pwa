@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {debounceTime} from 'rxjs/operators';
-import {LoggerService} from '../common/logger';
+import {LoggerService} from 'src/app/shared/logger';
 import {DiCurrentTrackCount} from '../di-music/di-current-track-count';
 
 @Component({

@@ -8,12 +8,13 @@ export interface PerformersFilter {
   query?: string;
 }
 
-export const DiPerformersFilterPart = new InjectionToken<Observable<Partial<PerformersFilter>>>('Performers filter part.');
+/** Multi-DI */
+export const DiPerformersFilterPart = new InjectionToken<Observable<Partial<PerformersFilter>>[]>('Performers filter part.');
 
 export const DiPerformersFilter = new InjectionToken<Observable<PerformersFilter>>('Performers filter.', {
   providedIn: 'root',
   factory: () => {
-    const filterPart = inject(DiPerformersFilterPart) as unknown as Observable<Partial<PerformersFilter>>[];
+    const filterPart = inject(DiPerformersFilterPart);
 
     return combineLatest(filterPart).pipe(map(mergeObjects), map(clearEmptyValues), distinctUntilChanged(jsonEqual));
   },

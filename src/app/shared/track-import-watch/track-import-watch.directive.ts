@@ -3,11 +3,11 @@ import {DestroyRef, Directive, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {combineLatest, of} from 'rxjs';
 import {bufferCount, catchError, concatMap, filter, map, switchMap, take, tap} from 'rxjs/operators';
-import {DiOnline} from 'src/app/module/common/di-common';
-import {LoggerService} from 'src/app/module/common/logger';
+import {DiOnline} from 'src/app/di';
 import {DiCurrentTrackHashes} from 'src/app/module/di-music/di-current-track-hashes';
 import {TrackService} from 'src/app/module/di-music/track.service';
 import {dataToTrack} from 'src/music';
+import {LoggerService} from '../logger';
 
 interface Index {
   files: {hash?: string; path?: string}[];

@@ -1,8 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {RouterModule} from '@angular/router';
+import {DiShowFavorites} from 'src/app/di';
 import {RouteInfo, RouteTracks} from 'src/app/routing';
-import {DiShowFavorites} from '../di-music/di-show-favorites';
 
 @Component({
   selector: 'dd-chords-dashboard',

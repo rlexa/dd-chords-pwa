@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject, Input} from '@angular/core';
+import {DiShowChords} from 'src/app/di';
 import {Track} from 'src/music';
-import {DiShowChords} from '../../di-music/di-show-chords';
 import {TrackMetaComponent} from './track-meta';
 import {TrackTextComponent} from './track-text';
 

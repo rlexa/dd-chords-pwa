@@ -2,7 +2,7 @@ import {DestroyRef, Directive, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {SwUpdate} from '@angular/service-worker';
 import {delay, from, merge, switchMap, tap} from 'rxjs';
-import {LoggerService} from 'src/app/module/common/logger';
+import {LoggerService} from '../logger';
 
 @Directive({selector: '[ddChordsServiceWorkerWatch]', standalone: true})
 export class ServiceWorkerWatchDirective implements OnInit {

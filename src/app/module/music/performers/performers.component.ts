@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
-import {VlistComponent} from '../../common/vlist';
+import {VlistComponent} from 'src/app/shared/vlist';
 import {DiCurrentPerformers} from '../../di-music/di-current-performers';
 import {DiPerformersFilterQuery} from '../../di-music/di-performer-filter-query';
 import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer';
