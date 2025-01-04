@@ -47,8 +47,8 @@ bootstrapApplication(AppComponent, {
     // routing
     provideRouter(
       [
-        {path: RouteShared, loadChildren: () => import('./app/module/shared-target/routes')},
-        {path: RouteUi, loadChildren: () => import('./app/module/dashboard/routes')},
+        {path: RouteShared, loadChildren: () => import('./app/feature/shared-target/routes')},
+        {path: RouteUi, loadChildren: () => import('./app/feature/dashboard/routes')},
         {path: '', redirectTo: RouteUi, pathMatch: 'full'},
         {path: '**', redirectTo: ''},
       ],
