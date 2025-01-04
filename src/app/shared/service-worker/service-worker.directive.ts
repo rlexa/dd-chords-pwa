@@ -1,16 +1,16 @@
-import {DestroyRef, inject, Injectable} from '@angular/core';
+import {DestroyRef, Directive, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {SwUpdate} from '@angular/service-worker';
 import {delay, from, merge, switchMap, tap} from 'rxjs';
-import {LoggerService} from './module/common/logger';
+import {LoggerService} from 'src/app/module/common/logger';
 
-@Injectable({providedIn: 'root'})
-export class SwService {
+@Directive({selector: '[ddChordsServiceWorker]', standalone: true})
+export class ServiceWorkerDirective implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly loggerService = inject(LoggerService);
   private readonly swUpdate = inject(SwUpdate);
 
-  constructor() {
+  ngOnInit() {
     merge(
       this.swUpdate.versionUpdates.pipe(tap((event) => this.loggerService.log(`Detected update, reloading soon...`, event))),
       this.swUpdate.unrecoverable.pipe(

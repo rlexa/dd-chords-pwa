@@ -3,7 +3,9 @@
 exports[`AppComponent renders 1`] = `
 <mock-render>
   <dd-chords-app>
-    <router-outlet />
+    <router-outlet
+      ddchordsserviceworker=""
+    />
   </dd-chords-app>
 </mock-render>
 `;

@@ -13,7 +13,7 @@ module.exports = tseslint.config(
         'error',
         {
           type: 'attribute',
-          prefix: 'dd-chords',
+          prefix: 'ddChords',
           style: 'camelCase',
         },
       ],
