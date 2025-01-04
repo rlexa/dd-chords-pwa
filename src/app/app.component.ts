@@ -1,10 +1,11 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {ServiceWorkerDirective} from './shared/service-worker';
+import {TrackImportDirective} from './shared/track-import';
 
 @Component({
   selector: 'dd-chords-app',
-  template: `<router-outlet ddChordsServiceWorker />`,
+  template: `<router-outlet ddChordsServiceWorker ddChordsTrackImport />`,
   styles: [
     `
       :host {
@@ -20,6 +21,6 @@ import {ServiceWorkerDirective} from './shared/service-worker';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [RouterModule, ServiceWorkerDirective],
+  imports: [RouterModule, ServiceWorkerDirective, TrackImportDirective],
 })
 export class AppComponent {}

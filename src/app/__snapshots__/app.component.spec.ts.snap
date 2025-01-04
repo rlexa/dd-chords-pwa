@@ -5,6 +5,7 @@ exports[`AppComponent renders 1`] = `
   <dd-chords-app>
     <router-outlet
       ddchordsserviceworker=""
+      ddchordstrackimport=""
     />
   </dd-chords-app>
 </mock-render>

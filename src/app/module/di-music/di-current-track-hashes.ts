@@ -9,10 +9,6 @@ export const DiCurrentTrackHashes = new InjectionToken<Observable<Set<string>>>(
   factory: () => {
     const db$ = inject(DiMusicIdbLive);
 
-    return db$.pipe(
-      debounceTime(10),
-      switchMap((db) => getTrackHashes$(db)),
-      shareReplay({refCount: true, bufferSize: 1}),
-    );
+    return db$.pipe(debounceTime(10), switchMap(getTrackHashes$), shareReplay({refCount: true, bufferSize: 1}));
   },
 });

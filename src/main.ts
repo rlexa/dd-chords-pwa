@@ -17,7 +17,6 @@ import {DiTracksFilterPart, TracksFilter} from './app/module/di-music/di-tracks-
 import {DiTracksFilterPartFavorites} from './app/module/di-music/di-tracks-filter-favorites';
 import {DiTracksFilterPartPerformer} from './app/module/di-music/di-tracks-filter-performer';
 import {DiTracksFilterPartQuery} from './app/module/di-music/di-tracks-filter-query';
-import {TrackImportService} from './app/module/di-music/track-import.service';
 import {RouteShared, RouteUi} from './app/routing';
 import {environment} from './environments/environment';
 
@@ -61,8 +60,6 @@ bootstrapApplication(AppComponent, {
         const routingService = inject(RoutingService);
         const showChords$ = inject(DiShowChords);
         const showFavorites$ = inject(DiShowFavorites);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const trackImportService = inject(TrackImportService);
 
         return () => {
           cacheService.register('showChords', showChords$, (val) => showChords$.next(val ?? showChords$.value));
