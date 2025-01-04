@@ -1,9 +1,7 @@
 import {Observable, of} from 'rxjs';
-import {TrackMeta} from 'src/app/module/di-music/di-current-tracks';
-import {PerformersFilter} from 'src/app/module/di-music/di-performers-filter';
-import {Performer, TracksFilter} from 'src/app/module/di-music/di-tracks-filter';
-import {filterStringValue, queryStringValue} from 'src/app/module/di-music/util';
+import {Performer, PerformersFilter, TrackMeta, TracksFilter} from 'src/app/di';
 import {idbOpenRequest$} from 'src/indexeddb';
+import {filterStringValue, queryStringValue} from 'src/util';
 import {Track} from './music';
 
 export interface IdbTrack extends Track {

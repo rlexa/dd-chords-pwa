@@ -1,9 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {DiCurrentPerformers, DiPerformersFilterQuery, DiTracksFilterPerformer} from 'src/app/di';
 import {VlistComponent} from 'src/app/shared/vlist';
-import {DiCurrentPerformers} from '../../di-music/di-current-performers';
-import {DiPerformersFilterQuery} from '../../di-music/di-performer-filter-query';
-import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer';
 
 @Component({
   selector: 'dd-chords-performers',

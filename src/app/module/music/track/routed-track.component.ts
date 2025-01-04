@@ -2,9 +2,9 @@ import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject, Input, OnDestroy} from '@angular/core';
 import {StateSubject} from 'dd-rxjs';
 import {switchMap, tap} from 'rxjs/operators';
+import {DiTracksFilterPerformer} from 'src/app/di';
 import {RouteParamIdTrack} from 'src/app/routing';
-import {DiTracksFilterPerformer} from '../../di-music/di-tracks-filter-performer';
-import {TrackService} from '../../di-music/track.service';
+import {TrackService} from 'src/app/shared/track';
 import {TrackComponent} from './track.component';
 
 @Component({

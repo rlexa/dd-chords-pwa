@@ -3,8 +3,8 @@ import {combineLatest, Observable, of} from 'rxjs';
 import {shareReplay, switchMap} from 'rxjs/operators';
 import {Track} from 'src/music';
 import {getTrackMetas$} from 'src/music/music-idb';
-import {DiMusicIdbLive} from './di-music-idb';
-import {DiTracksFilter} from './di-tracks-filter';
+import {DiMusicIdbLive} from './music-idb-live.di';
+import {DiTracksFilter} from './tracks-filter.di';
 
 export type TrackMeta = Pick<Track, 'id' | 'performer' | 'title'>;
 

@@ -1,14 +1,9 @@
 import {inject, InjectionToken} from '@angular/core';
-import {StateSubject} from 'dd-rxjs';
 import {Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {jsonEqual} from 'src/util';
-import {TracksFilter} from './di-tracks-filter';
-
-export const DiTracksFilterPerformer = new InjectionToken<StateSubject<string>>('Track filter performer.', {
-  providedIn: 'root',
-  factory: () => new StateSubject<string>(''),
-});
+import {DiTracksFilterPerformer} from './active';
+import {TracksFilter} from './tracks-filter.di';
 
 export const DiTracksFilterPartPerformer = new InjectionToken<Observable<Partial<TracksFilter>>>('Track filter part.', {
   providedIn: 'root',

@@ -1,8 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {debounceTime} from 'rxjs/operators';
+import {DiCurrentTrackCount} from 'src/app/di';
 import {LoggerService} from 'src/app/shared/logger';
-import {DiCurrentTrackCount} from '../di-music/di-current-track-count';
 
 @Component({
   selector: 'dd-chords-info',

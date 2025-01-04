@@ -6,14 +6,19 @@ import {provideRouter, withComponentInputBinding} from '@angular/router';
 import {provideServiceWorker} from '@angular/service-worker';
 import {of} from 'rxjs';
 import {AppComponent} from './app/app.component';
-import {DiShowChords, DiShowFavorites} from './app/di';
-import {DiPerformersFilterPartFavorites} from './app/module/di-music/di-performer-filter-favorites';
-import {DiPerformersFilterPartQuery} from './app/module/di-music/di-performer-filter-query';
-import {DiPerformersFilterPart, PerformersFilter} from './app/module/di-music/di-performers-filter';
-import {DiTracksFilterPart, TracksFilter} from './app/module/di-music/di-tracks-filter';
-import {DiTracksFilterPartFavorites} from './app/module/di-music/di-tracks-filter-favorites';
-import {DiTracksFilterPartPerformer} from './app/module/di-music/di-tracks-filter-performer';
-import {DiTracksFilterPartQuery} from './app/module/di-music/di-tracks-filter-query';
+import {
+  DiPerformersFilterPart,
+  DiPerformersFilterPartFavorites,
+  DiPerformersFilterPartQuery,
+  DiShowChords,
+  DiShowFavorites,
+  DiTracksFilterPart,
+  DiTracksFilterPartFavorites,
+  DiTracksFilterPartPerformer,
+  DiTracksFilterPartQuery,
+  PerformersFilter,
+  TracksFilter,
+} from './app/di';
 import {RouteShared, RouteUi} from './app/routing';
 import {CacheService} from './app/shared/cache';
 import {RoutingService} from './app/shared/routing';

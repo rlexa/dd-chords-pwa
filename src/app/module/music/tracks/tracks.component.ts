@@ -1,9 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, EventEmitter, inject, Output} from '@angular/core';
 import {RouterModule} from '@angular/router';
+import {DiCurrentTrackMetas, DiTracksFilterQuery} from 'src/app/di';
 import {VlistComponent} from 'src/app/shared/vlist';
-import {DiCurrentTrackMetas} from '../../di-music/di-current-tracks';
-import {DiTracksFilterQuery} from '../../di-music/di-tracks-filter-query';
 
 @Component({
   selector: 'dd-chords-tracks',

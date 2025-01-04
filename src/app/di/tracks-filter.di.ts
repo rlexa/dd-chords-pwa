@@ -14,12 +14,13 @@ export interface TracksFilter {
   query?: string;
 }
 
-export const DiTracksFilterPart = new InjectionToken<Observable<Partial<TracksFilter>>>('Track filter part.');
+/** Multi-DI */
+export const DiTracksFilterPart = new InjectionToken<Observable<Partial<TracksFilter>>[]>('Track filter part.');
 
 export const DiTracksFilter = new InjectionToken<Observable<TracksFilter>>('Track filter.', {
   providedIn: 'root',
   factory: () => {
-    const diTracksFilterPart = inject(DiTracksFilterPart) as unknown as Observable<Partial<TracksFilter>>[];
+    const diTracksFilterPart = inject(DiTracksFilterPart);
 
     return combineLatest(diTracksFilterPart).pipe(map(mergeObjects), map(clearEmptyValues), distinctUntilChanged(jsonEqual));
   },

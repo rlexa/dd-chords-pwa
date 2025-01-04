@@ -2,9 +2,9 @@ import {inject, InjectionToken} from '@angular/core';
 import {combineLatest, Observable} from 'rxjs';
 import {shareReplay, switchMap} from 'rxjs/operators';
 import {getPerformer$} from 'src/music/music-idb';
-import {DiMusicIdbLive} from './di-music-idb';
-import {Performer} from './di-tracks-filter';
-import {DiTracksFilterPerformer} from './di-tracks-filter-performer';
+import {DiTracksFilterPerformer} from './active';
+import {DiMusicIdbLive} from './music-idb-live.di';
+import {Performer} from './tracks-filter.di';
 
 export const DiCurrentPerformer = new InjectionToken<Observable<Performer | null>>('Current performer', {
   providedIn: 'root',

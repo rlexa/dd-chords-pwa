@@ -1,7 +1,7 @@
 import {inject, InjectionToken} from '@angular/core';
 import {Observable} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
-import {DiCurrentTrackHashes} from './di-current-track-hashes';
+import {DiCurrentTrackHashes} from './current-track-hashes.di';
 
 export const DiCurrentTrackCount = new InjectionToken<Observable<number>>('Current track count', {
   providedIn: 'root',
