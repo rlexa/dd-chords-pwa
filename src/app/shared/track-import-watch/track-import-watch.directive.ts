@@ -15,8 +15,8 @@ interface Index {
 
 const trackSourceBuiltIn = 'builtin';
 
-@Directive({selector: '[ddChordsTrackImport]', standalone: true})
-export class TrackImportDirective implements OnInit {
+@Directive({selector: '[ddChordsTrackWatchImport]', standalone: true})
+export class TrackImportWatchDirective implements OnInit {
   private readonly currentHashes$ = inject(DiCurrentTrackHashes);
   private readonly destroyRef = inject(DestroyRef);
   private readonly httpClient = inject(HttpClient);

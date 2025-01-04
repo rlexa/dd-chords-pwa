@@ -4,8 +4,8 @@ import {SwUpdate} from '@angular/service-worker';
 import {delay, from, merge, switchMap, tap} from 'rxjs';
 import {LoggerService} from 'src/app/module/common/logger';
 
-@Directive({selector: '[ddChordsServiceWorker]', standalone: true})
-export class ServiceWorkerDirective implements OnInit {
+@Directive({selector: '[ddChordsServiceWorkerWatch]', standalone: true})
+export class ServiceWorkerWatchDirective implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly loggerService = inject(LoggerService);
   private readonly swUpdate = inject(SwUpdate);
