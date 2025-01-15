@@ -16,7 +16,6 @@ type VisibleList = 'performers' | 'tracks';
   templateUrl: './music.component.html',
   styleUrls: ['./music.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, RouterModule, PerformersComponent, TracksComponent],
 })
 export class MusicComponent implements OnInit {

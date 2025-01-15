@@ -20,7 +20,6 @@ import {TrackImportWatchDirective} from './shared/track-import-watch/track-impor
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [RouterModule, ServiceWorkerWatchDirective, TrackImportWatchDirective],
 })
 export class AppComponent {}

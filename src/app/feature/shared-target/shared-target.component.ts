@@ -20,7 +20,6 @@ import {QueryParamTrackId, RouteTracks, RouteUi} from 'src/app/routing';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, RouterModule],
 })
 export class SharedTargetComponent implements OnInit {

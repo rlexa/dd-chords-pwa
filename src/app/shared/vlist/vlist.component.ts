@@ -31,7 +31,6 @@ import {trackByIndex} from 'src/util';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, ScrollingModule],
 })
 export class VlistComponent<T> {

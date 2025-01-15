@@ -25,7 +25,6 @@ import {TrackTextComponent} from './track-text';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, TrackMetaComponent, TrackTextComponent],
 })
 export class TrackComponent {

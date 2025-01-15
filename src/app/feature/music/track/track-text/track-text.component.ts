@@ -26,7 +26,6 @@ import {StateSubject} from 'src/util';
     }`,
   styleUrls: ['./track-text.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule],
 })
 export class TrackTextComponent implements OnDestroy {

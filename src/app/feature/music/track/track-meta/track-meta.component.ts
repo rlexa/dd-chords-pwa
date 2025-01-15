@@ -56,7 +56,6 @@ import {queryPlaylistFavorites} from 'src/music/music-idb';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, ContainsPipe],
 })
 export class TrackMetaComponent implements OnDestroy, OnInit {

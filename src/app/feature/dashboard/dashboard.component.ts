@@ -24,7 +24,6 @@ import {RouteInfo, RouteTracks} from 'src/app/routing';
     </div>`,
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, RouterModule],
 })
 export class DashboardComponent {

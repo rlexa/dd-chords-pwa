@@ -45,7 +45,6 @@ import {VlistComponent} from 'src/app/shared/vlist';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, RouterModule, VlistComponent],
 })
 export class TracksComponent {

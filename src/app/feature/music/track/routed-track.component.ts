@@ -11,7 +11,6 @@ import {TrackComponent} from './track.component';
   selector: 'dd-chords-routed-track',
   template: `<dd-chords-track [track]="track$ | async" />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, TrackComponent],
 })
 export class RoutedTrackComponent implements OnDestroy {

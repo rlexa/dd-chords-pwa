@@ -43,7 +43,6 @@ import {VlistComponent} from 'src/app/shared/vlist';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [CommonModule, VlistComponent],
 })
 export class PerformersComponent {
