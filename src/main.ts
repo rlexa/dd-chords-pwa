@@ -1,5 +1,5 @@
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {APP_INITIALIZER, enableProdMode, inject, provideExperimentalZonelessChangeDetection} from '@angular/core';
+import {enableProdMode, inject, provideAppInitializer, provideExperimentalZonelessChangeDetection} from '@angular/core';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
@@ -55,21 +55,15 @@ bootstrapApplication(AppComponent, {
       withComponentInputBinding(),
     ),
     // app init
-    {
-      provide: APP_INITIALIZER,
-      multi: true,
-      useFactory: () => {
-        const cacheService = inject(CacheService);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const routingService = inject(RoutingService);
-        const showChords$ = inject(DiShowChords);
-        const showFavorites$ = inject(DiShowFavorites);
+    provideAppInitializer(() => {
+      const cacheService = inject(CacheService);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const routingService = inject(RoutingService);
+      const showChords$ = inject(DiShowChords);
+      const showFavorites$ = inject(DiShowFavorites);
 
-        return () => {
-          cacheService.register('showChords', showChords$, (val) => showChords$.next(val ?? showChords$.value));
-          cacheService.register('showFavorites', showFavorites$, (val) => showFavorites$.next(val ?? showFavorites$.value));
-        };
-      },
-    },
+      cacheService.register('showChords', showChords$, (val) => showChords$.next(val ?? showChords$.value));
+      cacheService.register('showFavorites', showFavorites$, (val) => showFavorites$.next(val ?? showFavorites$.value));
+    }),
   ],
 }).catch((err) => console.error(err));
