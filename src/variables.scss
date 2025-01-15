@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 @mixin add_customVars_toClassStyles($key-value-map, $prefix, $class, $style) {
   @each $key, $val in $key-value-map {
     .#{$class}-#{$key} {
@@ -134,7 +136,15 @@ $radius: (
 }
 
 @mixin add_customVars_as_hsla_fromRgb($id, $rgb, $a: 1, $prefixPart: 'clr', $prefixColor: 'color') {
-  @include add_customVars_as_hsla($id, hue($rgb), saturation($rgb), lightness($rgb), $a, $prefixPart, $prefixColor);
+  @include add_customVars_as_hsla(
+    $id,
+    color.channel($rgb, 'hue', $space: hsl),
+    color.channel($rgb, 'saturation', $space: hsl),
+    color.channel($rgb, 'lightness', $space: hsl),
+    $a,
+    $prefixPart,
+    $prefixColor
+  );
   --#{$prefixPart}-#{$id}-from-rgb: #{$rgb};
 }
 
