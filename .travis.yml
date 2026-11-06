@@ -8,13 +8,22 @@ branches:
   only:
     - main
 
+cache:
+  directories:
+    - $HOME/.cache/pnpm
+    - $HOME/.local/share/pnpm/store
+
+before_install:
+  - corepack enable
+  - corepack prepare pnpm@11.8.0 --activate
+
 before_script:
   - npm install -g firebase-tools
-  - npm install -g @angular/cli
 
 script:
-  - npm run test
-  - npm run build
+  - pnpm install --frozen-lockfile
+  - pnpm test
+  - pnpm build
 
 after_success:
   - firebase deploy --token "$FIREBASE_TOKEN"
