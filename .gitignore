@@ -45,6 +45,9 @@ firebase-debug.log
 /coverage
 /libpeerconnection.log
 npm-debug.log
+# pnpm
+pnpm-debug.log*
+.pnpm-store/
 yarn-error.log
 testem.log
 /typings

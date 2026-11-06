@@ -1,0 +1,9 @@
+# pnpm project settings (pnpm 11+). Machine-level settings (store dir, etc.) are ignored here.
+# Install/postinstall scripts are blocked unless listed; this install runs the native builds the
+# app needs (esbuild's binary is required by @angular-devkit/build-angular).
+allowBuilds:
+  esbuild: true
+  '@parcel/watcher': true
+  lmdb: true
+  msgpackr-extract: true
+  fsevents: true
