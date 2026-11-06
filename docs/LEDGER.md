@@ -7,13 +7,13 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - Update **before** a session ends and **before** any context reset. One line per item, no prose essays.
 - Stamp the date on every edit. Anything older than a month gets re-verified against the repo.
 
-`Last updated: 2026-11-06` · `Branch: progress` · `HEAD: 4963c31 "modern app init"` · `Clean tree: yes`
+`Last updated: 2026-11-06` · `Branch: progress` · `HEAD: 472e0bb "agent instructions and project docs"` · `Clean tree: only docs/LEDGER.md (this stamp commit)`
 
 ## Active goals
 
 | # | Goal | Status |
 | --- | --- | --- |
-| G1 | Agent handoff protocol + project docs (`AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/LEDGER.md`) | done, uncommitted |
+| G1 | Agent handoff protocol + project docs (`AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/LEDGER.md`) | done, committed `472e0bb` on `progress` |
 | G2 | Make offline installs able to resync assets (`ngsw-config.json` covers no `/assets/dd-chords/**`) | proposed, not started |
 | G3 | Test coverage for the load pipeline (`TrackImportWatchDirective`, `src/music/music-idb.ts`) | proposed, not started |
 
@@ -21,16 +21,16 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 
 | ID | Milestone | Status |
 | --- | --- | --- |
-| M0 | Docs + ledger + handoff protocol authored against verified repo facts | done — awaiting commit on `progress` |
+| M0 | Docs + ledger + handoff protocol authored against verified repo facts | done — committed `472e0bb`; this ledger stamp is the follow-up commit |
 | M1 | Asset sync survives offline / cold install (add `dd-chords` group to `ngsw-config.json`, or drop the `DiOnline` gate) | open |
 | M2 | Specs for `upsertTrack$` / `toggleTrackPlaylist$` / import directive (ng-mocks + `toMatchSnapshot`) | open |
 | M3 | Fix `CacheService` version-gate precedence bug (`?? 0 >= cachedMapVersion`) | open, blocked on user call |
 
 ## Next steps
 
-1. Commit G1 docs on `progress` (`AGENTS.md`, `docs/*`, `README.md` rewrite).
-2. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
-3. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
+1. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
+2. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
+3. Nothing else pending on the docs (G1/M0 shipped).
 
 ## Decisions
 
@@ -45,7 +45,9 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - Only 3 specs exist (`app.component`, `music`, `md5`). `jest-global-mocks.ts` makes `console.error` throw — tests fail loudly on logging.
 - `key.pem` / `cert.pem` are local-only (gitignored); `npm start` fails without them.
 - `.travis.yml` is tracked and deploys to Firebase on `main`; README's "no CI" claim was stale and is now corrected.
+- `AGENTS.md` is now auto-loaded by the agent harness as project instructions, so step 0 (read the ledger) applies without anyone having to remember it.
 
 ## History
 
 `2026-11-06` — Repo surveyed: asset→IndexedDB sync (`TrackImportWatchDirective`) is the whole data-load path; no backend services. Docs + ledger authored from verified reads, nothing overwritten. Previous ledger state: none (file created today).
+`2026-11-06` — G1/M0 shipped: `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/LEDGER.md`, `README.md` rewrite committed as `472e0bb` on `progress`. `npm test` (3 suites / 42 tests / 1 snapshot) and `npm run lint` both green before the commit.
