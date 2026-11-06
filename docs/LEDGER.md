@@ -7,7 +7,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - Update **before** a session ends and **before** any context reset. One line per item, no prose essays.
 - Stamp the date on every edit. Anything older than a month gets re-verified against the repo.
 
-`Last updated: 2026-11-06` · `Branch: pnpm-migration` · `HEAD: this ledger stamp, on top of 63e4688` · `Clean tree: AGENTS.md (audit-count fix) + docs/LEDGER.md (this stamp commit)` · 9 commits ahead of `main` (`84cab2c`), nothing merged or pushed
+`Last updated: 2026-11-06` · `Branch: main` · `HEAD: this ledger stamp, on top of 892677e` · `Clean tree: docs/LEDGER.md (this stamp commit)` · G4 merged: `main` fast-forwarded `84cab2c`→`892677e`, worktree removed, branch deleted
 
 ## Active goals
 
@@ -16,7 +16,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | G1 | Agent handoff protocol + project docs (`AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/LEDGER.md`) | done, committed `472e0bb` on `progress` |
 | G2 | Make offline installs able to resync assets (`ngsw-config.json` covers no `/assets/dd-chords/**`) | proposed, not started |
 | G3 | Test coverage for the load pipeline (`TrackImportWatchDirective`, `src/music/music-idb.ts`) | proposed, not started |
-| G4 | Move the repo from npm to pnpm (lockfile, scripts, build-script allow-list, CI, docs) | Tasks 1–7 done (`4e9e1a0` + acceptance); task reviews and whole-branch review **approved** 2026-11-06; ready for `finishing-a-development-branch` — merge/push needs the user's decision |
+| G4 | Move the repo from npm to pnpm (lockfile, scripts, build-script allow-list, CI, docs) | **done** — merged into `main` as `892677e` (fast-forward) on user's choice; merged result re-verified green |
 
 ## Milestones
 
@@ -26,11 +26,11 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | M1 | Asset sync survives offline / cold install (add `dd-chords` group to `ngsw-config.json`, or drop the `DiOnline` gate) | open |
 | M2 | Specs for `upsertTrack$` / `toggleTrackPlaylist$` / import directive (ng-mocks + `toMatchSnapshot`) | open |
 | M3 | Fix `CacheService` version-gate precedence bug (`?? 0 >= cachedMapVersion`) | open, blocked on user call |
-| M4 | npm → pnpm migration (7 tasks: package.json, lockfile swap, scripts, `pnpm-workspace.yaml`, Travis, docs, cold-install check) | done — Tasks 1–6 (`d794c79`→`4e9e1a0) approved per task; Task 7 acceptance green with **no commit** (acceptance-only); whole-branch review vs `d858db5` **approved** 2026-11-06 (only finding: stale `AGENTS.md` §4 audit count, fixed in this stamp). Execution ledger: `.superpowers/sdd/2026-11-06-pnpm-migration/progress.md` (untracked). Awaiting merge decision |
+| M4 | npm → pnpm migration (7 tasks: package.json, lockfile swap, scripts, `pnpm-workspace.yaml`, Travis, docs, cold-install check) | done — Tasks 1–6 (`d794c79`→`4e9e1a0`) approved per task; Task 7 acceptance green with **no commit** (acceptance-only); whole-branch review vs `d858db5` **approved** 2026-11-06 (only finding: stale `AGENTS.md` §4 audit count, fixed). Merged into `main` 2026-11-06; execution ledger `.superpowers/sdd/2026-11-06-pnpm-migration/progress.md` lived in the removed worktree |
 
 ## Next steps
 
-1. Run `finishing-a-development-branch` on `pnpm-migration` (base `d858db5`): whole-branch review approved 2026-11-06, so present the four options and **merge/push needs the user's decision**. Nothing is merged or pushed; `main` untouched.
+1. Post-merge follow-ups for G4 (all three raised below, user's call): keep or drop the `https` devDependency; the Travis double-install gap; the audit findings.
 2. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
 3. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
 4. Three open questions to raise with the user once M4 lands: keep the `https` devDependency (declared, unused, a real registry package — not Node's built-in)?; the `pnpm audit` findings (verified today: **215 — 22 low / 83 moderate / 104 high / 6 critical**) are accepted as-is for the migration but the spec's premise quoted npm's older 90/4-high baseline, so re-confirm; and `.travis.yml` has no `install:` override, so Travis's default stage runs `npm install` before `script`'s `pnpm install --frozen-lockfile` — CI installs twice (`install: true` would be a follow-up fix).
@@ -50,7 +50,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - `key.pem` / `cert.pem` are local-only (gitignored); `pnpm start` fails without them.
 - `.travis.yml` is tracked and deploys to Firebase on `main`; README's "no CI" claim was stale and is now corrected.
 - `AGENTS.md` is now auto-loaded by the agent harness as project instructions, so step 0 (read the ledger) applies without anyone having to remember it.
-- G4 work happens in the worktree `~/.local/share/opencode/worktree/2603db/pnpm-migration`; `main` (`C:/develop/github/dd-chords-pwa`) is untouched at `84cab2c`, and nothing has been merged or pushed (no remote involved).
+- The G4 worktree (`~/.local/share/opencode/worktree/2603db/pnpm-migration`) was removed after the merge; the `pnpm-migration` branch is deleted. `main` is now pnpm-native (root `node_modules` reinstalled via `pnpm install --frozen-lockfile`, 1055 pkgs). `origin/main` is still at `84cab2c` — pushing is the user's call.
 - Baseline verified with npm before the migration: `npm ci` (1174 pkgs) → 3 suites / 42 tests / 1 snapshot, `npm run lint` clean. Toolchain: Node 24.17.0, npm 11.13.0, pnpm 11.8.0, corepack 0.35.0.
 - `eslint.config.js` does `require('@eslint/js')` without declaring it — fatal under pnpm's strict layout, so Task 1 adds `@eslint/js` + `rimraf` as devDependencies (versions taken from `package-lock.json`).
 - `tslib ^2.8.1` is explicit: `importHelpers: true` needs it; npm hoisting hid the undeclared import (`TS2354`).
@@ -63,4 +63,5 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 `2026-11-06` — Repo surveyed: asset→IndexedDB sync (`TrackImportWatchDirective`) is the whole data-load path; no backend services. Docs + ledger authored from verified reads, nothing overwritten. Previous ledger state: none (file created today).
 `2026-11-06` — G1/M0 shipped: `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/LEDGER.md`, `README.md` rewrite committed as `472e0bb` on `progress`. `npm test` (3 suites / 42 tests / 1 snapshot) and `npm run lint` both green before the commit.
 `2026-11-06` — G4/M4 Tasks 1–6 executed and approved through the SDD workflow: `8916c71` (package.json), `d794c79` (lockfile swap + `tslib`), `dc9336e` (scripts), `8d558af` (`pnpm-workspace.yaml` policy), `5e17a1d` (Travis via corepack), `4e9e1a0` (docs). Task 7's cold-install acceptance ran green with no commit. This stamp is the resume point: Task 7's task review, then the whole-branch review against `d858db5`.
-`2026-11-06` — G4/M4 closed out: Task 7 task review Approved (controller re-verified acceptance against live repo state — 1055 pkgs, parity 1021 names no drift, audit 215/6 critical); whole-branch review vs base `d858db5` **approved inline** (per the user's no-subagent directive), no critical or important findings, minors (Task 3 parity-helper rewrite, `build:watch` dev-default, Task 4 header, Task 6 stale refs) verified resolved; sole review finding — stale audit count in `AGENTS.md` §4 — fixed in this stamp. Branch `pnpm-migration` = 9 commits, nothing merged/pushed; `finishing-a-development-branch` awaits the user's merge decision.
+`2026-11-06` — G4/M4 closed out: Task 7 task review Approved (controller re-verified acceptance against live repo state — 1055 pkgs, parity 1021 names no drift, audit 215/6 critical); whole-branch review vs base `d858db5` **approved inline** (per the user's no-subagent directive), no critical or important findings, minors (Task 3 parity-helper rewrite, `build:watch` dev-default, Task 4 header, Task 6 stale refs) verified resolved; sole review finding — stale audit count in `AGENTS.md` §4 — fixed.
+`2026-11-06` — G4 merged: user chose option 1 of `finishing-a-development-branch`, so `main` fast-forwarded `84cab2c`→`892677e` (10 commits, `pnpm-lock.yaml` + `pnpm-workspace.yaml` added, `package-lock.json` deleted). Merged result re-verified green: `pnpm test` 3 suites / 42 tests / 1 snapshot, `pnpm lint` clean, `pnpm build` PASS. Worktree removed, branch deleted.
