@@ -7,7 +7,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - Update **before** a session ends and **before** any context reset. One line per item, no prose essays.
 - Stamp the date on every edit. Anything older than a month gets re-verified against the repo.
 
-`Last updated: 2026-11-06` · `Branch: main` · `HEAD: this ledger stamp, on top of 892677e` · `Clean tree: docs/LEDGER.md (this stamp commit)` · G4 merged: `main` fast-forwarded `84cab2c`→`892677e`, worktree removed, branch deleted
+`Last updated: 2026-11-06` · `Branch: angular-22` · `HEAD: this ledger stamp, branched from main@9923432` · `Clean tree: docs/LEDGER.md (this stamp commit)` · Working in worktree `C:\Users\alexe\.local\share\opencode\worktree\2603db\angular-22` (design doc: `C:\Users\alexe\.opencode\plan\angular-22-upgrade.md`)
 
 ## Active goals
 
@@ -18,6 +18,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | G3 | Test coverage for the load pipeline (`TrackImportWatchDirective`, `src/music/music-idb.ts`) | proposed, not started |
 | G4 | Move the repo from npm to pnpm (lockfile, scripts, build-script allow-list, CI, docs) | **done** — merged into `main` as `892677e` (fast-forward) on user's choice; merged result re-verified green |
 | G5 | Dependency update pass (incl. deciding the unused `https` devDependency, currently kept) | proposed, not started — user signalled 2026-11-06 |
+| G6 | Upgrade Angular 19.0.6 → 22.2.x (single hop, worktree `angular-22`), gates green, zoneless test env | in progress — step 1 of 5 done |
 
 ## Milestones
 
@@ -27,14 +28,17 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | M1 | Asset sync survives offline / cold install (add `dd-chords` group to `ngsw-config.json`, or drop the `DiOnline` gate) | open |
 | M2 | Specs for `upsertTrack$` / `toggleTrackPlaylist$` / import directive (ng-mocks + `toMatchSnapshot`) | open |
 | M3 | Fix `CacheService` version-gate precedence bug (`?? 0 >= cachedMapVersion`, `cache.service.ts:54`) | open, blocked on user call |
-| M4 | npm → pnpm migration (7 tasks: package.json, lockfile swap, scripts, `pnpm-workspace.yaml`, Travis, docs, cold-install check) | done — Tasks 1–6 (`d794c79`→`4e9e1a0`) approved per task; Task 7 acceptance green with **no commit** (acceptance-only); whole-branch review vs `d858db5` **approved** 2026-11-06 (only finding: stale `AGENTS.md` §4 audit count, fixed). Merged into `main` 2026-11-06; execution ledger `.superpowers/sdd/2026-11-06-pnpm-migration/progress.md` lived in the removed worktree |
+| M5 | Angular 19→22 upgrade (G6): 5 steps — worktree+baseline, dep bump+schematics, forced edits, gates, ledger/merge | **step 1 done** (worktree `angular-22` off `main`@`9923432`; `pnpm install` 1055 pkgs; `pnpm test` 3 suites/42 tests/1 snapshot, `pnpm lint` clean, `pnpm build` PASS on v19.0.6). Steps 2–5 open |
 
 ## Next steps
 
-1. Post-merge follow-ups for G4 (user's call, see item 4): the Travis double-install gap; the audit findings. `https` is **kept** — decided 2026-11-06, to be handled in a later dependency update (D5).
-2. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
-3. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
-4. Two open questions for the user: the `pnpm audit` findings (verified: **215 — 22 low / 83 moderate / 104 high / 6 critical**) are accepted as-is for the migration but the spec's premise quoted npm's older 90/4-high baseline, so re-confirm; and `.travis.yml` has no `install:` override, so Travis's default stage runs `npm install` before `script`'s `pnpm install --frozen-lockfile` — CI installs twice (`install: true` would be a follow-up fix).
+1. M5 step 2 — dep bump: `pnpm ng update @angular/core@22 @angular/cli@22`; if the schematic refuses v19, do staged hops `@20`→`@21`→`@22`, one commit per hop. Then matrix: `@angular/*` + `@angular-devkit/build-angular` + `@angular/cli` 22.2.6, `@angular/cdk` 22.2.6, TypeScript `6.0.x`, `jest` + `@types/jest` 30, `jest-preset-angular` 17.0.3, `angular-eslint` 22.6.0 (`eslint` stays 9.x, `typescript-eslint` stays 8), `ng-mocks` 14.18.5, `engines` `^22.22.3 || ^24.15.0 || ^26.0.0`.
+2. M5 step 3 — forced edits the schematics won't do: `src/main.ts` `provideExperimentalZonelessChangeDetection`→`provideZonelessChangeDetection`; `src/jest-setup.ts` `setup-env/zone`→`setup-env/zoneless` (fix failures in test code, do not revert to zone); `tsconfig*` only what TS 6 forces; remove `@angular/platform-browser-dynamic` and the karma/protractor targets in `angular.json`.
+3. M5 step 4 — gates: `pnpm test` (review snapshot diffs, no blind regenerate), `pnpm lint`, `pnpm build`, re-record `pnpm audit`.
+4. M5 step 5 — ledger stamp + commit, then offer the merge choice (`finishing-a-development-branch`).
+5. G5 leftovers (D5): decide the `https` devDependency; the Travis double-install gap (`install: true`); re-confirm the audit findings.
+6. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
+7. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
 
 ## Decisions
 
@@ -46,7 +50,8 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 
 ## Notes
 
-- Subagent context budget works: one implementer + one reviewer per task, one at a time. Models used: implementers `opencode/deepseek-v4.1-flash-free#high`, reviewers `opencode/glm-5.3-flash-free#high`; the whole-branch review wants the most capable model available.
+- G6 worktree `angular-22` branched from `main`@`9923432`; the root checkout is untouched on `main`. Design doc lives outside the repo at `C:\Users\alexe\.opencode\plan\angular-22-upgrade.md`. Verified 2026-11-06 in the worktree: `pnpm install` fresh, v19.0.6 baseline green — `pnpm test` 3 suites/42 tests/1 snapshot, `pnpm lint` clean, `pnpm build` PASS.
+- Subagent context budget works: one implementer + one reviewer per task, one at a time. Models used: implementers `opencode/deepseek-v4.1-flash-free#high`, reviewers `opencode/glm-5.3-flash-free#high`; the whole-branch review wants the most capable model available. **Superseded 2026-11-06 (D3): user directs all work inline in the main session.**
 - IDB is `ddchords` v5. Bumping `dbVersion` deletes the `tracks` store and reloads the page → full re-import of all 10 files. Any schema change is a total resync.
 - Only 3 specs exist (`app.component`, `music`, `md5`). `jest-global-mocks.ts` makes `console.error` throw — tests fail loudly on logging.
 - `key.pem` / `cert.pem` are local-only (gitignored) and both present in the root repo (verified 2026-11-06); `pnpm start` fails without them.
@@ -69,3 +74,4 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 `2026-11-06` — G4 merged: user chose option 1 of `finishing-a-development-branch`, so `main` fast-forwarded `84cab2c`→`892677e` (10 commits, `pnpm-lock.yaml` + `pnpm-workspace.yaml` added, `package-lock.json` deleted). Merged result re-verified green: `pnpm test` 3 suites / 42 tests / 1 snapshot, `pnpm lint` clean, `pnpm build` PASS. Worktree removed, branch deleted.
 `2026-11-06` — Workspace cleanup finished: the harness's non-force worktree removal left the directory behind, so it was deleted on the user's confirmation after every leftover file was hash-checked against `main`'s blobs (byte-identical; the only untracked file was the gitignored `dd-chords.json`, identical to the root copy). `git branch -d pnpm-migration` done (`was 892677e`), `git worktree prune` leaves only the root repo. `git status` clean. `pnpm test` re-run on `main`: 3 suites / 42 tests.
 `2026-11-06` — User decision: keep the `https` devDependency for now, revisit in a later dependency update → recorded as D5 + G5. Verified unused in this session: no `https` import anywhere under `src/`.
+`2026-11-06` — G6/M5 step 1: worktree `angular-22` created from `main`@`9923432`, session moved into it, `pnpm install` fresh, v19.0.6 control baseline green (test 3/42/1, lint clean, build PASS). Next: M5 step 2 (dep bump + `ng update` schematics).
