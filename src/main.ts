@@ -1,5 +1,5 @@
 import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {enableProdMode, inject, provideAppInitializer, provideExperimentalZonelessChangeDetection} from '@angular/core';
+import {enableProdMode, inject, provideAppInitializer, provideZonelessChangeDetection} from '@angular/core';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
@@ -33,7 +33,7 @@ bootstrapApplication(AppComponent, {
     // ng
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideServiceWorker('ngsw-worker.js', {enabled: environment.production}),
     // 3rd
     // local

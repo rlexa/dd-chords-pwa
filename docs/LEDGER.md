@@ -7,7 +7,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - Update **before** a session ends and **before** any context reset. One line per item, no prose essays.
 - Stamp the date on every edit. Anything older than a month gets re-verified against the repo.
 
-`Last updated: 2026-11-06` · `Branch: angular-22` · `HEAD: this ledger stamp, branched from main@9923432` · `Clean tree: docs/LEDGER.md (this stamp commit)` · Working in worktree `C:\Users\alexe\.local\share\opencode\worktree\2603db\angular-22` (design doc: `C:\Users\alexe\.opencode\plan\angular-22-upgrade.md`)
+`Last updated: 2026-11-06` · `Branch: angular-22` · `HEAD: hop 1 of the Angular upgrade` · `Clean tree: this ledger stamp` · Working in worktree `C:\Users\alexe\.local\share\opencode\worktree\2603db\angular-22` (design doc: `C:\Users\alexe\.opencode\plan\angular-22-upgrade.md`)
 
 ## Active goals
 
@@ -18,7 +18,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | G3 | Test coverage for the load pipeline (`TrackImportWatchDirective`, `src/music/music-idb.ts`) | proposed, not started |
 | G4 | Move the repo from npm to pnpm (lockfile, scripts, build-script allow-list, CI, docs) | **done** — merged into `main` as `892677e` (fast-forward) on user's choice; merged result re-verified green |
 | G5 | Dependency update pass (incl. deciding the unused `https` devDependency, currently kept) | proposed, not started — user signalled 2026-11-06 |
-| G6 | Upgrade Angular 19.0.6 → 22.2.x (single hop, worktree `angular-22`), gates green, zoneless test env | in progress — step 1 of 5 done |
+| G6 | Upgrade Angular 19.0.6 → 22.2.x (worktree `angular-22`, staged hops 20→21→22), gates green, zoneless test env | in progress — hop 1 of 3 done |
 
 ## Milestones
 
@@ -28,14 +28,14 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | M1 | Asset sync survives offline / cold install (add `dd-chords` group to `ngsw-config.json`, or drop the `DiOnline` gate) | open |
 | M2 | Specs for `upsertTrack$` / `toggleTrackPlaylist$` / import directive (ng-mocks + `toMatchSnapshot`) | open |
 | M3 | Fix `CacheService` version-gate precedence bug (`?? 0 >= cachedMapVersion`, `cache.service.ts:54`) | open, blocked on user call |
-| M5 | Angular 19→22 upgrade (G6): 5 steps — worktree+baseline, dep bump+schematics, forced edits, gates, ledger/merge | **step 1 done** (worktree `angular-22` off `main`@`9923432`; `pnpm install` 1055 pkgs; `pnpm test` 3 suites/42 tests/1 snapshot, `pnpm lint` clean, `pnpm build` PASS on v19.0.6). Steps 2–5 open |
+| M5 | Angular 19→22 upgrade (G6) — steps: worktree+v19 baseline, hop 1 (→20), hop 2 (→21), hop 3 (→22), cleanup+gates, ledger/merge | **steps 1–2 done**: baseline green on v19.0.6 (`7074ca4`); hop 1 deps `c19c517` + forced edits (`@angular/*` 20.3.35, `cdk` 20.2.14, CLI/build-angular 20.3.42, TS 5.9.3, jest 30.5.2, `jest-preset-angular` 17.0.3, ng-mocks 14.18.5, jsdom 26.1.0). Gates green: 42/42 tests, snapshot unchanged, lint clean, build PASS (initial 471 kB / transfer 126 kB). Steps 3–6 open |
 
 ## Next steps
 
-1. M5 step 2 — dep bump: `pnpm ng update @angular/core@22 @angular/cli@22`; if the schematic refuses v19, do staged hops `@20`→`@21`→`@22`, one commit per hop. Then matrix: `@angular/*` + `@angular-devkit/build-angular` + `@angular/cli` 22.2.6, `@angular/cdk` 22.2.6, TypeScript `6.0.x`, `jest` + `@types/jest` 30, `jest-preset-angular` 17.0.3, `angular-eslint` 22.6.0 (`eslint` stays 9.x, `typescript-eslint` stays 8), `ng-mocks` 14.18.5, `engines` `^22.22.3 || ^24.15.0 || ^26.0.0`.
-2. M5 step 3 — forced edits the schematics won't do: `src/main.ts` `provideExperimentalZonelessChangeDetection`→`provideZonelessChangeDetection`; `src/jest-setup.ts` `setup-env/zone`→`setup-env/zoneless` (fix failures in test code, do not revert to zone); `tsconfig*` only what TS 6 forces; remove `@angular/platform-browser-dynamic` and the karma/protractor targets in `angular.json`.
-3. M5 step 4 — gates: `pnpm test` (review snapshot diffs, no blind regenerate), `pnpm lint`, `pnpm build`, re-record `pnpm audit`.
-4. M5 step 5 — ledger stamp + commit, then offer the merge choice (`finishing-a-development-branch`).
+1. M5 hop 2 — commit hop 1's forced edits, then bump `@angular/*` + `@angular/cdk` to 21.x and `angular-eslint`/`@angular-eslint/*` to 21.4.0 (`typescript-eslint` ^8 stays), `pnpm install`, `ng update @angular/core --migrate-only --from 20.3.35 --to 21.x` (bare package name, one package per invocation — a version specifier makes it fail with "Package is not installed"), then gates.
+2. M5 hop 3 — same recipe to 22.2.x with TypeScript `6.0.x`, `@angular-devkit/build-angular` + `@angular/cli` 22.2.6, `angular-eslint` 22.6.0; then `ng update @angular/core @angular/cli --migrate-only` for v22 migrations (OnPush default, zoneless, `InjectFlags`/`TestBed.get` removal). Optional `control-flow-migration` after, with one snapshot review pass.
+3. M5 cleanup — drop `@angular/platform-browser-dynamic` + karma/protractor targets in `angular.json`, `engines` `^22.22.3 || ^24.15.0 || ^26.0.0`, `tsconfig*` only if TS 6 forces it, re-record `pnpm audit` numbers (AGENTS.md §4).
+4. M5 gates + close — `pnpm test` (judge snapshot diffs, don't regenerate blindly) → `pnpm lint` → `pnpm build`, ledger stamp, offer the merge choice (`finishing-a-development-branch`).
 5. G5 leftovers (D5): decide the `https` devDependency; the Travis double-install gap (`install: true`); re-confirm the audit findings.
 6. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
 7. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
@@ -75,3 +75,4 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 `2026-11-06` — Workspace cleanup finished: the harness's non-force worktree removal left the directory behind, so it was deleted on the user's confirmation after every leftover file was hash-checked against `main`'s blobs (byte-identical; the only untracked file was the gitignored `dd-chords.json`, identical to the root copy). `git branch -d pnpm-migration` done (`was 892677e`), `git worktree prune` leaves only the root repo. `git status` clean. `pnpm test` re-run on `main`: 3 suites / 42 tests.
 `2026-11-06` — User decision: keep the `https` devDependency for now, revisit in a later dependency update → recorded as D5 + G5. Verified unused in this session: no `https` import anywhere under `src/`.
 `2026-11-06` — G6/M5 step 1: worktree `angular-22` created from `main`@`9923432`, session moved into it, `pnpm install` fresh, v19.0.6 control baseline green (test 3/42/1, lint clean, build PASS). Next: M5 step 2 (dep bump + `ng update` schematics).
+`2026-11-06` — G6/M5 hop 1 → v20: `ng update` refused 19→22 in one go, so the path is staged (19→20→21→22). Deps committed as `c19c517` (Angular 20.3.35, cdk 20.2.14, CLI/build 20.3.42, TS 5.9.3, jest 30.5.2 + preset 17.0.3 + `@types/jest` 30 + ng-mocks 14.18.5 + jsdom 26.1.0 + `@types/node` 22.20.5) — peer-satisfied, no `strictPeerDependencies` override needed. `--migrate-only --from 19.0.6 --to 20.3.35` → zero file changes. Forced edits in this commit: `main.ts` zoneless symbol, `jest-setup.ts` → `setup-env/zoneless`, `jest.config.ts` presets import → `presets/index.js` (Node ESM type-stripping), snapshot header link, `docs/ARCHITECTURE.md` API name. Gates: 42/42, snapshot unchanged, lint clean, build PASS (initial 471.14 kB / transfer 126 kB vs v19's 559 kB / 133 kB). Next: hop 2 → 21.x.
