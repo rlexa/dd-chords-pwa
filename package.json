@@ -50,6 +50,7 @@
     "express": "^4.17.1",
     "https": "^1.0.0",
     "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "jest-junit": "^16.0.0",
     "jest-preset-angular": "^17.0.3",
     "jsdom": "^26.1.0",

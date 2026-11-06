@@ -53,7 +53,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^21.2.29
-        version: 21.2.29(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/compiler@21.2.26)(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/service-worker@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@types/node@22.20.5)(chokidar@5.0.0)(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jiti@2.7.0)(typescript@5.9.3)
+        version: 21.2.29(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/compiler@21.2.26)(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/service-worker@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@types/node@22.20.5)(chokidar@5.0.0)(jest-environment-jsdom@30.5.2)(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jiti@2.7.0)(typescript@5.9.3)
       '@angular/cli':
         specifier: ^21.2.29
         version: 21.2.29(@types/node@22.20.5)(chokidar@5.0.0)
@@ -87,12 +87,15 @@ importers:
       jest:
         specifier: ^30.5.2
         version: 30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3))
+      jest-environment-jsdom:
+        specifier: ^30.5.2
+        version: 30.5.2
       jest-junit:
         specifier: ^16.0.0
         version: 16.0.0
       jest-preset-angular:
         specifier: ^17.0.3
-        version: 17.0.3(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(@types/jsdom@20.0.1)(babel-jest@30.5.2(@babel/core@7.29.13))(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jsdom@26.1.0)(typescript@5.9.3)
+        version: 17.0.3(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(@types/jsdom@21.1.7)(babel-jest@30.5.2(@babel/core@7.29.13))(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jsdom@26.1.0)(typescript@5.9.3)
       jsdom:
         specifier: ^26.1.0
         version: 26.1.0
@@ -2626,8 +2629,8 @@ packages:
   '@types/jest@30.0.0':
     resolution: {integrity: sha512-XTYugzhuwqWjws0CVz8QpM36+T+Dz5mTEBKhNs/esGLnCIlGdRy+Dq78NRjd7ls7r8BC8ZRMOrKlkO1hU0JOwA==}
 
-  '@types/jsdom@20.0.1':
-    resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
+  '@types/jsdom@21.1.7':
+    resolution: {integrity: sha512-yOriVnggzrnQ3a9OKOCxaVuSug3w3/SbOj5i7VwXWZEyUNl3bLF9V3MfxGbZKuwqJOQyRfqXyROBB1CoZLFWzA==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -4302,6 +4305,15 @@ packages:
   jest-each@30.5.2:
     resolution: {integrity: sha512-GRrW+7fmmgmkvyfEBqc1QFdWnF1Ex5yG6Y6AWL4TTxnkWlKIT98dsKh3P3UuWm6v4XsQwVE6DEzXIPMzWJ3ZbA==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
+
+  jest-environment-jsdom@30.5.2:
+    resolution: {integrity: sha512-6NOZjEP+WNi4WXjbxb/1ROnfaMxn6Dhqu6uSC22o0H28z+uppejs/jZ9KCVoLepqqoCjcNZujtzQqC9jSV15jg==}
+    engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
+    peerDependencies:
+      canvas: ^3.0.0
+    peerDependenciesMeta:
+      canvas:
+        optional: true
 
   jest-environment-node@30.5.2:
     resolution: {integrity: sha512-Ciz4KgTGIbojxSKpuFImgWJj5EyqfE8xMq9NxWmOXnQywHHS03H9Mv+vaCB29J5pr3JBrY27WbRV18rBdjh8Dg==}
@@ -6301,7 +6313,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-angular@21.2.29(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/compiler@21.2.26)(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/service-worker@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@types/node@22.20.5)(chokidar@5.0.0)(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jiti@2.7.0)(typescript@5.9.3)':
+  '@angular-devkit/build-angular@21.2.29(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/compiler@21.2.26)(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/service-worker@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)(@types/node@22.20.5)(chokidar@5.0.0)(jest-environment-jsdom@30.5.2)(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jiti@2.7.0)(typescript@5.9.3)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2102.29(chokidar@5.0.0)
@@ -6365,6 +6377,7 @@ snapshots:
       '@angular/service-worker': 21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       esbuild: 0.28.1
       jest: 30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3))
+      jest-environment-jsdom: 30.5.2
     transitivePeerDependencies:
       - '@angular/compiler'
       - '@emnapi/core'
@@ -7936,12 +7949,12 @@ snapshots:
 
   '@jest/diff-sequences@30.5.0': {}
 
-  '@jest/environment-jsdom-abstract@30.5.2(@types/jsdom@20.0.1)(jsdom@26.1.0)':
+  '@jest/environment-jsdom-abstract@30.5.2(@types/jsdom@21.1.7)(jsdom@26.1.0)':
     dependencies:
       '@jest/environment': 30.5.2
       '@jest/fake-timers': 30.5.2
       '@jest/types': 30.5.1
-      '@types/jsdom': 20.0.1
+      '@types/jsdom': 21.1.7
       '@types/node': 22.20.5
       jest-mock: 30.5.2
       jest-util: 30.5.1
@@ -8103,7 +8116,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.0
+      '@jridgewell/sourcemap-codec': 1.6.0
 
   '@jridgewell/trace-mapping@0.3.9':
     dependencies:
@@ -8891,7 +8904,7 @@ snapshots:
       expect: 30.5.2
       pretty-format: 30.5.1
 
-  '@types/jsdom@20.0.1':
+  '@types/jsdom@21.1.7':
     dependencies:
       '@types/node': 22.20.5
       '@types/tough-cookie': 4.0.5
@@ -10788,6 +10801,17 @@ snapshots:
       jest-util: 30.5.1
       pretty-format: 30.5.1
 
+  jest-environment-jsdom@30.5.2:
+    dependencies:
+      '@jest/environment': 30.5.2
+      '@jest/environment-jsdom-abstract': 30.5.2(@types/jsdom@21.1.7)(jsdom@26.1.0)
+      '@types/jsdom': 21.1.7
+      jsdom: 26.1.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
   jest-environment-node@30.5.2:
     dependencies:
       '@jest/environment': 30.5.2
@@ -10851,12 +10875,12 @@ snapshots:
       '@types/node': 22.20.5
       jest-util: 30.5.1
 
-  jest-preset-angular@17.0.3(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(@types/jsdom@20.0.1)(babel-jest@30.5.2(@babel/core@7.29.13))(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jsdom@26.1.0)(typescript@5.9.3):
+  jest-preset-angular@17.0.3(@angular/compiler-cli@21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@babel/core@7.29.13)(@jest/transform@30.5.2)(@jest/types@30.5.1)(@types/jsdom@21.1.7)(babel-jest@30.5.2(@babel/core@7.29.13))(jest@30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3)))(jsdom@26.1.0)(typescript@5.9.3):
     dependencies:
       '@angular/compiler-cli': 21.2.26(@angular/compiler@21.2.26)(typescript@5.9.3)
       '@angular/core': 21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)
       '@angular/platform-browser': 21.2.26(@angular/animations@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@21.2.26(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@21.2.26(@angular/compiler@21.2.26)(rxjs@7.8.1)(zone.js@0.15.0))
-      '@jest/environment-jsdom-abstract': 30.5.2(@types/jsdom@20.0.1)(jsdom@26.1.0)
+      '@jest/environment-jsdom-abstract': 30.5.2(@types/jsdom@21.1.7)(jsdom@26.1.0)
       bs-logger: 0.2.6
       esbuild-wasm: 0.28.2
       jest: 30.5.2(@types/node@22.20.5)(ts-node@10.9.2(@types/node@22.20.5)(typescript@5.9.3))
