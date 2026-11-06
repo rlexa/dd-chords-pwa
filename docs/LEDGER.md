@@ -7,7 +7,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - Update **before** a session ends and **before** any context reset. One line per item, no prose essays.
 - Stamp the date on every edit. Anything older than a month gets re-verified against the repo.
 
-`Last updated: 2026-11-06` · `Branch: angular-22` · `HEAD: hop 1 of the Angular upgrade` · `Clean tree: this ledger stamp` · Working in worktree `C:\Users\alexe\.local\share\opencode\worktree\2603db\angular-22` (design doc: `C:\Users\alexe\.opencode\plan\angular-22-upgrade.md`)
+`Last updated: 2026-11-06` · `Branch: angular-22` · `HEAD: 716b023` (hop 2 done, v21.2.x) · `Clean tree: this ledger stamp` · Working in worktree `C:\Users\alexe\.local\share\opencode\worktree\2603db\angular-22` (design doc: `C:\Users\alexe\.opencode\plan\angular-22-upgrade.md`)
 
 ## Active goals
 
@@ -18,7 +18,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | G3 | Test coverage for the load pipeline (`TrackImportWatchDirective`, `src/music/music-idb.ts`) | proposed, not started |
 | G4 | Move the repo from npm to pnpm (lockfile, scripts, build-script allow-list, CI, docs) | **done** — merged into `main` as `892677e` (fast-forward) on user's choice; merged result re-verified green |
 | G5 | Dependency update pass (incl. deciding the unused `https` devDependency, currently kept) | proposed, not started — user signalled 2026-11-06 |
-| G6 | Upgrade Angular 19.0.6 → 22.2.x (worktree `angular-22`, staged hops 20→21→22), gates green, zoneless test env | in progress — hop 1 of 3 done |
+| G6 | Upgrade Angular 19.0.6 → 22.2.x (worktree `angular-22`, staged hops 20→21→22), gates green, zoneless test env | in progress — hops 1–2 done (now on 21.2.x, gates green), hop 3 open |
 
 ## Milestones
 
@@ -28,17 +28,20 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | M1 | Asset sync survives offline / cold install (add `dd-chords` group to `ngsw-config.json`, or drop the `DiOnline` gate) | open |
 | M2 | Specs for `upsertTrack$` / `toggleTrackPlaylist$` / import directive (ng-mocks + `toMatchSnapshot`) | open |
 | M3 | Fix `CacheService` version-gate precedence bug (`?? 0 >= cachedMapVersion`, `cache.service.ts:54`) | open, blocked on user call |
-| M5 | Angular 19→22 upgrade (G6) — steps: worktree+v19 baseline, hop 1 (→20), hop 2 (→21), hop 3 (→22), cleanup+gates, ledger/merge | **steps 1–2 done**: baseline green on v19.0.6 (`7074ca4`); hop 1 deps `c19c517` + forced edits (`@angular/*` 20.3.35, `cdk` 20.2.14, CLI/build-angular 20.3.42, TS 5.9.3, jest 30.5.2, `jest-preset-angular` 17.0.3, ng-mocks 14.18.5, jsdom 26.1.0). Gates green: 42/42 tests, snapshot unchanged, lint clean, build PASS (initial 471 kB / transfer 126 kB). Steps 3–6 open |
+| M5 | Angular 19→22 upgrade (G6) — one goal per hop, each hop = dep bump + migrate + forced edits + gates + commit | **hops 1–2 done**: baseline `7074ca4`; hop 1 `c19c517`+`e3adcdb`; hop 2 `e8ce181`+`64e5315`+`716b023`. Hop 3 open |
 
 ## Next steps
 
-1. M5 hop 2 — commit hop 1's forced edits, then bump `@angular/*` + `@angular/cdk` to 21.x and `angular-eslint`/`@angular-eslint/*` to 21.4.0 (`typescript-eslint` ^8 stays), `pnpm install`, `ng update @angular/core --migrate-only --from 20.3.35 --to 21.x` (bare package name, one package per invocation — a version specifier makes it fail with "Package is not installed"), then gates.
-2. M5 hop 3 — same recipe to 22.2.x with TypeScript `6.0.x`, `@angular-devkit/build-angular` + `@angular/cli` 22.2.6, `angular-eslint` 22.6.0; then `ng update @angular/core @angular/cli --migrate-only` for v22 migrations (OnPush default, zoneless, `InjectFlags`/`TestBed.get` removal). Optional `control-flow-migration` after, with one snapshot review pass.
-3. M5 cleanup — drop `@angular/platform-browser-dynamic` + karma/protractor targets in `angular.json`, `engines` `^22.22.3 || ^24.15.0 || ^26.0.0`, `tsconfig*` only if TS 6 forces it, re-record `pnpm audit` numbers (AGENTS.md §4).
-4. M5 gates + close — `pnpm test` (judge snapshot diffs, don't regenerate blindly) → `pnpm lint` → `pnpm build`, ledger stamp, offer the merge choice (`finishing-a-development-branch`).
-5. G5 leftovers (D5): decide the `https` devDependency; the Travis double-install gap (`install: true`); re-confirm the audit findings.
-6. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
-7. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
+Small goals, one commit each, and stamp this ledger after every one (not only at hop boundaries). Each gate line is `pnpm test` → `pnpm lint` → `pnpm build`.
+
+1. **G6 hop 3a — dep bump to 22.2.x**: `@angular/*` 22.2.6, `@angular/cdk` latest 22.x, `@angular/cli` + `@angular-devkit/build-angular` 22.2.6, `angular-eslint`/`@angular-eslint/*` 22.6.0, `typescript ~6.0.x`, `ng update @angular/core @angular/cli --migrate-only --from 21.2.26 --to 22.2.6` (bare package name, one package per invocation). Commit manifest + lockfile. **If a peer wall appears** (`ng-mocks`/`jest-preset-angular` not yet on 22), resolve it before continuing: latest of each, or note the blocker in `Notes`.
+2. **G6 hop 3b — forced edits**: whatever the migration doesn't do (v22: OnPush default, `platform-browser-dynamic`, `InjectFlags`/`TestBed.get`, karma/protractor targets in `angular.json`). Gate green, commit.
+3. **G6 hop 3c — optional `control-flow-migration`** (`ng generate control-flow-migration`), then one snapshot review pass — judge the diff, don't regenerate blindly. Commit only if it changes source; else leave it out and record that.
+4. **G6 hop 3d — cleanup**: drop `@angular/platform-browser-dynamic`, `engines` `^22.22.3 || ^24.15.0 || ^26.0.0`, re-record `pnpm audit` numbers in `AGENTS.md` §4. Gates + ledger stamp + commit.
+5. **G6 close** — full gates on the final HEAD, ledger stamp, then offer the merge choice (`finishing-a-development-branch`).
+6. **G5** — dependency pass: decide the `https` devDependency (D5), the Travis double-install gap (`install: true`), re-confirm the audit findings.
+7. **Ask the user** whether M1–M3 are wanted. M3 (`CacheService` precedence bug, `cache.service.ts:54`) changes cached-state behaviour, so it needs their call.
+8. **If M1 approved** — patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (needs a `maxAge`/`freshness` call; the index is a build artifact so stale-while-revalidate fits).
 
 ## Decisions
 
@@ -51,7 +54,8 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 ## Notes
 
 - G6 worktree `angular-22` branched from `main`@`9923432`; the root checkout is untouched on `main`. Design doc lives outside the repo at `C:\Users\alexe\.opencode\plan\angular-22-upgrade.md`. Verified 2026-11-06 in the worktree: `pnpm install` fresh, v19.0.6 baseline green — `pnpm test` 3 suites/42 tests/1 snapshot, `pnpm lint` clean, `pnpm build` PASS.
-- Subagent context budget works: one implementer + one reviewer per task, one at a time. Models used: implementers `opencode/deepseek-v4.1-flash-free#high`, reviewers `opencode/glm-5.3-flash-free#high`; the whole-branch review wants the most capable model available. **Superseded 2026-11-06 (D3): user directs all work inline in the main session.**
+- G6 hop 2 facts (verified 2026-11-06): Angular 21 ships `@angular/core` types only via the `exports` map (`types/testing.d.ts`), so `tsconfig.json` `moduleResolution` must be `bundler` — Node10 resolution gives `TS2307` on `@angular/core/testing`, which surfaces as ng-mocks' `Property 'detectChanges' does not exist on MockedComponentFixture`. Pnpm's strict layout also dropped `jest-environment-jsdom` (it had been a transitive peer under npm) → `ReferenceError: WindowContext is not defined`; fixed by declaring it explicitly (`^30.5.2`), not by a `breakContext` hack (that workaround was tried and reverted — tests are green without it).
+- Models used for subagent work: implementers `opencode/deepseek-v4.1-flash-free#high`, reviewers `opencode/glm-5.3-flash-free#high`. **Superseded 2026-11-06 (D3): all work runs inline in the main session.**
 - IDB is `ddchords` v5. Bumping `dbVersion` deletes the `tracks` store and reloads the page → full re-import of all 10 files. Any schema change is a total resync.
 - Only 3 specs exist (`app.component`, `music`, `md5`). `jest-global-mocks.ts` makes `console.error` throw — tests fail loudly on logging.
 - `key.pem` / `cert.pem` are local-only (gitignored) and both present in the root repo (verified 2026-11-06); `pnpm start` fails without them.
@@ -76,3 +80,5 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 `2026-11-06` — User decision: keep the `https` devDependency for now, revisit in a later dependency update → recorded as D5 + G5. Verified unused in this session: no `https` import anywhere under `src/`.
 `2026-11-06` — G6/M5 step 1: worktree `angular-22` created from `main`@`9923432`, session moved into it, `pnpm install` fresh, v19.0.6 control baseline green (test 3/42/1, lint clean, build PASS). Next: M5 step 2 (dep bump + `ng update` schematics).
 `2026-11-06` — G6/M5 hop 1 → v20: `ng update` refused 19→22 in one go, so the path is staged (19→20→21→22). Deps committed as `c19c517` (Angular 20.3.35, cdk 20.2.14, CLI/build 20.3.42, TS 5.9.3, jest 30.5.2 + preset 17.0.3 + `@types/jest` 30 + ng-mocks 14.18.5 + jsdom 26.1.0 + `@types/node` 22.20.5) — peer-satisfied, no `strictPeerDependencies` override needed. `--migrate-only --from 19.0.6 --to 20.3.35` → zero file changes. Forced edits in this commit: `main.ts` zoneless symbol, `jest-setup.ts` → `setup-env/zoneless`, `jest.config.ts` presets import → `presets/index.js` (Node ESM type-stripping), snapshot header link, `docs/ARCHITECTURE.md` API name. Gates: 42/42, snapshot unchanged, lint clean, build PASS (initial 471.14 kB / transfer 126 kB vs v19's 559 kB / 133 kB). Next: hop 2 → 21.x.
+
+``2026-11-06 `G6/M5 hop 2 -> v21: manifest e8ce181 (@angular/core/compiler 21.2.26, cdk 21.2.14, cli/devkit/build-angular 21.2.29, ngular-eslint 21.4.0), lockfile 64e5315 (peer-clean), forced edits 716b023 (moduleResolution -> undler, explicit jest-environment-jsdom). --migrate-only --from 20.3.35 --to 21.2.26 changed only 	sconfig.json's resolution (already applied by the v20 hop). Gates green: 3 suites / 42 tests / 1 snapshot unchanged, lint clean, build PASS (initial 478.26 kB / transfer 127.17 kB). Next: hop 3a (dep bump to 22.2.6).
