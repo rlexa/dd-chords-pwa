@@ -33,14 +33,14 @@ The model driving this repo has a ~64k-token context. Assume it will run out bef
 ## 2. Commands
 
 ```
-npm run build:watch     # watch-build into dist/  (dev mode)
-npm start               # express server over https://127.0.0.1:4200  — needs key.pem + cert.pem (gitignored, local only)
-npm test               # jest --ci --logHeapUsage
-npm run test:dev        # jest --updateSnapshot --bail --runInBand  (regenerate snapshots)
-npm run test:watch
-npm run lint            # ng lint
-npm run build           # production build; prebuild = rimraf dist && generate-chords-index
-npm run generate-chords-index   # regenerates src/assets/dd-chords/dd-chords.json (md5 hash index)
+pnpm run build:watch     # watch-build into dist/  (dev mode)
+pnpm start               # express server over https://127.0.0.1:4200  — needs key.pem + cert.pem (gitignored, local only)
+pnpm test               # jest --ci --logHeapUsage
+pnpm run test:dev       # jest --updateSnapshot --bail --runInBand  (regenerate snapshots)
+pnpm run test:watch
+pnpm lint               # ng lint
+pnpm build              # production build; prebuild = rimraf dist && generate-chords-index
+pnpm generate-chords-index   # regenerates src/assets/dd-chords/dd-chords.json (md5 hash index)
 ```
 
 `src/assets/dd-chords/dd-chords.json` is a **build artifact**, gitignored. Regenerate it; never hand-edit it. The dataset is the 10 `.txt` files beside it.
@@ -56,6 +56,7 @@ npm run generate-chords-index   # regenerates src/assets/dd-chords/dd-chords.jso
 - Prettier: `printWidth: 140`, `bracketSpacing: false`, single quotes, organize-imports. `tsconfig` is `strict` + `strictTemplates`.
 - Tests: Jest + `jest-preset-angular` (CJS preset) + ng-mocks (`MockBuilder`/`MockRender`) with `toMatchSnapshot()`. Snapshots live in `__snapshots__`.
 - Routing: lazy `loadChildren`/`loadComponent` in `src/app/feature/*/routes.ts`; route/query names are constants in `src/app/routing.ts`.
+- npm no longer appears in this repo's scripts; README's global `firebase-tools` install is the one remaining npm command.
 
 ## 4. Landmines
 
@@ -65,7 +66,8 @@ npm run generate-chords-index   # regenerates src/assets/dd-chords/dd-chords.jso
 - **Offline never syncs.** The directive gates on `filter(online)` and `ngsw-config.json` caches nothing under `/assets/dd-chords/**`, so a cold offline install gets no data and no resync. (Ledger M1.)
 - **`CacheService` version gate is wrong.** `cache.service.ts`: `if (cachedMap?.version ?? 0 >= cachedMapVersion)` — precedence, not `??`. Fixing it changes cache-eviction behaviour. (Ledger M3.)
 - **`console.error` throws in tests** (`src/jest-global-mocks.ts`); `Date.now`/`Math.random` are pinned. A test that logs fails.
-- `.travis.yml` runs `npm run test && npm run build` and deploys to Firebase on `main`. It is live CI, not decoration.
+- **pnpm's strict layout hides undeclared imports.** npm hoisting made them resolvable; `pnpm audit` reports 90 findings (4 high: `shell-quote` via `@angular-devkit/build-angular`, `vue` in the esbuild chain, `lodash` in `@angular-devkit`'s `merge`), accepted for this migration.
+- `.travis.yml` runs `pnpm test && pnpm build` and deploys to Firebase on `main`. It is live CI, not decoration.
 
 ## 5. Don't
 

@@ -123,7 +123,7 @@ reporters `default` + `jest-junit` → gitignored `junit.xml`). Setup is `src/je
 `setupZoneTestEnv()` even though the app is zoneless, and imports `src/jest-global-mocks.ts`: that
 throws on `console.error` and pins `Date.now` / `Math.random` and `localStorage`/`sessionStorage`, so
 a test that logs or free-runs fails. Three specs (`app.component`, `music`, `md5`) with ng-mocks +
-`toMatchSnapshot()`, snapshots in `__snapshots__`. Regenerate with `npm run test:dev`.
+`toMatchSnapshot()`, snapshots in `__snapshots__`. Regenerate with `pnpm run test:dev`.
 
 ## Known issues
 

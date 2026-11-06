@@ -7,7 +7,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - Update **before** a session ends and **before** any context reset. One line per item, no prose essays.
 - Stamp the date on every edit. Anything older than a month gets re-verified against the repo.
 
-`Last updated: 2026-11-06` · `Branch: pnpm-migration` · `HEAD: this ledger stamp, on top of d858db5 "docs: pnpm migration design + implementation plan"` · `Clean tree: only docs/LEDGER.md (this stamp commit)`
+`Last updated: 2026-11-06` · `Branch: pnpm-migration` · `HEAD: this ledger stamp, on top of 5e17a1d` · `Clean tree: only docs/LEDGER.md (this stamp commit)`
 
 ## Active goals
 
@@ -16,7 +16,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | G1 | Agent handoff protocol + project docs (`AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/LEDGER.md`) | done, committed `472e0bb` on `progress` |
 | G2 | Make offline installs able to resync assets (`ngsw-config.json` covers no `/assets/dd-chords/**`) | proposed, not started |
 | G3 | Test coverage for the load pipeline (`TrackImportWatchDirective`, `src/music/music-idb.ts`) | proposed, not started |
-| G4 | Move the repo from npm to pnpm (lockfile, scripts, build-script allow-list, CI, docs) | in progress — design + plan committed `d858db5`, Tasks 1–7 pending |
+| G4 | Move the repo from npm to pnpm (lockfile, scripts, build-script allow-list, CI, docs) | in progress — Tasks 1–6 done, Task 7 (cold-install check) pending |
 
 ## Milestones
 
@@ -26,11 +26,11 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 | M1 | Asset sync survives offline / cold install (add `dd-chords` group to `ngsw-config.json`, or drop the `DiOnline` gate) | open |
 | M2 | Specs for `upsertTrack$` / `toggleTrackPlaylist$` / import directive (ng-mocks + `toMatchSnapshot`) | open |
 | M3 | Fix `CacheService` version-gate precedence bug (`?? 0 >= cachedMapVersion`) | open, blocked on user call |
-| M4 | npm → pnpm migration (7 tasks: package.json, lockfile swap, scripts, `pnpm-workspace.yaml`, Travis, docs, cold-install check) | open — plan written, nothing implemented yet. Execution ledger: `.superpowers/sdd/2026-11-06-pnpm-migration/progress.md` (untracked) |
+| M4 | npm → pnpm migration (7 tasks: package.json, lockfile swap, scripts, `pnpm-workspace.yaml`, Travis, docs, cold-install check) | in progress — Tasks 1–6 done, Task 7 (cold-install check) pending. Execution ledger: `.superpowers/sdd/2026-11-06-pnpm-migration/progress.md` (untracked) |
 
 ## Next steps
 
-1. Resume G4/M4 at Task 1 of `docs/superpowers/plans/2026-11-06-pnpm-migration.md` (spec: `docs/superpowers/specs/2026-11-06-pnpm-migration-design.md`); read the SDD execution ledger first — it holds the task list and the pre-flight rulings. Nothing is merged or pushed; `main` untouched.
+1. Resume G4/M4 at Task 7 (cold-install check) of `docs/superpowers/plans/2026-11-06-pnpm-migration.md` (spec: `docs/superpowers/specs/2026-11-06-pnpm-migration-design.md`); read the SDD execution ledger first — it holds the task list and the pre-flight rulings. Nothing is merged or pushed; `main` untouched.
 2. Ask user to confirm M1–M3 are actually wanted; M3 is a bug fix that changes cached-state behaviour.
 3. If M1 approved: patch `ngsw-config.json` with an assets group for `/assets/dd-chords/**` (`maxAge`/`freshness` call needed — index is a build artifact, so stale-while-revalidate is probably right).
 4. Two open questions to raise with the user once M4 lands: keep the `https` devDependency (it is a real registry package, not Node's built-in)? and the 90 npm audit findings — separate task.
@@ -53,6 +53,7 @@ Rules live in [`AGENTS.md`](../AGENTS.md); this file holds state only.
 - G4 work happens in the worktree `~/.local/share/opencode/worktree/2603db/pnpm-migration`; `main` (`C:/develop/github/dd-chords-pwa`) is untouched at `84cab2c`. The worktree sat on a detached HEAD until today, so the `pnpm-migration` branch now points at `d858db5`.
 - Baseline verified with npm before the migration: `npm ci` (1174 pkgs) → 3 suites / 42 tests / 1 snapshot, `npm run lint` clean. Toolchain: Node 24.17.0, npm 11.13.0, pnpm 11.8.0, corepack 0.35.0.
 - `eslint.config.js` does `require('@eslint/js')` without declaring it — fatal under pnpm's strict layout, so Task 1 adds `@eslint/js` + `rimraf` as devDependencies (versions taken from `package-lock.json`).
+- `tslib ^2.8.1` is explicit: `importHelpers: true` needs it; npm hoisting hid the undeclared import (`TS2354`).
 
 ## History
 
