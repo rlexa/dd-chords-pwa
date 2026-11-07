@@ -15,8 +15,12 @@ strictPeerDependencies: true
 # ('^1.7.1 || 2.0.0-beta.2 || 2.0.0-beta.3') does not include alpha.6 — and 1.2.5, whose peer
 # does accept alpha.4+, is excluded by oxc's '~1.2.6'. Upstream packaging bug (still present
 # in oxc-parser 0.157.0). The wasm binding is optional and only used on wasm32-wasi, so we
-# ignore just these two peer names instead of turning strictPeerDependencies off.
+# ignore just these two peer ranges instead of turning strictPeerDependencies off.
+# pnpm 11 dropped `ignoreDependencies` from the peer checker — `filterPeerDependencyIssues2`
+# only honours ignoreMissing/allowAny/allowedVersions, and this is a version mismatch ("bad"),
+# not a missing peer, so only allowedVersions suppresses it. Scoped to the declaring package.
 peerDependencyRules:
-  ignoreDependencies:
-    - '@emnapi/core'
-    - '@emnapi/runtime'
+  allowedVersions:
+    '@napi-rs/wasm-runtime':
+      '@emnapi/core': '2.0.0-alpha.6 || 2.0.0-beta.2 || 2.0.0-beta.3 || ^1.7.1'
+      '@emnapi/runtime': '2.0.0-alpha.6 || 2.0.0-beta.2 || 2.0.0-beta.3 || ^1.7.1'
