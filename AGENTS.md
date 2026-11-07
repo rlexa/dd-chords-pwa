@@ -41,6 +41,7 @@ pnpm run test:watch
 pnpm lint               # ng lint
 pnpm build              # production build; prebuild = rimraf dist && generate-chords-index
 pnpm generate-chords-index   # regenerates src/assets/dd-chords/dd-chords.json (md5 hash index)
+npm install -g firebase-tools   # the CLI `firebase deploy` needs (README's deploy step, .travis.yml's before_script); the only npm command left
 ```
 
 `src/assets/dd-chords/dd-chords.json` is a **build artifact**, gitignored. Regenerate it; never hand-edit it. The dataset is the 10 `.txt` files beside it.
@@ -66,7 +67,7 @@ pnpm generate-chords-index   # regenerates src/assets/dd-chords/dd-chords.json (
 - **Offline never syncs.** The directive gates on `filter(online)` and `ngsw-config.json` caches nothing under `/assets/dd-chords/**`, so a cold offline install gets no data and no resync. (Ledger M1.)
 - **`CacheService` version gate is wrong.** `cache.service.ts`: `if (cachedMap?.version ?? 0 >= cachedMapVersion)` — precedence, not `??`. Fixing it changes cache-eviction behaviour. (Ledger M3.)
 - **`console.error` throws in tests** (`src/jest-global-mocks.ts`); `Date.now`/`Math.random` are pinned. A test that logs fails.
-- **pnpm's strict layout hides undeclared imports.** npm hoisting made them resolvable; `tslib` and `@eslint/js` are now declared explicitly for that reason. `pnpm audit` (verified 2026-11-06) reports **215 findings — 22 low / 83 moderate / 104 high / 6 critical** (`form-data`, `shell-quote`, `websocket-driver`, `tar`, `piscina`, `proxy-addr`), accepted for this migration.
+- **pnpm's strict layout hides undeclared imports.** npm hoisting made them resolvable; `tslib` and `@eslint/js` are now declared explicitly for that reason. `pnpm audit` (verified 2026-11-07, Angular 22 tree) reports **70 findings — 9 low / 22 moderate / 38 high / 1 critical** across 20 packages: the dev-dep lint/build tree (`ajv`, `minimatch`, `brace-expansion`, `js-yaml`, `picomatch`, `fast-uri`, `flatted`, `@eslint/plugin-kit`, `@humanfs/node`, `deepmerge`, `diff`, `glob`, `postcss-selector-parser`, `source-map-js`, ...) plus the runtime server tree (`proxy-addr`, `body-parser`, `qs`, `path-to-regexp`, `ws`, `uuid`). The 215-findings set from the npm tree (`form-data`, `shell-quote`, `websocket-driver`, `tar`, `piscina`) is gone with pnpm's stricter resolution. Accepted, and CI does not run audit.
 - `.travis.yml` runs `pnpm test && pnpm build` and deploys to Firebase on `main`. It is live CI, not decoration.
 
 ## 5. Don't
