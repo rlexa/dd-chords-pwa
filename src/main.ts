@@ -1,4 +1,4 @@
-import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi, withXhr} from '@angular/common/http';
 import {enableProdMode, inject, provideAppInitializer, provideZonelessChangeDetection} from '@angular/core';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {provideAnimations} from '@angular/platform-browser/animations';
@@ -32,7 +32,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     // ng
     provideAnimations(),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideZonelessChangeDetection(),
     provideServiceWorker('ngsw-worker.js', {enabled: environment.production}),
     // 3rd

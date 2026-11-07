@@ -25,9 +25,9 @@ import {queryPlaylistFavorites} from 'src/music/music-idb';
           @if (track?.performer && track?.data) {
             <span>
               <button
-                (click)="toggleFavorite(track?.id)"
+                (click)="toggleFavorite(track.id)"
                 class="btn btn-dense btn-borderless"
-                [class.active]="track?.playlists | contains: playlistFavorites"
+                [class.active]="track.playlists | contains: playlistFavorites"
               >
                 <i class="fas fa-heart"></i>
               </button>
