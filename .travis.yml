@@ -1,8 +1,10 @@
 sudo: false
 
 language: node_js
+# package.json has engineStrict: true and node: ^22.22.3 || ^24.15.0 || >=26.0.0,
+# so `pnpm install --frozen-lockfile` fails unless CI's node is in that range.
 node_js:
-  - 22
+  - 24
 
 branches:
   only:
