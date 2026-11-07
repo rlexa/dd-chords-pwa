@@ -1,4 +1,3 @@
-import {CommonModule} from '@angular/common';
 import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
@@ -20,7 +19,7 @@ import {QueryParamTrackId, RouteTracks, RouteUi} from 'src/app/routing';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
 })
 export class SharedTargetComponent implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
