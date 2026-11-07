@@ -64,7 +64,7 @@ milestone M1 in the ledger.
 
 ## App composition
 
-Angular 19, `bootstrapApplication` in [`main.ts`](../src/main.ts) — standalone only, no `NgModule`,
+Angular 22, `bootstrapApplication` in [`main.ts`](../src/main.ts) — standalone only, no `NgModule`,
 `provideZonelessChangeDetection`. `provideServiceWorker` is enabled only in production,
 and the root router (`'ui'` → dashboard, `'shared'` → share target, `''` → redirect `'ui'`) is set up
 with `withComponentInputBinding()`. `provideAppInitializer` wires `CacheService` before bootstrap.

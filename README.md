@@ -9,7 +9,7 @@ syncs it into IndexedDB. Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.m
 
 ### UI Framework
 
-[Angular] v19, standalone components, zoneless change detection.
+[Angular] v22, standalone components, zoneless change detection.
 
 #### UI Experience
 
