@@ -19,6 +19,11 @@
     "target": "ES2022",
     "module": "es2020",
     "lib": ["es2019", "dom"],
+    // tsconfig.json is the project the editor falls back to for files no other config
+    // includes (tsserver only auto-discovers a file literally named "tsconfig.json"), so it
+    // needs the jest ambient types — specs would otherwise report TS2593/TS2304. The app and
+    // spec configs declare their own `types`, so the build is unaffected.
+    "types": ["jest", "node"],
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
