@@ -10,7 +10,11 @@ const jestConfig: Config = {
   coveragePathIgnorePatterns: ['/node_modules/', 'public-api.ts', '.module.ts', 'index.ts', '.mock.ts', 'test.ts'],
   setupFilesAfterEnv: ['<rootDir>/src/jest-setup.ts'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/', '/test-util/index.ts', '.stories.ts', 'test.ts'],
-  snapshotSerializers: ['jest-preset-angular/build/serializers/ng-snapshot', 'jest-preset-angular/build/serializers/html-comment'],
+  snapshotSerializers: [
+    'jest-preset-angular/build/serializers/no-ng-attributes',
+    'jest-preset-angular/build/serializers/ng-snapshot',
+    'jest-preset-angular/build/serializers/html-comment',
+  ],
   reporters: ['default', 'jest-junit'],
   moduleNameMapper: {
     'src/(.*)': '<rootDir>/src/$1',
