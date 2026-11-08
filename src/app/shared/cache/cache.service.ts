@@ -51,8 +51,8 @@ export class CacheService implements OnDestroy {
 
   private initFromCache<T>(key: string, init: (val: T | undefined) => void) {
     const cachedMap = this.get<CachedMap>(cachedMapKey);
-    if (cachedMap?.version ?? 0 >= cachedMapVersion) {
-      init(cachedMap?.value[key]);
+    if ((cachedMap?.version ?? 0) >= cachedMapVersion) {
+      init(cachedMap?.value?.[key]);
     }
   }
 
