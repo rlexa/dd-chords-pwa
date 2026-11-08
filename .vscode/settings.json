@@ -1,10 +1,10 @@
 {
-    "editor.detectIndentation": false,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true,
-    "html.format.wrapLineLength": 140,
-    "editor.rulers": [140],
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+  "editor.detectIndentation": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "html.format.wrapLineLength": 140,
+  "editor.rulers": [140],
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib"
 }
