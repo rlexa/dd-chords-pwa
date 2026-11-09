@@ -3,8 +3,9 @@ Nothing is in progress.** The one outstanding gap is the browser DI smoke test a
 `https://127.0.0.1:4200` — the 42 ng-mocks specs never build the real DI graph, so the 23
 `InjectionToken` factories in `src/app/di` stay uncovered. It is not merge-blocking.
 
-Last updated: 2026-11-09 · Repo: `C:\develop\github\dd-chords-pwa` · Branch: `md-cleanup`
-(docs-only cleanup) · HEAD: this docs commit, on top of `e87f015` · Tree: clean · Pushed: yes
+Last updated: 2026-11-09 · Repo: `C:\develop\github\dd-chords-pwa` · Branch: `main`
+· HEAD: this ledger stamp, on top of `e2b6be6` (the docs-only cleanup, merged into `main` by
+fast-forward) · Tree: clean · Pushed: yes (both this commit and `e2b6be6` on `origin/main`)
 
 # Active goals
 
@@ -60,6 +61,8 @@ Last updated: 2026-11-09 · Repo: `C:\develop\github\dd-chords-pwa` · Branch: `
   load-bearing: fix its comment, never the entry.
 - `src/assets/dd-chords/dd-chords.json` is a build artifact and gitignored — regenerate with
   `pnpm generate-chords-index`, never hand-edit. The dataset is the 10 `.txt` files beside it.
+- Docs are compressed to current state only — no dates, SHAs, or superseded numbers. `docs/superpowers/`
+  (the completed pnpm-migration plan and spec) is deleted. Keep docs describing what's true now.
 - `.travis.yml` runs `pnpm test && pnpm build` and deploys to Firebase on `main`; it is live CI.
 - Context protocol (64k window, checkpoint at ~50%) and Windows/PowerShell gotchas: AGENTS.md §1.
 
