@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {DiCurrentPerformers, DiPerformersFilterQuery, DiTracksFilterPerformer} from 'src/app/di';
 import {VlistComponent} from 'src/app/shared/vlist';
@@ -43,7 +43,7 @@ import {VlistComponent} from 'src/app/shared/vlist';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, VlistComponent],
+  imports: [AsyncPipe, VlistComponent],
 })
 export class PerformersComponent {
   protected readonly performers$ = inject(DiCurrentPerformers);

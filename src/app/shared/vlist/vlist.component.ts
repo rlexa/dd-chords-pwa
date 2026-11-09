@@ -1,5 +1,5 @@
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import {CommonModule} from '@angular/common';
+import {NgTemplateOutlet} from '@angular/common';
 import {ChangeDetectionStrategy, Component, contentChild, Input, TemplateRef} from '@angular/core';
 import {trackByIndex} from 'src/util';
 
@@ -31,7 +31,7 @@ import {trackByIndex} from 'src/util';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ScrollingModule],
+  imports: [NgTemplateOutlet, ScrollingModule],
 })
 export class VlistComponent<T> {
   protected readonly itemSizeDefault = 23;

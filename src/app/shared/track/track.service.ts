@@ -1,4 +1,4 @@
-import {DestroyRef, inject, Injectable} from '@angular/core';
+import {DestroyRef, inject, Service} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {forkJoin, of} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
@@ -6,7 +6,7 @@ import {DiMusicIdb, DiMusicIdbChange, DiMusicIdbLive} from 'src/app/di';
 import {Track} from 'src/music';
 import {getTrack$, toggleTrackFavorite$, upsertTrack$} from 'src/music/music-idb';
 
-@Injectable({providedIn: 'root'})
+@Service()
 export class TrackService {
   private readonly db$ = inject(DiMusicIdb);
   private readonly dbChange$ = inject(DiMusicIdbChange);

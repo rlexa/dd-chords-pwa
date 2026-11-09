@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {DiShowFavorites} from 'src/app/di';
@@ -24,7 +24,7 @@ import {RouteInfo, RouteTracks} from 'src/app/routing';
     </div>`,
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule, AsyncPipe],
 })
 export class DashboardComponent {
   protected readonly showFavorites$ = inject(DiShowFavorites);

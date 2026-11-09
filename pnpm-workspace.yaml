@@ -10,7 +10,7 @@ allowBuilds:
 engineStrict: true
 strictPeerDependencies: true
 # Targeted peer exemption, not a global relaxation. @oxc-parser/binding-wasm32-wasi (an
-# optional dep of @angular-devkit/build-angular@22) declares @emnapi/{core,runtime} as
+# optional dep of @angular/build@22) declares @emnapi/{core,runtime} as
 # dependencies pinned to 2.0.0-alpha.6, but @napi-rs/wasm-runtime@1.2.7's peer range
 # ('^1.7.1 || 2.0.0-beta.2 || 2.0.0-beta.3') does not include alpha.6 — and 1.2.5, whose peer
 # does accept alpha.4+, is excluded by oxc's '~1.2.6'. Upstream packaging bug (still present

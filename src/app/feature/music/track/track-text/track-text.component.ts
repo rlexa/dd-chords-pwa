@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {combineLatest} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -26,7 +26,7 @@ import {StateSubject} from 'src/util';
     }`,
   styleUrls: ['./track-text.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule],
+  imports: [AsyncPipe],
 })
 export class TrackTextComponent implements OnDestroy {
   private readonly data$ = new StateSubject<string | null>(null);

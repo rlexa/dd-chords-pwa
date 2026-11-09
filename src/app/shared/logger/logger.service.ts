@@ -1,4 +1,4 @@
-import {DestroyRef, inject, Injectable, OnDestroy} from '@angular/core';
+import {DestroyRef, inject, OnDestroy, Service} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {map, shareReplay} from 'rxjs/operators';
 import {CacheService} from 'src/app/shared/cache';
@@ -12,7 +12,7 @@ interface LogItem {
   timestamp: number;
 }
 
-@Injectable({providedIn: 'root'})
+@Service()
 export class LoggerService implements OnDestroy, Pick<Console, 'error' | 'log' | 'debug'> {
   private readonly cacheService = inject(CacheService);
   private readonly destroyRef = inject(DestroyRef);

@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {concatMap, Subject} from 'rxjs';
 import {DiCanShare} from 'src/app/di';
@@ -56,7 +56,7 @@ import {queryPlaylistFavorites} from 'src/music/music-idb';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ContainsPipe],
+  imports: [AsyncPipe, ContainsPipe],
 })
 export class TrackMetaComponent implements OnDestroy, OnInit {
   protected readonly canShare$ = inject(DiCanShare);

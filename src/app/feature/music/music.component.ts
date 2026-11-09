@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {RouterModule} from '@angular/router';
@@ -16,7 +16,7 @@ type VisibleList = 'performers' | 'tracks';
   templateUrl: './music.component.html',
   styleUrls: ['./music.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, PerformersComponent, TracksComponent],
+  imports: [AsyncPipe, RouterModule, PerformersComponent, TracksComponent],
 })
 export class MusicComponent implements OnInit {
   protected readonly currentPerformer$ = inject(DiCurrentPerformer);

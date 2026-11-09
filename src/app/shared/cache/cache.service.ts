@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {DestroyRef, inject, Injectable, OnDestroy} from '@angular/core';
+import {DestroyRef, inject, OnDestroy, Service} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, switchMap, take, tap} from 'rxjs/operators';
@@ -20,7 +20,7 @@ interface CachedMap {
 const cachedMapKey = 'dd-chords-cache';
 const cachedMapVersion = 2;
 
-@Injectable({providedIn: 'root'})
+@Service()
 export class CacheService implements OnDestroy {
   private readonly destroyRef = inject(DestroyRef);
 

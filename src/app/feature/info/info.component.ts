@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, DatePipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {debounceTime} from 'rxjs/operators';
 import {DiCurrentTrackCount} from 'src/app/di';
@@ -23,7 +23,7 @@ import {LoggerService} from 'src/app/shared/logger';
   </div>`,
   styleUrls: ['./info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule],
+  imports: [AsyncPipe, DatePipe],
 })
 export class InfoComponent {
   protected readonly currentTrackCount$ = inject(DiCurrentTrackCount);

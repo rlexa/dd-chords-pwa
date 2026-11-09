@@ -18,7 +18,7 @@
       "prefix": "dd-chords",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": {
               "base": "dist/dd-chords-pwa",
@@ -66,7 +66,7 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "dd-chords-pwa:build"
           },
@@ -74,12 +74,6 @@
             "production": {
               "buildTarget": "dd-chords-pwa:build:production"
             }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "dd-chords-pwa:build"
           }
         },
         "lint": {

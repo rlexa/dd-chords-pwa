@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject, Input} from '@angular/core';
 import {DiShowChords} from 'src/app/di';
 import {Track} from 'src/music';
@@ -25,7 +25,7 @@ import {TrackTextComponent} from './track-text';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TrackMetaComponent, TrackTextComponent],
+  imports: [AsyncPipe, TrackMetaComponent, TrackTextComponent],
 })
 export class TrackComponent {
   protected readonly showChords$ = inject(DiShowChords);

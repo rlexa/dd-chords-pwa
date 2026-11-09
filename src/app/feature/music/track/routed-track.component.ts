@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, inject, Input, OnDestroy} from '@angular/core';
 import {switchMap, tap} from 'rxjs/operators';
 import {DiTracksFilterPerformer} from 'src/app/di';
@@ -11,7 +11,7 @@ import {TrackComponent} from './track.component';
   selector: 'dd-chords-routed-track',
   template: `<dd-chords-track [track]="track$ | async" />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, TrackComponent],
+  imports: [AsyncPipe, TrackComponent],
 })
 export class RoutedTrackComponent implements OnDestroy {
   private readonly trackService = inject(TrackService);

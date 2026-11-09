@@ -1,4 +1,4 @@
-import {DestroyRef, inject, Injectable, OnDestroy} from '@angular/core';
+import {DestroyRef, inject, OnDestroy, Service} from '@angular/core';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
@@ -17,7 +17,7 @@ const mergeParams = (route: ActivatedRouteSnapshot, into: Record<string, string 
  *
  * Create-By-Injecting as soon as possible to make sure to catch all initial route changes (if needed).
  */
-@Injectable({providedIn: 'root'})
+@Service()
 export class RoutingService implements OnDestroy {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);

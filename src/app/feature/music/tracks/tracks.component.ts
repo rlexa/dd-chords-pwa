@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {ChangeDetectionStrategy, Component, EventEmitter, inject, Output} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {DiCurrentTrackMetas, DiTracksFilterQuery} from 'src/app/di';
@@ -45,7 +45,7 @@ import {VlistComponent} from 'src/app/shared/vlist';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, VlistComponent],
+  imports: [AsyncPipe, RouterModule, VlistComponent],
 })
 export class TracksComponent {
   protected readonly tracks$ = inject(DiCurrentTrackMetas);
