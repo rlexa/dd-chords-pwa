@@ -106,8 +106,9 @@ Views are `OnPush`; app state is rxjs everywhere except one place:
 
 [`CacheService`](../src/app/shared/cache/cache.service.ts) keeps `dd-chords-cache` in localStorage
 (versioned, `cachedMapVersion = 2`). Registered keys: `showChords` and `showFavorites` from the app
-initializer in `main.ts`, `logs` from `LoggerService` — nothing else is persisted.
-Note the precedence bug (`?? 0 >= …`) tracked as M3.
+initializer in `main.ts`, `logs` from `LoggerService` — nothing else is persisted. The version gate
+now reads `(cachedMap?.version ?? 0) >= cachedMapVersion`, so stored state really is restored on
+start; no spec covers `CacheService` yet (ledger M3).
 
 ### Service worker
 
@@ -127,4 +128,5 @@ a test that logs or free-runs fails. Three specs (`app.component`, `music`, `md5
 
 ## Known issues
 
-See [`LEDGER.md`](LEDGER.md) — M1 offline sync gap, M2 untested load pipeline, M3 cache version gate.
+Open gaps live in [`LEDGER.md`](LEDGER.md): M1 — offline never resyncs; M2 — an IDB `dbVersion` bump
+wipes `tracks`, and nothing backs up playlists.
